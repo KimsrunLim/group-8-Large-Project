@@ -19,7 +19,7 @@ app.post('/api/users', async (req, res, next) => {
     const db = client.db("group8large");
 
     const results = await
-        db.collection('users').find({ Login : username, Password : password}).toArray();
+        db.collection('users').find({ Username : username, Password : password}).toArray();
     
     var id = -1;
     var fn = '';
