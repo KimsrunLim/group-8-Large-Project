@@ -2,30 +2,46 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+const path = require('path');
+const PORT = process.env.PORT || 5000;
+
 const app = express();
+
+app.set('port', (process.env.PORT || 5000));
+
 app.use(cors());
 app.use(bodyParser.json());
 
-const url = 'mongodb+srv://admin:COP4331@group8large.ndz51wr.mongodb.net/?retryWrites=true&w=majority&appName=group8large';
-const MongoClient = require("mongodb").MongoClient;
+///////////////////////////////////////////////////
+// For Heroku deployment
+// Server static assets if in production
+if (process.env.NODE_ENV === 'production') {
+    // Set static folder
+    app.use(express.static('gameon-frontend-web/build'));
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'gameon-frontend-web', 'build', 'index.html'));
+    });
+}
 
+require('dotenv').config();
+const url = process.env.MONGODB_URI;
+const MongoClient = require('mongodb').MongoClient;
 const client = new MongoClient(url);
-client.connect(console.log("mongodb connected"));
+client.connect();
+
 
 app.post('/api', async (req, res, next) => {
-    
+
     const { firstName, lastName, username, password } = req.body;
 
-    const newUser = {FirstName:firstName, LastName:lastName, Username:username, Password:password};
+    const newUser = { FirstName: firstName, LastName: lastName, Username: username, Password: password };
     var error = '';
 
-    try
-    {
+    try {
         const db = client.db("group8large");
         const result = db.collection('users').insertOne(newUser);
     }
-    catch(e)
-    {
+    catch (e) {
         error = e.toString();
     }
 
@@ -41,19 +57,19 @@ app.post('/api/users', async (req, res, next) => {
     const db = client.db("group8large");
 
     const results = await
-        db.collection('users').find({ Username : username, Password : password}).toArray();
-    
+        db.collection('users').find({ Username: username, Password: password }).toArray();
+
     var id = -1;
     var fn = '';
     var ln = '';
-    
+
     if (results.length > 0) {
         id = results[0]._id;
         fn = results[0].FirstName;
         ln = results[0].LastName;
     }
 
-    var ret = { id:id, firstName:fn, lastName:ln, error: '' };
+    var ret = { id: id, firstName: fn, lastName: ln, error: '' };
     res.status(200).json(ret);
 });
 
@@ -70,4 +86,6 @@ app.use((req, res, next) => {
     next();
 });
 
-app.listen(5000);
+app.listen(PORT, () => {
+    console.log('Server listening on port ' + PORT);
+});
