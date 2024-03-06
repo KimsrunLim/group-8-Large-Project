@@ -19,7 +19,7 @@ function SignUp()
     
         try
         {
-            const response = await fetch('http://localhost:5000/api',
+            const response = await fetch('https://group8large-57cfa8808431.herokuapp.com/api',
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
         
             var res = JSON.parse(await response.text());
