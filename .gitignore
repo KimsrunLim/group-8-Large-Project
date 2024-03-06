@@ -1,0 +1,7 @@
+node_modules
+.env
+
+git config --global user.email "rick@jsventures.com"
+git config --global user.name "Rick Leinecker"
+
+heroku git:remote -a group8large
