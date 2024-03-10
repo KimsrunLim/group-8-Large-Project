@@ -9,13 +9,13 @@ function Login() {
 
     const [message, setMessage] = useState('');
 
-    const app_name = 'cop4331-4'
+    const app_name = 'group8large-57cfa8808431'
     function buildPath(route) {
         if (process.env.NODE_ENV === 'production') {
             return 'https://' + app_name + '.herokuapp.com/' + route;
         }
         else {
-            return 'http://localhost:5000/' + route;
+            return 'http://localhost:5001/' + route;
         }
     }
 
@@ -26,7 +26,7 @@ function Login() {
         var js = JSON.stringify(obj);
 
         try {
-            const response = fetch(buildPath('/api/users'),
+            const response = fetch(buildPath('api/users'),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
             var res = JSON.parse(response.text());

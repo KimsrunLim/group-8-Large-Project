@@ -26,7 +26,7 @@ function Signup() {
         var js = JSON.stringify(obj);
 
         try {
-            const response = fetch(buildPath('/api'),
+            const response = fetch(buildPath('api'),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
             var res = JSON.parse(response.text());
