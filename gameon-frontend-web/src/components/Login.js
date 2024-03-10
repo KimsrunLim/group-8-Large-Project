@@ -26,10 +26,12 @@ function Login() {
         var js = JSON.stringify(obj);
 
         try {
-            const response = fetch(buildPath('api/users'),
+            const response = await fetch(buildPath('api/users'),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
-            var res = JSON.parse(response.text());
+            console.log(response);
+
+            var res = JSON.parse(await response.text());
 
             if (res.id <= 0) // can't log in
             {
