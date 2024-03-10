@@ -16,7 +16,7 @@ function Login() {
         var js = JSON.stringify(obj);
 
         try {
-            const response = fetch('http://localhost:5001/api/users',
+            const response = fetch(buildPath('/api/users'),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
             var res = JSON.parse(response.text());
