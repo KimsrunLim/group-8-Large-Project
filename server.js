@@ -29,7 +29,7 @@ const MongoClient = require('mongodb').MongoClient;
 const client = new MongoClient(url);
 client.connect();
 
-
+// signup
 app.post('/api', async (req, res, next) => {
 
     const { firstName, lastName, username, password } = req.body;
@@ -49,6 +49,7 @@ app.post('/api', async (req, res, next) => {
     res.status(200).json(ret);
 });
 
+// login
 app.post('/api/users', async (req, res, next) => {
     var error = '';
 

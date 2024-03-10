@@ -2,13 +2,13 @@ import './App.css';
 
 import { BrowserRouter, Routes, Route} from "react-router-dom";
 
-import Testingpage from './pages/Testingpage.js';
+import LoginPage from './pages/LoginPage.js';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" index element={<Testingpage />} />
+        <Route path="/" index element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
   );

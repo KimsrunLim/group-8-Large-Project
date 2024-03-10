@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function SignUp() {
+function Signup() {
 
     var firstName = '';
     var lastName = '';
@@ -9,6 +9,7 @@ function SignUp() {
 
     const [message, setMessage] = useState('');
 
+    /* wait until heroku functional
     const app_name = 'group8large-57cfa8808431'
     function buildPath(route) {
         if (process.env.NODE_ENV === 'production') {
@@ -17,7 +18,7 @@ function SignUp() {
         else {
             return 'http://localhost:5000/' + route;
         }
-    }
+    } */
 
     const addUser = async event => {
         event.preventDefault();
@@ -45,8 +46,8 @@ function SignUp() {
     };
 
     return (
-        <div id="signUpDiv">
-            <form onSubmit={SignUp}>
+        <div id="signupDiv">
+            <form onSubmit={Signup}>
                 <span id="inner-title">SIGN UP</span><br />
                 <input type="text" id="firstName" placeholder="firstName"
                     ref={(c) => firstName = c} /><br />
@@ -56,12 +57,12 @@ function SignUp() {
                     ref={(c) => username = c} /><br />
                 <input type="password" id="password" placeholder="Password"
                     ref={(c) => password = c} />
-                <input type="submit" id="signUpButton" class="buttons" value="Do It"
-                    onClick={SignUp} />
+                <input type="submit" id="signupButton" class="buttons" value="Do It"
+                    onClick={Signup} />
             </form>
-            <span id="signUpResult">{message}</span>
+            <span id="signupResult">{message}</span>
         </div>
     );
 };
 
-export default SignUp;
+export default Signup;
