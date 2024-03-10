@@ -5,28 +5,37 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 // local
 
-function Login()
-{
+function Login() {
     var username;
     var password;
 
     const [message, setMessage] = useState('');
 
-    const doLogin = async event =>
-    {
+    const app_name = 'group8large-57cfa8808431'
+    function buildPath(route) {
+        if (process.env.NODE_ENV === 'production') {
+            return 'https://' + app_name + '.herokuapp.com/' + route;
+        }
+        else {
+            return 'http://localhost:5001/' + route;
+        }
+    }
+
+    const doLogin = async event => {
         event.preventDefault();
 
-        var obj = {username: username.value, password: password.value};
+        var obj = { username: username.value, password: password.value };
         var js = JSON.stringify(obj);
 
-        try
-        {
-            const response = await fetch('http://localhost:5001/api/users',
-                {method:'POST', body:js, headers:{'Content-Type':'application/json'}});
-        
+        try {
+            const response = await fetch(buildPath('api/users'),
+                { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
+
+            console.log(response);
+
             var res = JSON.parse(await response.text());
 
-            if( res.id <= 0 ) // can't log in
+            if (res.id <= 0) // can't log in
             {
                 setMessage('User/Password combination incorrect');
             }
@@ -38,9 +47,8 @@ function Login()
                 setMessage('');
                 window.location.href = '/home'; // reroute
             }
-            }
-        catch(e)
-        {
+        }
+        catch (e) {
             alert(e.toString());
             return;
         }

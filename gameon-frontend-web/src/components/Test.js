@@ -24,10 +24,10 @@ function Test() {
         var js = JSON.stringify(obj);
 
         try {
-            const response = await fetch(buildPath('/api/users'),
+            const response = fetch(buildPath('/api/users'),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
-            var res = JSON.parse(await response.text());
+            var res = JSON.parse(response.text());
 
             if (res.id <= 0) {
                 setMessage('User/Password combination incorrect');

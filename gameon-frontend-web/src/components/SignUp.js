@@ -9,16 +9,15 @@ function Signup() {
 
     const [message, setMessage] = useState('');
 
-    /* wait until heroku functional
     const app_name = 'group8large-57cfa8808431'
     function buildPath(route) {
         if (process.env.NODE_ENV === 'production') {
             return 'https://' + app_name + '.herokuapp.com/' + route;
         }
         else {
-            return 'http://localhost:5000/' + route;
+            return 'http://localhost:5001/' + route;
         }
-    } */
+    }
 
     const addUser = async event => {
         event.preventDefault();
@@ -27,7 +26,7 @@ function Signup() {
         var js = JSON.stringify(obj);
 
         try {
-            const response = await fetch('http://localhost:5001/api',
+            const response = await fetch(buildPath('api'),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
             var res = JSON.parse(await response.text());
