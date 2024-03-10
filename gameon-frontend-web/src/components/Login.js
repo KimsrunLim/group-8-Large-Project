@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Login.css';
 
 // local
@@ -46,23 +47,32 @@ function Login()
 
     // return markup
     return (
-        <div id="loginDiv" className="login-container">
-            <form onSubmit={doLogin} className="login-form">
-                <h2 className="login-title">Log In to Your Account</h2>
-                <div className="input-group">
-                    <input type="text" id="loginName" placeholder="Username" 
-                        ref={(c) => username = c} />
+        <div className="container">
+            <div className="row justify-content-center">
+                <div className="col-md-6">
+                    <div className="card">
+                        <h2 className="card-header text-center">Log in to your account</h2>
+                        <div className="card-body">
+                            <form onSubmit={doLogin}>
+                                <div className="form-group">
+                                    <label htmlFor="loginName">Email address</label>
+                                    <input type="text" id="loginName" className="form-control" placeholder="Email address" ref={username} />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="loginPassword">Password</label>
+                                    <input type="password" id="loginPassword" className="form-control" placeholder="Password" ref={password} />
+                                </div>
+                                <button type="submit" className="btn btn-primary w-100">Log In</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div className="text-center">
+                        <a href="/signup">New to Heroku? Sign Up</a>
+                    </div>
                 </div>
-                <div className="input-group">
-                    <input type="password" id="loginPassword" placeholder="Password"
-                        ref={(c) => password = c} />
-                </div>
-                <div className="input-group">
-                    <button type="submit" className="login-button">Log In</button>
-                </div>
-            </form>
-            <p className="login-result">{message}</p>
-        </div>        
+            </div>
+            {message && <div className="alert alert-danger mt-3">{message}</div>}
+        </div>       
     );
 };
 

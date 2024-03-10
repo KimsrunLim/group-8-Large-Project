@@ -9,6 +9,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" index element={<LoginPage />} />
+        <Route path="/login" index element={<LoginPage />} />
+        <Route path="/signup" index element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
   );
