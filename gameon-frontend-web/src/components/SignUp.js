@@ -26,10 +26,10 @@ function Signup() {
         var js = JSON.stringify(obj);
 
         try {
-            const response = fetch(buildPath('api'),
+            const response = await fetch(buildPath('api'),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
-            var res = JSON.parse(response.text());
+            var res = JSON.parse(await response.text());
 
             if (res.error.length > 0) {
                 setMessage("API Error:" + res.error);
