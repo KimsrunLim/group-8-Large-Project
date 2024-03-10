@@ -67,7 +67,7 @@ function Login()
                         </div>
                     </div>
                     <div className="text-center">
-                        <a href="/signup">New to Heroku? Sign Up</a>
+                        <a href="/signup">New to GameOn? Sign Up</a>
                     </div>
                 </div>
             </div>
