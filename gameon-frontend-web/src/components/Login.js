@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/Login.css';
 
 // local
 
@@ -46,33 +47,84 @@ function Login()
     };
 
     // return markup
+    // functionality to implement:
+        // click on logo to direct to landing page
     return (
-        <div className="container">
-            <div className="row justify-content-center">
-                <div className="col-md-6">
+        <>
+            <style>
+                {`
+                    .card {
+                        /* un-rounded bottom corners of login card */
+                        border-bottom-left-radius: 0;
+                        border-bottom-right-radius: 0;
+                    }
+
+                    .alert {
+                        /* un-rounded top corners of signup link card */
+                        border-top-left-radius: 0;
+                        border-top-right-radius: 0;
+                    }
+
+                    .input-group-text {
+                        /* un-rounded right corners of icons */
+                        border-top-right-radius: 0;
+                        border-bottom-right-radius: 0;
+                        padding: 1rem;
+                    }
+                `}
+            </style>
+
+            <div className="container">
+                <div className="row justify-content-center">
+                    <div className="col-md-6">
+                        <div className="text-center mb-4">
+                            <img src="/logo192.png" alt="GameOn Logo"
+                                style={{ maxWidth: '100%', height: 'auto' }} />
+                    </div>
                     <div className="card">
-                        <h2 className="card-header text-center">Log in to your account</h2>
+                        <h1 className="text-center mb-4 pt-4">Log In</h1>
                         <div className="card-body">
-                            <form onSubmit={doLogin}>
-                                <div className="form-group">
-                                    <label htmlFor="loginName">Email address</label>
-                                    <input type="text" id="loginName" className="form-control" placeholder="Email address" ref={username} />
+                        <form onSubmit={doLogin}>
+                            <div className="form-group mb-4">
+                            <label htmlFor="loginName" className="mb-1">Username</label>
+                            <div className="input-group">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text">
+                                        <FontAwesomeIcon icon={faUser}/>
+                                    </span>
                                 </div>
-                                <div className="form-group">
-                                    <label htmlFor="loginPassword">Password</label>
-                                    <input type="password" id="loginPassword" className="form-control" placeholder="Password" ref={password} />
+                                    <input type="text" id="loginName" className="form-control"
+                                        placeholder="Username" ref={(c) => username = c}/>
+                            </div>
+                            </div>
+                            <div className="form-group mb-4">
+                            <label htmlFor="loginPassword" className="mb-1">Password</label>
+                            <div className="input-group">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text">
+                                        <FontAwesomeIcon icon={faLock}/>
+                                    </span>
                                 </div>
-                                <button type="submit" className="btn btn-primary w-100">Log In</button>
-                            </form>
+                                    <input type="password" id="loginPassword" className="form-control"
+                                        placeholder="Password" ref={(c) => password = c} />
+                            </div>
+                            </div>
+                            <button type="submit" className="btn btn-primary w-100 mb-4">Submit</button>
+                        </form>
                         </div>
                     </div>
-                    <div className="text-center">
-                        <a href="/signup">New to GameOn? Sign Up</a>
+                    <a href="/signup" className="alert-link" style={{display: 'block', textDecoration: 'none'}}>
+                        <div className="text-center">
+                            <div className="alert alert-secondary" role="alert">
+                            New to GameOn? <a href="/signup" className="alert-link">Sign Up</a>
+                            </div>
+                        </div>
+                    </a>
                     </div>
                 </div>
+                {message && <div className="alert alert-danger mt-3">{message}</div>}
             </div>
-            {message && <div className="alert alert-danger mt-3">{message}</div>}
-        </div>       
+        </>
     );
 };
 
