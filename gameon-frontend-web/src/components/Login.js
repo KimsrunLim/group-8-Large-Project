@@ -5,8 +5,8 @@ import '../styles/Login.css';
 
 function Login()
 {
-    var loginName;
-    var loginPassword;
+    var username;
+    var password;
 
     const [message, setMessage] = useState('');
 
@@ -14,16 +14,15 @@ function Login()
     {
         event.preventDefault();
 
-        var obj = {login:loginName.value,password:loginPassword.value};
+        var obj = {username: username.value, password: password.value};
         var js = JSON.stringify(obj);
 
         try
         {
-            const response = await
-            fetch('http://localhost:5000/api/login',
-                {method:'POST',body:js,headers:{'Content-Type':'application/json'}});
+            const response = await fetch('http://localhost:5001/api/users',
+                {method:'POST', body:js, headers:{'Content-Type':'application/json'}});
         
-            var res = JSON.parse(await response.text()); // call response
+            var res = JSON.parse(await response.text());
 
             if( res.id <= 0 ) // can't log in
             {
@@ -31,9 +30,9 @@ function Login()
             }
             else // log in
             {
-                var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
+                // var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
                 // save into local storage so later on know the name
-                localStorage.setItem('user_data', JSON.stringify(user));
+                // localStorage.setItem('user_data', JSON.stringify(user));
                 setMessage('');
                 window.location.href = '/home'; // reroute
             }
@@ -52,11 +51,11 @@ function Login()
                 <h2 className="login-title">Log In to Your Account</h2>
                 <div className="input-group">
                     <input type="text" id="loginName" placeholder="Username" 
-                        ref={(c) => loginName = c} />
+                        ref={(c) => username = c} />
                 </div>
                 <div className="input-group">
                     <input type="password" id="loginPassword" placeholder="Password"
-                        ref={(c) => loginPassword = c} />
+                        ref={(c) => password = c} />
                 </div>
                 <div className="input-group">
                     <button type="submit" className="login-button">Log In</button>

@@ -26,7 +26,7 @@ function Signup() {
         var js = JSON.stringify(obj);
 
         try {
-            const response = await fetch(buildPath('/api'),
+            const response = await fetch('http://localhost:5001/api',
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
             var res = JSON.parse(await response.text());
