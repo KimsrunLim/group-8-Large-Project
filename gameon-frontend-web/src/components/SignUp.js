@@ -9,7 +9,6 @@ function Signup() {
 
     const [message, setMessage] = useState('');
 
-    /* wait until heroku functional
     const app_name = 'group8large-57cfa8808431'
     function buildPath(route) {
         if (process.env.NODE_ENV === 'production') {
@@ -18,7 +17,7 @@ function Signup() {
         else {
             return 'http://localhost:5000/' + route;
         }
-    } */
+    }
 
     const addUser = async event => {
         event.preventDefault();
