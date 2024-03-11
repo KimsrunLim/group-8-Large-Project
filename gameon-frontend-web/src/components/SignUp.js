@@ -20,7 +20,7 @@ function Signup() {
     }
 
     const addUser = async event => {
-        event.preventDefault();
+        // event.preventDefault();
 
         var obj = { firstName: firstName.value, lastName: lastName.value, username: username.value, password: password.value };
         var js = JSON.stringify(obj);
@@ -29,8 +29,8 @@ function Signup() {
             const response = await fetch(buildPath('api'),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
-            var res = JSON.parse(await response.text());
-
+                var res = JSON.parse(await response.text());
+                
             if (res.error.length > 0) {
                 setMessage("API Error:" + res.error);
             }
@@ -44,9 +44,41 @@ function Signup() {
         }
     };
 
+    const dosignup = async event => {
+        event.preventDefault();
+
+        var obj = { username: username.value, password: password.value };
+        var js = JSON.stringify(obj);
+
+        try {
+            const response = await fetch(buildPath('api/users'),
+                { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
+
+            console.log(response);
+
+            var res = JSON.parse(await response.text());
+
+            // Check if user exist
+            // const users = await response.json();
+            console.log(res);
+            if (res.id !== -1) {
+                console.log(`Username ${obj.username} exists.`);
+            } else {
+                // add new user
+                addUser();
+                console.log(`new username: ${obj.username}`);
+            }
+
+        }
+        catch (e) {
+            alert(e.toString());
+            return;
+        }
+    };
+
     return (
         <div id="signupDiv">
-            <form onSubmit={Signup}>
+            <form onSubmit={dosignup}>
                 <span id="inner-title">SIGN UP</span><br />
                 <input type="text" id="firstName" placeholder="firstName"
                     ref={(c) => firstName = c} /><br />
@@ -57,7 +89,7 @@ function Signup() {
                 <input type="password" id="password" placeholder="Password"
                     ref={(c) => password = c} />
                 <input type="submit" id="signupButton" class="buttons" value="Do It"
-                    onClick={Signup} />
+                    onClick={dosignup} />
             </form>
             <span id="signupResult">{message}</span>
         </div>
