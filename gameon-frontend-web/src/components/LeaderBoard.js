@@ -46,11 +46,11 @@ const LeaderBoard = () => {
                     <thead class="bg-info">
                         <tr>
                             <td>curPlayer</td>
-                            <td>name</td>
-                            <td>speed</td>
-                            <td>score</td>
+                            <td>temp</td>
+                            <td>123</td>
+                            <td>456</td>
                             <td>device</td>
-                            <td>dt</td>
+                            <td>2025-13-13</td>
                         </tr>
                         <th>Rank</th>
                         <th>Name</th>
