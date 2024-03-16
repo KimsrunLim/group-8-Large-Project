@@ -1,0 +1,23 @@
+export const LeaderboardData = [
+    {
+        name:"jacob",
+        speed:"45",
+        score:"192",
+        device:"phone",
+        dt:"2022-02-12"
+    },
+    {
+        name:"Slime",
+        speed:"61",
+        score:"520",
+        device:"computer",
+        dt:"2022-05-22"
+    },
+    {
+        name:"cat",
+        speed:"12",
+        score:"83",
+        device:"computer",
+        dt:"2022-12-12"
+    }
+]

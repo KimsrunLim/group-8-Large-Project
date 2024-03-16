@@ -27,7 +27,7 @@ function Navbar() {
                     <a className="nav-item nav-link active me-5" href="/leaderboard">About</a>
                     { /* functionality on leaderboard:
                        * - logged in & IF user score exists: show user at top of stats  */ }
-                    <a className="nav-item nav-link active me-5" href="/about">Rank</a>
+                    <a className="nav-item nav-link active me-5" href="/rank">Rank</a>
                     <a className="nav-item nav-link" width="30" height="30" href="/profile">
                         <FontAwesomeIcon icon={faUser} />
                         { /* functionality on profile image click:
