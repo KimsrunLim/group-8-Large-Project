@@ -33,21 +33,25 @@ client.connect();
 app.post('/api', async (req, res, next) => {
 
     const { firstName, lastName, username, password } = req.body;
-
     const newUser = { FirstName: firstName, LastName: lastName, Username: username, Password: password };
+    
     var error = '';
 
-    const db = client.db("group8large");
-
-    const results = await
-        db.collection('users').find({ Username: username }).toArray();
-
-    if (results.length == 0) {
+    try {
         const db = client.db("group8large");
-        const result = db.collection('users').insertOne(newUser);
+        const results = await
+            db.collection('users').find({ Username: username }).toArray();
+
+        if (results.length == 0) {
+            const db = client.db("group8large");
+            const result = db.collection('users').insertOne(newUser);
+        }
+        else {
+            error = "User already exists";
+        }
     }
-    else {
-        error = "User already exists";
+    catch (e) {
+        error = e;
     }
 
     var ret = { error: error };
@@ -59,20 +63,25 @@ app.post('/api/users', async (req, res, next) => {
     var error = '';
 
     const { username, password } = req.body;
-
-    const db = client.db("group8large");
-
-    const results = await
-        db.collection('users').find({ Username: username, Password: password }).toArray();
-
-    var id = -1;
-    var fn = '';
-    var ln = '';
-
-    if (results.length > 0) {
-        id = results[0]._id;
-        fn = results[0].FirstName;
-        ln = results[0].LastName;
+    
+    try {
+        const db = client.db("group8large");
+    
+        const results = await
+            db.collection('users').find({ Username: username, Password: password }).toArray();
+    
+        var id = -1;
+        var fn = '';
+        var ln = '';
+    
+        if (results.length > 0) {
+            id = results[0]._id;
+            fn = results[0].FirstName;
+            ln = results[0].LastName;
+        }
+    }
+    catch(e) {
+        error = e;
     }
 
     var ret = { id: id, firstName: fn, lastName: ln, error: '' };
