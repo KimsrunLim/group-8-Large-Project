@@ -37,15 +37,23 @@ app.post('/api', async (req, res, next) => {
     const newUser = { FirstName: firstName, LastName: lastName, Username: username, Password: password };
     var error = '';
 
+
     try {
-        const db = client.db("group8large");
-        const result = db.collection('users').insertOne(newUser);
+        if (firstName == null || lastName == null || username == null || password == null) {
+            error = -1;
+        }
+        else {
+            const db = client.db("group8large");
+            const result = db.collection('users').insertOne(newUser);
+        }
     }
     catch (e) {
         error = e.toString();
     }
 
+
     var ret = { error: error };
+    console.log("Error: ", ret);
     res.status(200).json(ret);
 });
 
