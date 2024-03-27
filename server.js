@@ -37,23 +37,20 @@ app.post('/api', async (req, res, next) => {
     const newUser = { FirstName: firstName, LastName: lastName, Username: username, Password: password };
     var error = '';
 
+    const db = client.db("group8large");
 
-    try {
-        if (firstName == null || lastName == null || username == null || password == null) {
-            error = -1;
-        }
-        else {
-            const db = client.db("group8large");
-            const result = db.collection('users').insertOne(newUser);
-        }
-    }
-    catch (e) {
-        error = e.toString();
-    }
+    const results = await
+        db.collection('users').find({ Username: username }).toArray();
 
+    if (results.length == 0) {
+        const db = client.db("group8large");
+        const result = db.collection('users').insertOne(newUser);
+    }
+    else {
+        error = "User already exists";
+    }
 
     var ret = { error: error };
-    console.log("Error: ", ret);
     res.status(200).json(ret);
 });
 
