@@ -17,6 +17,7 @@ function App() {
         <Route path="/home" index element={<HomePage />} />
         <Route path="/login" index element={<LoginPage />} />
         <Route path="/signup" index element={<SignupPage />} />
+        <Route path="/leaderboard" index element={<LeaderBoardPage />} />
       </Routes>
     </BrowserRouter>
   );

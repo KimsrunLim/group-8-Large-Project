@@ -34,7 +34,7 @@ app.post('/api', async (req, res, next) => {
 
     const { firstName, lastName, username, password } = req.body;
     const newUser = { FirstName: firstName, LastName: lastName, Username: username, Password: password };
-    
+
     var error = '';
 
     try {
@@ -63,28 +63,54 @@ app.post('/api/users', async (req, res, next) => {
     var error = '';
 
     const { username, password } = req.body;
-    
+
     try {
         const db = client.db("group8large");
-    
+
         const results = await
             db.collection('users').find({ Username: username, Password: password }).toArray();
-    
+
         var id = -1;
         var fn = '';
         var ln = '';
-    
+
         if (results.length > 0) {
             id = results[0]._id;
             fn = results[0].FirstName;
             ln = results[0].LastName;
         }
     }
-    catch(e) {
+    catch (e) {
         error = e;
     }
 
     var ret = { id: id, firstName: fn, lastName: ln, error: '' };
+    res.status(200).json(ret);
+});
+
+app.post('/api/leaderboard', async (req, res, next) => {
+    const { username, accuracy, speed, score, device, date } = req.body;
+    var error = '';
+
+    try {
+        const db = client.db("group8large");
+        const results = await
+            db.collection('TypingGame').find({ Username: username }).sort({ Score: -1 }).toArray();
+
+
+        console.log(results);
+        console.log("Number of Scores: ", results.length);
+
+        if (results.length <= 0)
+        {
+            error = "No User Exists";
+        }
+    }
+    catch (e) {
+        error = e;
+    }
+
+    var ret = { error: error };
     res.status(200).json(ret);
 });
 
