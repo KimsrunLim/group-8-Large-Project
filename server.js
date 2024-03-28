@@ -30,7 +30,7 @@ const client = new MongoClient(url);
 client.connect();
 
 // signup
-app.post('/api', async (req, res, next) => {
+app.post('/api/signup', async (req, res, next) => {
 
     const { firstName, lastName, username, password } = req.body;
     const newUser = { FirstName: firstName, LastName: lastName, Username: username, Password: password };
