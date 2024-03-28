@@ -89,7 +89,33 @@ app.post('/api/users', async (req, res, next) => {
 });
 
 app.post('/api/leaderboard', async (req, res, next) => {
-    const { username, accuracy, speed, score, device, date } = req.body;
+    // const { username, accuracy, speed, score, device, date } = req.body;
+    var error = '';
+    var results;
+
+    try {
+        const db = client.db("group8large");
+        results = await
+            db.collection('TypingGame').find().sort({Score: -1}).toArray();
+
+        // console.log(results);
+        // console.log("Number of Scores: ", results.length);
+
+        if (results.length <= 0)
+        {
+            error = "No Data";
+        }
+    }
+    catch (e) {
+        error = e;
+    }
+
+    var ret = { results: results, error: error };
+    res.status(200).json(ret);
+});
+
+app.post('/api/userData', async (req, res, next) => {
+    const { username } = req.body;
     var error = '';
 
     try {
@@ -98,8 +124,8 @@ app.post('/api/leaderboard', async (req, res, next) => {
             db.collection('TypingGame').find({ Username: username }).sort({ Score: -1 }).toArray();
 
 
-        console.log(results);
-        console.log("Number of Scores: ", results.length);
+        // console.log(results);
+        // console.log("Number of Scores: ", results.length);
 
         if (results.length <= 0)
         {
