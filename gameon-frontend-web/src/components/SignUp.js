@@ -29,7 +29,7 @@ function Signup() {
         var js = JSON.stringify(obj);
 
         try {
-            const response = await fetch(buildPath('api'),
+            const response = await fetch(buildPath('api/signup'),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
                 var res = JSON.parse(await response.text());
@@ -62,6 +62,9 @@ function Signup() {
 
             var res = JSON.parse(await response.text());
 
+            // input check
+
+            
             // check if user exists
             console.log(res);
             if (res.id !== -1) { // error: exists
