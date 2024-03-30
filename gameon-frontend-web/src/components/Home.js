@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import temp1 from "../assets/astronaut.png";
 import temp2 from "../assets/celebrating.png";
 import temp3 from "../assets/taken.png";
+import "../pages/SpeedTypingPage"
 
 // add more as games built
 const gameView = [
@@ -53,7 +54,8 @@ function Home()
             <div className="flex flex-col justify-center items-center gap-4 p-4">
               <p className="text-xl font-semibold text-center">{item.name}</p>
               <p className="text-center">{item.overview}</p>
-              <button className="bg-black text-white text-lg">Play</button>
+              {/* <button className="bg-black text-white text-lg">Play</button> */}
+              <a href="/SpeedTypingPage.js" class="btn btn-info" tabindex="-1" role="button">Play</a>
             </div>
           </div>
         ))}

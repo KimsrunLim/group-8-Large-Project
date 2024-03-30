@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage.js';
 import SignupPage from './pages/SignupPage.js';
 import HomePage from './pages/HomePage.js';
 import LeaderBoardPage from './pages/LeaderBoardPage.js';
+import SpeedTypingPage from './pages/SpeedTypingPage.js';
 
 
 
