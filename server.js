@@ -32,8 +32,8 @@ client.connect();
 // signup
 app.post('/api/signup', async (req, res, next) => {
 
-    const { firstName, lastName, username, password } = req.body;
-    const newUser = { FirstName: firstName, LastName: lastName, Username: username, Password: password };
+    const { username, email, password } = req.body;
+    const newUser = { Username: username, Email: email, Password: password };
 
     var error = '';
 
