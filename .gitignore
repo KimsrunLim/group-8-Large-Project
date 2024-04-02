@@ -1,4 +1,4 @@
-node_modules
+/node_modules
 .env
 
 git config --global user.email "rick@jsventures.com"
