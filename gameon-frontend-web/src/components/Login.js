@@ -71,6 +71,7 @@ function Login() {
                         <div className="logo p-4 text-center m-auto">
                             <img src="/logo192.png" className='img-fluid' alt="GameOn Logo" style={{ maxWidth: "150px" }} />
                         </div>
+
                         <div className="login-container">
 
                             { /* Login Box */}
@@ -105,7 +106,8 @@ function Login() {
                                         {message &&
                                             <div className="text-danger mt-1 mb-2 pt-2 pb-2 text-center mx-auto fs-6 fw-bold">
                                                 {message}
-                                            </div>}
+                                            </div>
+                                        }
 
                                         { /* Submit */}
                                         <button type="submit" className="btn bg-black w-100 mt-3 mb-1 fs-5 text-white fw-bold">Submit</button>
@@ -120,7 +122,7 @@ function Login() {
 
                             { /* Switch to Signup */}
                             <div className='d-grid py-5'>
-                                <button onClick={handleGuest} class="btn border border-3 border-dark fw-bold" type="button" style={{maxHeight: "50px", height: "50px"}}>Continue as Guest</button>
+                                <button onClick={handleGuest} class="btn border border-3 border-dark fw-bold" type="button" style={{ maxHeight: "50px", height: "50px" }}>Continue as Guest</button>
                             </div>
                         </div>
                     </div>

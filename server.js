@@ -32,8 +32,8 @@ client.connect();
 // signup
 app.post('/api/signup', async (req, res, next) => {
 
-    const { firstName, lastName, username, password } = req.body;
-    const newUser = { FirstName: firstName, LastName: lastName, Username: username, Password: password };
+    const { username, email, password } = req.body;
+    const newUser = { Username: username, Email: email, Password: password };
 
     var error = '';
 
@@ -45,6 +45,32 @@ app.post('/api/signup', async (req, res, next) => {
         if (results.length == 0) {
             const db = client.db("group8large");
             const result = db.collection('users').insertOne(newUser);
+        }
+        else {
+            error = "User already exists";
+        }
+    }
+    catch (e) {
+        error = e;
+    }
+
+    var ret = { error: error };
+    res.status(200).json(ret);
+});
+
+// check for existing user
+app.post('/api/userCheck', async (req, res, next) => {
+
+    const { username } = req.body;
+    var error = '';
+
+    try {
+        const db = client.db("group8large");
+        const results = await
+            db.collection('users').find({ Username: username }).toArray();
+
+        if (results.length == 0) {
+            const db = client.db("group8large");
         }
         else {
             error = "User already exists";
