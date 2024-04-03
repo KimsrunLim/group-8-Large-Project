@@ -1,33 +1,45 @@
 import React, {useEffect, useState} from 'react';
-import { LeaderboardData } from './tempDatabase';
 import PlayerData from './PlayerData'
-// const API = "links"
+const API = '/api/leaderboard'
 
 const LeaderBoard = () => {
 
-    // var firstName = '';
-    // var lastName = '';
-    // var username = '';
-    // var password = '';
+    var firstName = '';
+    var lastName = '';
+    var username = '';
+    var password = '';
 
     const [players, setPlayers] = useState([])
-    // Unlock when having api url
+    const app_name = 'group8large-57cfa8808431'
+    function buildPath(route) {
+        if (process.env.NODE_ENV === 'production') {
+            return 'https://' + app_name + '.herokuapp.com/' + route;
+        }
+        else {
+            return 'http://localhost:5001/' + route;
+        }
+    }
         const fetchPlayer = async (url) => {
+            var obj = { };
+            var js = JSON.stringify(obj);
             try {
-                const res = await fetch(url);
+                const res = await fetch(buildPath('api/leaderboard'),
+                { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
+
                 const player = await res.json();
                 if (player.length > 0) {
-                    setPlayers(player);
                 }
-                console.log(player);
+                setPlayers(player.results);
+                console.log("This One: ", player);
             } catch (e) {
                 console.error(e)
             }
         }
 
         useEffect(() => {
-            // fetchUser(API);
-        }, [])
+            fetchPlayer(API.results);
+        }, []);
+
         return <>
         <div class='row align-items-center'>
             {/* Detail */}
@@ -53,20 +65,21 @@ const LeaderBoard = () => {
                             <td>curPlayer</td>
                             <td>temp</td>
                             <td>123</td>
+                            <td>123</td>
                             <td>456</td>
                             <td>device</td>
                             <td>2025-13-13</td>
                         </tr>
                         <th>Rank</th>
                         <th>Name</th>
+                        <th>Accuracy</th>
                         <th>Speed</th>
                         <th>Score</th>
                         <th>Device</th>
                         <th>Date</th>
                     </thead>
                     <tbody>
-                        <PlayerData players={filt(LeaderboardData)} />
-                        {/* <PlayerData players={filt(players)} />   (api version) */}   
+                        <PlayerData players={filt(players)} /> 
                     </tbody>
                 </table>
 
@@ -77,6 +90,7 @@ const LeaderBoard = () => {
 
 // filter
 function filt(data){
+    console.log(data);
 
     // TBD
     let filter = data.filter(val => {
@@ -91,6 +105,7 @@ function filt(data){
             return b.score - a.score;
         }
     })
+
 }
 
 export default LeaderBoard;
