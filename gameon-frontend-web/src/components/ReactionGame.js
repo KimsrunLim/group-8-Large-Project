@@ -4,9 +4,11 @@ import { useState, useRef } from "react";
 function ReactionGame()
 {
     const [endTime, setEndTime] = useState(null);
+    const [output, setOutput] = useState(null);
+    const [unit, setUnit] = useState(null);
+    
     const canvasRef = useRef(null);
-    var result = 444;
-    var early = true;
+    var result = 0;
     
     const randomTime = (max) => {
         let time = Math.floor(Math.random() * Math.floor(max) ) + 1;
@@ -17,43 +19,47 @@ function ReactionGame()
 
     function getStartingtime(time) {
 
+        canvasRef.current.addEventListener('click', function() {
+            if(canvasRef.current.style.backgroundColor === "rgb(243, 16, 16)") {
+                setEndTime("Too Early, Please Restart The Game");
+                result = -1;
+                return;
+            }
+        })
         setTimeout( function() {
+            
             let data1 = new Date();
             let start = data1.getTime();
-            
-            canvasRef.current.style.backgroundColor = 'rgb(78,197,78)'; //green
+            if(result === 0) {
+                canvasRef.current.style.backgroundColor = 'rgb(78,197,78)'; //green
+            }
             console.log("starttime:", start);
-            early = false;
-
             canvasRef.current.addEventListener('click', function() {
+
                 let date2 = new Date().getTime();
                 if(result === 0) {
                     setEndTime(date2 - start);
                     result = endTime;
+                    setOutput("Time: ");
+                    setUnit(" ms");
                 }
             })
         }, time)
-  
+        
     }
 
     const startGame = () => {
-        early = true;
         canvasRef.current.style.backgroundColor = 'rgb(243,16,16)';
         console.log("game start");
         let changeColorTime = randomTime(8); //max time as 8 sec.
         result = 0;
+        setOutput(null);
+        setUnit(null);
         setEndTime(null);
-
         getStartingtime(changeColorTime);
 
     };
 
-    const endGame = () => {
-        if (early)
-        {
-            console.log("YYY");
-        }
-    };
     return(
         <div class="text-center">
             <div>
@@ -64,9 +70,9 @@ function ReactionGame()
             </div>
             <button className="btn btn-primary" onClick={startGame}>Start</button>
             <p>
-                 {endTime !== null && <p>Time: {endTime} ms</p>}
+                {endTime !== null && <span> {output}{endTime}{unit}</span>}
             </p>
-            <canvas className="w-100 text-white" ref={canvasRef} onClick={endGame}></canvas>
+            <canvas className="w-100" style={{height: "70vh"}} ref={canvasRef}><p>Mango</p></canvas>
         </div>
     )
 }
