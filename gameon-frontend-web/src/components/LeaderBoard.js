@@ -5,14 +5,11 @@ import PlayerData from './PlayerData'
 
 const LeaderBoard = () => {
 
-<<<<<<< Updated upstream
-=======
     // var firstName = '';
     // var lastName = '';
     // var username = '';
     // var password = '';
 
->>>>>>> Stashed changes
     const [players, setPlayers] = useState([])
     // Unlock when having api url
         const fetchPlayer = async (url) => {

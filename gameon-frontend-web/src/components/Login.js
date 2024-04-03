@@ -27,7 +27,7 @@ function Login() {
         // ensure that both username and password fields are not empty
         if (!username.value || !password.value) {
             setMessage('Please enter both a username and password.');
-            return; 
+            return;
         }
 
         var obj = { username: username.value, password: password.value };
@@ -59,77 +59,32 @@ function Login() {
 
     return (
         <>
-            <style>
-                {`
-                    .card {
-                        padding: 5%;
-                        /* un-rounded bottom corners of login card */
-                        border-bottom-left-radius: 0;
-                        border-bottom-right-radius: 0;
-                    }
-
-                    .card-header {
-                        background-color: #fff;
-                        position: relative; 
-                        border-bottom: none;
-                    }
-
-                    /* floating underline */
-                    .card-header::after {
-                        content: '';
-                        display: block;
-                        position: absolute;
-                        left: 15%; 
-                        right: 15%; 
-                        bottom: -1px;
-                        height: 1px;
-                        background: #ccc;
-                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); 
-                    }
-
-                    .alert-secondary {
-                        background-color: #eee;
-                        /* un-rounded top corners of signup link card */
-                        border-top-left-radius: 0;
-                        border-top-right-radius: 0;
-                    }
-
-                    .input-group-text {
-                        padding: 1rem;
-                        background-color: #eee;
-                        color: #000;
-                        /* un-rounded right corners of icons */
-                        border-top-right-radius: 0;
-                        border-bottom-right-radius: 0;
-                        border-top: none;
-                    }
-                `}
-            </style>
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-md-6">
-                        { /* Logo */ }
+                        { /* Logo */}
                         <div className="logo text-center mb-4 pb-4 pt-4">
                             <a href="/home">
                                 <img src="/logo192.png" alt="GameOn Logo"
-                                    style={{ width: '10rem', height: '10rem', marginTop: '5%'}} />
+                                    style={{ width: '10rem', height: '10rem', marginTop: '5%' }} />
                             </a>
                         </div>
                         <div className="login-container">
-                            { /* Login Box */ }
+                            { /* Login Box */}
                             <div className="card">
-                                { /* Title */ }
-                                <span className="card-header text-center pb-4 pt-2" style={{
-                                    fontSize: '2rem', fontWeight: 'bold', color: '#000'}}>
-                                    Log In</span>
+                                { /* Title */}
+                                {/* <h2 className="card-header text-center pb-4 pt-2">Log In</h2> */}
+                                <span className="card-header text-center pb-4 pt-2" style={{ fontSize: '2rem', fontWeight: 'bold', color: '#000' }}>
+                                    Log In
+                                </span>
                                 <div className="card-body">
-                                { /* Form */ }
+                                    { /* Form */}
                                     <form onSubmit={doLogin}>
                                         { /* validation functionality: 
                                         * - valid -> no effects
                                         * - invalid -> red text input highlight (replace bootstrap's blue) 
                                         *              & red icon    */ }
-                                        
+
                                         { /* Username */}
                                         <div className="form-group pt-4">
                                             <label htmlFor="username" className="mb-1"
@@ -139,14 +94,14 @@ function Login() {
                                             <div className="input-group mb-4">
                                                 <div className="input-group-prepend">
                                                     <span className="input-group-text">
-                                                        <FontAwesomeIcon icon={faUser}/>
+                                                        <FontAwesomeIcon icon={faUser} />
                                                     </span>
                                                 </div>
                                                 <input type="text" id="username" className="form-control"
-                                                    placeholder="Username" ref={(c) => username = c}/>
+                                                    placeholder="Username" ref={(c) => username = c} />
                                             </div>
                                         </div>
-                                        { /* Password */ }
+                                        { /* Password */}
                                         <div className="form-group">
                                             <label htmlFor="password" className="mb-1"
                                                 style={{ fontWeight: 600, color: '#444' }}>
@@ -155,37 +110,41 @@ function Login() {
                                             <div className="input-group mb-4">
                                                 <div className="input-group-prepend">
                                                     <span className="input-group-text">
-                                                        <FontAwesomeIcon icon={faLock}/>
+                                                        <FontAwesomeIcon icon={faLock} />
                                                     </span>
                                                 </div>
                                                 <input type="text" id="password" className="form-control"
-                                                    placeholder="Password" ref={(c) => password = c}/>
+                                                    placeholder="Password" ref={(c) => password = c} />
                                             </div>
                                         </div>
                                         { /* Error Feedback */}
-                                        { /* idea: red container highlight on error message... flash/until type */ }
+                                        { /* idea: red container highlight on error message... flash/until type */}
                                         {message &&
-                                        <div className="alert alert-danger mt-1 mb-2 pt-2 pb-2 text-center mx-auto" 
-                                                style={{ border: 'none', backgroundColor: '#fff',
+                                            <div className="alert alert-danger mt-1 mb-2 pt-2 pb-2 text-center mx-auto"
+                                                style={{
+                                                    border: 'none', backgroundColor: '#fff',
                                                     fontSize: '1rem', fontWeight: 'bold',
-                                                    color: '#7D0000', width: '70%' }}>
-                                            {message}
-                                        </div>}
-                                        { /* Submit */ }
+                                                    color: '#7D0000', width: '70%'
+                                                }}>
+                                                {message}
+                                            </div>}
+                                        { /* Submit */}
                                         <button type="submit" className="btn btn-primary w-100 mt-3 mb-1"
-                                            style={{ backgroundColor: '#000', borderColor: '#000',
-                                                    fontSize: '1.2rem', fontWeight: 500, color: '#fff' }}>
+                                            style={{
+                                                backgroundColor: '#000', borderColor: '#000',
+                                                fontSize: '1.2rem', fontWeight: 500, color: '#fff'
+                                            }}>
                                             Submit
                                         </button>
                                     </form>
                                 </div>
                             </div>
-                            { /* Switch to Signup */ }
+                            { /* Switch to Signup */}
                             <a href="/signup" className="alert-link mb-4"
                                 style={{ display: 'block', textDecoration: 'none' }}>
                                 <div className="text-center">
                                     <div className="alert alert-secondary" role="alert"
-                                            style={{ fontWeight: 600, color: '#444' }}>
+                                        style={{ fontWeight: 600, color: '#444' }}>
                                         New to GameOn? <a href="/signup"
                                             className="alert-link mt-4 mb-4"
                                             style={{ fontWeight: 'bold', color: '#000' }} >Sign Up</a>
@@ -195,7 +154,7 @@ function Login() {
                         </div>
                     </div>
                 </div>
-            </div>                
+            </div>
         </>
     );
 };
