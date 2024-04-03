@@ -1,13 +1,12 @@
-import { useEffect, useState, useRef } from "react";
+import { faL } from "@fortawesome/free-solid-svg-icons";
+import { useState, useRef } from "react";
 
 function ReactionGame()
 {
-    const [startTime, setStartTime] = useState(null);
-    const [playTime, setPlayTime] = useState(0);
     const [endTime, setEndTime] = useState(null);
-    const [game, setGame] = useState(false);
-    const intervalRef = useRef(null);
     const canvasRef = useRef(null);
+    var result = 444;
+    var early = true;
     
     const randomTime = (max) => {
         let time = Math.floor(Math.random() * Math.floor(max) ) + 1;
@@ -15,62 +14,60 @@ function ReactionGame()
         console.log("time:", time);
         return time;
     }
-    var timer;
+
     function getStartingtime(time) {
-        
-        var timeout= setTimeout( function() {
+
+        setTimeout( function() {
             let data1 = new Date();
             let start = data1.getTime();
-            setStartTime(start);
+            
             canvasRef.current.style.backgroundColor = 'rgb(78,197,78)'; //green
             console.log("starttime:", start);
-            // timer = setInterval(() => {
-            //     setPlayTime(playTime+1);
-            // }, 1)
+            early = false;
 
             canvasRef.current.addEventListener('click', function() {
                 let date2 = new Date().getTime();
-                console.log("endingtime: ", date2);
-                setEndTime(date2 - start);
+                if(result === 0) {
+                    setEndTime(date2 - start);
+                    result = endTime;
+                }
             })
         }, time)
   
     }
 
-    
-    const Start = () => {
+    const startGame = () => {
+        early = true;
         canvasRef.current.style.backgroundColor = 'rgb(243,16,16)';
         console.log("game start");
         let changeColorTime = randomTime(8); //max time as 8 sec.
-        setStartTime(0);
-        setEndTime(0);
-        setGame(true);
+        result = 0;
+        setEndTime(null);
 
         getStartingtime(changeColorTime);
 
     };
 
     const endGame = () => {
-        console.log("gameover");
-        setGame(false);
-        canvasRef.current.style.backgroundColor = 'rgb(249,236,61)';
-        clearInterval(timer);
-        setStartTime(0);
+        if (early)
+        {
+            console.log("YYY");
+        }
     };
     return(
         <div class="text-center">
             <div>
                 <h1>ReactionGame</h1>
-                <p>Click Screen when color changed</p>
+                <p>Click the area when color change to <span className="text-success fw-bold">GREEN</span></p>
             </div>
             <div>
             </div>
-            <button className="btn btn-primary" onClick={Start}>Start</button>
-            <p>Time: </p>
-            {endTime !== null && <p>{endTime} ms</p>}
-            <canvas className="w-100 full-height-canvas text-white z-0" ref={canvasRef} onClick={endGame}>Mango?</canvas>
+            <button className="btn btn-primary" onClick={startGame}>Start</button>
+            <p>
+                 {endTime !== null && <p>Time: {endTime} ms</p>}
+            </p>
+            <canvas className="w-100 text-white" ref={canvasRef} onClick={endGame}></canvas>
         </div>
-
     )
 }
 export default ReactionGame;
