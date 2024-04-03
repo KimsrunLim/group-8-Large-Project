@@ -24,10 +24,10 @@ function Navbar() {
                         className="d-inline-block ps-1" alt=""/>n</span>
                 </a>
                 <div className="d-flex ms-auto">
-                    <a className="nav-item nav-link active me-5" href="/leaderboard">About</a>
+                    <a className="nav-item nav-link active me-5" href="/about">About</a>
                     { /* functionality on leaderboard:
                        * - logged in & IF user score exists: show user at top of stats  */ }
-                    <a className="nav-item nav-link active me-5" href="/rank">Rank</a>
+                    <a className="nav-item nav-link active me-5" href="/leaderboard">Rank</a>
                     <a className="nav-item nav-link" width="30" height="30" href="/profile">
                         <FontAwesomeIcon icon={faUser} />
                         { /* functionality on profile image click:

@@ -4,11 +4,6 @@ const API = '/api/leaderboard'
 
 const LeaderBoard = () => {
 
-    var firstName = '';
-    var lastName = '';
-    var username = '';
-    var password = '';
-
     const [players, setPlayers] = useState([])
     const app_name = 'group8large-57cfa8808431'
     function buildPath(route) {
