@@ -1,4 +1,5 @@
 /node_modules
+yarn.lock
 .env
 
 git config --global user.email "rick@jsventures.com"
