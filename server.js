@@ -58,6 +58,32 @@ app.post('/api/signup', async (req, res, next) => {
     res.status(200).json(ret);
 });
 
+// check for existing user
+app.post('/api/userCheck', async (req, res, next) => {
+
+    const { username } = req.body;
+    var error = '';
+
+    try {
+        const db = client.db("group8large");
+        const results = await
+            db.collection('users').find({ Username: username }).toArray();
+
+        if (results.length == 0) {
+            const db = client.db("group8large");
+        }
+        else {
+            error = "User already exists";
+        }
+    }
+    catch (e) {
+        error = e;
+    }
+
+    var ret = { error: error };
+    res.status(200).json(ret);
+});
+
 // login
 app.post('/api/users', async (req, res, next) => {
     var error = '';
