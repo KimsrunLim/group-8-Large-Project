@@ -11,19 +11,22 @@ import "../pages/SpeedTypingPage"
 // add more as games built
 const gameView = [
   {
-    name: 'typeRacer',
+    name: 'Type Racer',
     img: temp1,
-    overview: 'type as fast as you can'
+    overview: 'type as fast as you can',
+    link: "speedtyping"
   },
   {
-    name: 'game2',
+    name: 'Reaction Game',
     img: temp2,
-    overview: 'game description 2'
+    overview: 'click when the screen color change',
+    link: "reactiongame"
   },
   {
     name: 'game3',
     img: temp3,
-    overview: 'game description 3'
+    overview: 'game description 3',
+    link: "reactiongame"
   },
 ];
 
@@ -55,7 +58,7 @@ function Home()
               <p className="text-xl font-semibold text-center">{item.name}</p>
               <p className="text-center">{item.overview}</p>
               {/* <button className="bg-black text-white text-lg">Play</button> */}
-              <a href="/SpeedTypingPage.js" class="btn btn-info" tabindex="-1" role="button">Play</a>
+              <a href= {item.link} class="btn btn-info" tabindex="-1" role="button">Play</a>
             </div>
           </div>
         ))}
