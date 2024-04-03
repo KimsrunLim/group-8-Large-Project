@@ -143,6 +143,7 @@ function Signup() {
 
         if (!conPass) {
             setConPassError('Confirmation required');
+            return false;
         }
         else if (conPass !== password) {
             setConPassError('Password does not match');
@@ -183,16 +184,19 @@ function Signup() {
     const doSignup = async event => {
         event.preventDefault();
 
-        var resUser = validateUsername(username);
+        var resUser = await validateUsername(username);
         var resEmail = validateEmail(email);
         var resPass = validatePass(password);
         var resConPass = validateConPass(conPass);
 
-        if (resUser && resEmail && resPass && resConPass) {
-            addUser();
+        console.log("Results: ", resUser, resEmail, resPass, resConPass);
+
+        if (!(resUser) || !(resEmail) || !(resPass) || !(resConPass)) {
+            setMessage('');
             return;
         }
-
+        
+        addUser();
     };
 
     return (
@@ -289,7 +293,7 @@ function Signup() {
                                         { /* Error Feedback */}
                                         { /* idea: red container highlight on error message... flash/until type */}
                                         {message &&
-                                            <div className="text-danger mt-1 mb-2 pt-2 pb-2 text-center mx-auto fs-6 fw-bold">
+                                            <div className="text-success mt-1 mb-2 pt-2 pb-2 text-center mx-auto fs-6 fw-bold">
                                                 {message}
                                             </div>
                                         }
