@@ -36,8 +36,8 @@ function SpeedTyping() {
         "child", "adult", "student", "teacher", "mother", "father", "sister", "brother", "daughter", "son"
     ];
 
-    // track current position in word list
-    const [currWordIndex, setCurrWordIndex] = useState(0); 
+    // track current position in word list; MIGHT USE IN FUTURE
+    // const [currWordIndex, setCurrWordIndex] = useState(0); 
 
     // sets fixed words list & timer duration during session 
     useEffect(() => {
@@ -95,14 +95,17 @@ function SpeedTyping() {
         {
             setIndex(prevIndex => prevIndex + 1); // skip space
             
+            /* MIGHT USE IN FUTURE
             if (typedChar === ' ') {
                 setCurrWordIndex(prevIndex => prevIndex + 1); // mark word
-            }
+            } */
         }
         else
         {
             setMistakes((prevMistakes) => prevMistakes + 1);
         }
+
+        setInput('');
 
         /* implement?
         if (event.key == 'Backspace' && index > 0)
@@ -114,29 +117,33 @@ function SpeedTyping() {
         */
     };
 
-    let textAreaStyles = "position-absolute top-0 start-0 opacity-0 z-10";
-    let textDisplayStyles = "text-display border p-4";
-    let typedCharsStyles = "position-relative d-inline"; // Ensure inline behavior
-    let nextCharsStyles = "d-inline"; // This will continue the text inline
+    let textAreaStyles = "z-10 fs-1 start-0 top-0 h-50 w-50";
 
     return (
         <div className="container-fluid d-flex flex-column align-items-center justify-content-center">
             {/* Header */}
             <div className="title row text-center mt-5 pt-5 mb-4">
-                <h1 className="title mb-4">TypeRacer Game</h1>
+                <h1 className="title mb-4 fw-bolder">TypeRacer Game</h1>
                 <p>Timer: {timer}</p>
             </div>
 
             {/* Body */}
-            <div className="flex-row d-inline-flex text-display-container position-relative m-3 p-3">
-                <div className="col d-inline-flex align-start chars-typed border">
+            <div className="row text-display-container justify-content-center m-3 p-3 fs-1">
+                <div id="one" className="typed-chars col-6 border pt-3" style={{ height: '5rem' }}>
                     {/* display part of words string that user already typed */}
                     <span className="typed-chars text-muted">{words.substring(0, index)}</span>
                 </div>
-                <div className="col align-middle curr-char">
+                <div id="two" className="user-input col-6 pt-3 border overflow-hidden" style={{ height: '5rem' }}>
+                    {/* next char */}
                     <span className="current-char text-primary fw-bold">
                         {words.substring(index, index + 1)}
                     </span>
+
+                    {/* display part of words string that user hasn't typed*/}
+                    <span className="next-char text-muted overflow-hidden" area-hidden="true" >
+                        {/* {words.substring(index + 1)} COMMENTED OUT FOR TESTING */}
+                    </span>
+
                     <textarea
                         className={`form-control ${textAreaStyles}`}
                         value={input}
@@ -144,10 +151,6 @@ function SpeedTyping() {
                         autoFocus
                         // disabled={timer === 0}
                     />
-                </div>
-                <div className={`col d-inline-flex align-end next-chars ${textDisplayStyles}`} aria-hidden="true">
-                    {/* display part of words string that user hasn't typed*/}
-                    <span className="next-char text-muted">{words.substring(index + 1)}</span>
                 </div>
             </div>
 
