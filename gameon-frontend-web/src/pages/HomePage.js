@@ -1,13 +1,13 @@
 import React from 'react';
 
-import Navbar from '../components/Navbar';
+import Header from '../components/Navbar';
 import Home from '../components/Home';
 
 const HomePage = () =>
 {
     return(
         <div>
-            <Navbar />
+            <Header />
             <Home />
         </div>
     );

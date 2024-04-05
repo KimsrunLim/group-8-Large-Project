@@ -1,12 +1,12 @@
 import React from 'react'
 import temp1 from "../assets/astronaut.png";
-import Navbar from '../components/Navbar'
+import Header from '../components/Navbar'
 
 export default function AboutPage() {
   return (
 
     <div>
-        <Navbar />
+        <Header />
         <div className="row align-items-center" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "85vh" }}>
                 <div className="col-6 col-md-2">
                         <div className="card text-center">
