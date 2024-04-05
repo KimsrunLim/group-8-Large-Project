@@ -32,7 +32,7 @@ export default function AboutPage() {
                 <div class="col">
                     <div class="col">
                         <div class="card text-center">
-                            <img class="card-img-top" height="170" src={temp1} alt="Card image cap"/>
+                            <img class="card-img-top" height="200" src={temp1} alt="Card image cap"/>
                             <div class="card-body">
                                 <h3 class="card-title">Fiona Zhao</h3>
                                 <h6 class="card-subtitle mb-2 text-muted">Web</h6>
@@ -44,7 +44,7 @@ export default function AboutPage() {
                 <div class="col">
                     <div class="col">
                         <div class="card text-center">
-                            <img class="card-img-top" height="170" src={temp1} alt="Card image cap"/>
+                            <img class="card-img-top" height="200" src={temp1} alt="Card image cap"/>
                             <div class="card-body">
                                 <h3 class="card-title">Soleil Cordray</h3>
                                 <h6 class="card-subtitle mb-2 text-muted">Web</h6>
@@ -56,7 +56,7 @@ export default function AboutPage() {
                 <div class="col">
                     <div class="col">
                         <div class="card text-center">
-                            <img class="card-img-top" height="170" src={temp1} alt="Card image cap"/>
+                            <img class="card-img-top" height="200" src={temp1} alt="Card image cap"/>
                             <div class="card-body">
                                 <h3 class="card-title">Frost Austin</h3>
                                 <h6 class="card-subtitle mb-2 text-muted">Web</h6>
@@ -71,7 +71,7 @@ export default function AboutPage() {
             <div class="col">
                     <div class="col">
                         <div class="card text-center">
-                            <img class="card-img-top" height="170" src={temp1} alt="Card image cap"/>
+                            <img class="card-img-top" height="200" src={temp1} alt="Card image cap"/>
                             <div class="card-body">
                                 <h3 class="card-title">Luka Telebak</h3>
                                 <h6 class="card-subtitle mb-2 text-muted">Mobile</h6>
@@ -83,7 +83,7 @@ export default function AboutPage() {
                 <div class="col">
                     <div class="col">
                         <div class="card text-center">
-                            <img class="card-img-top" height="170" src={temp1} alt="Card image cap"/>
+                            <img class="card-img-top" height="200" src={temp1} alt="Card image cap"/>
                             <div class="card-body">
                                 <h3 class="card-title">Tanner Assenmacher</h3>
                                 <h6 class="card-subtitle mb-2 text-muted">Mobile</h6>
@@ -95,7 +95,7 @@ export default function AboutPage() {
                 <div class="col">
                     <div class="col">
                         <div class="card text-center">
-                            <img class="card-img-top" height="170" src={temp1} alt="Card image cap"/>
+                            <img class="card-img-top" height="200" src={temp1} alt="Card image cap"/>
                             <div class="card-body">
                                 <h3 class="card-title">Hani Bdeir</h3>
                                 <h6 class="card-subtitle mb-2 text-muted">Mobile</h6>

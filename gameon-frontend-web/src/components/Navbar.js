@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faHouse, faRankingStar, faUsers } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown } from 'react-bootstrap';
 
@@ -31,15 +31,19 @@ function Navbar() {
                                 <FontAwesomeIcon icon={faHouse} /> {/* Add tooltip */}
                             </a>
                         </div>
-                    <a className="nav-item nav-link active me-5" href="/about">About</a>
+                    <a className="nav-item nav-link active me-5" href="/about">
+                        <FontAwesomeIcon icon={faUsers} />
+                    </a>
                     { /* functionality on leaderboard:
                        * - logged in & IF user score exists: show user at top of stats  */ }
-                    <a className="nav-item nav-link active me-5" href="/leaderboard">Rank</a>
+                    <a className="nav-item nav-link active me-5" href="/leaderboard">
+                        <FontAwesomeIcon icon={faRankingStar} />
+                    </a>
                         { /* functionality on profile image click:
                            * - if logged in -> account page
                            * - else -> signup page  */ }
                     <Dropdown>
-                        <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                        <Dropdown.Toggle variant="light" id="dropdown-basic">
                         <FontAwesomeIcon icon={faUser} />
                         </Dropdown.Toggle>
 
