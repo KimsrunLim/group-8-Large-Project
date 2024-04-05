@@ -117,7 +117,7 @@ function SpeedTyping() {
         */
     };
 
-    let textAreaStyles = "z-10 fs-1 start-0 top-0 h-50 w-50";
+    let textAreaStyles = "position-absolute border-0 bg-transparent z-10 fs-1 h-50 w-50";
 
     return (
         <div className="container-fluid d-flex flex-column align-items-center justify-content-center">
@@ -128,29 +128,35 @@ function SpeedTyping() {
             </div>
 
             {/* Body */}
-            <div className="row text-display-container justify-content-center m-3 p-3 fs-1">
-                <div id="one" className="typed-chars col-6 border pt-3" style={{ height: '5rem' }}>
+            <div className="text-display-container justify-content-center m-3 p-3 fs-1 w-100">
+                <div id="one" className="typed-chars col-5 border pt-3 text-end overflow-hidden"
+                    style={{ height: '5rem' }}>
                     {/* display part of words string that user already typed */}
                     <span className="typed-chars text-muted">{words.substring(0, index)}</span>
                 </div>
-                <div id="two" className="user-input col-6 pt-3 border overflow-hidden" style={{ height: '5rem' }}>
-                    {/* next char */}
-                    <span className="current-char text-primary fw-bold">
-                        {words.substring(index, index + 1)}
-                    </span>
-
-                    {/* display part of words string that user hasn't typed*/}
-                    <span className="next-char text-muted overflow-hidden" area-hidden="true" >
-                        {/* {words.substring(index + 1)} COMMENTED OUT FOR TESTING */}
-                    </span>
-
+                <div id="two" className="user-input col-1 pt-3 border overflow-hidden"
+                    style={{ height: '5rem' }}>
+                    {/* user input */}
                     <textarea
                         className={`form-control ${textAreaStyles}`}
+                        style={{ boxShadow: 'none' }}
                         value={input}
                         onChange={keyPress}
                         autoFocus
                         // disabled={timer === 0}
                     />
+                </div>
+                <div id="three" className="user-input col-5 pt-3 ps-0 border">
+                    {/* next char
+                    <span className="current-char position-absolute text-primary px-0 fw-bold">
+                        {words.substring(index, index + 1)}
+                    </span>
+                    */}
+
+                    {/* display part of words string that user hasn't typed*/}
+                    <span className="next-char text-muted overflow-hidden" area-hidden="true" >
+                        {words.substring(index)}
+                    </span>
                 </div>
             </div>
 
