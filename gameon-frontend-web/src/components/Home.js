@@ -50,18 +50,18 @@ function Home()
     <Carousel indicators={false} data-bs-theme="dark">
       <Carousel.Item withinterval={5000}>
           <div className="text-center">
-            <img src={temp1} alt='#' class="bg-black"/>
-            <h2 class="text-black">Type Racer</h2>
-            <p class="text-black">type as fast as you can</p>
-            <a href= {"speedtyping"} class="btn btn-info" tabindex="-1" role="button">Play</a>
+            <img src={temp1} alt='#' className="bg-black"/>
+            <h2 className="text-black">Type Racer</h2>
+            <p className="text-black">type as fast as you can</p>
+            <a href= {"speedtyping"} className="btn btn-info" tabindex="-1" role="button">Play</a>
           </div>
       </Carousel.Item>
       <Carousel.Item interval={5000}>
           <div className="text-center">
             <img src={temp2} alt='#'/>
-            <h2 class="text-black text-center">Reaction Game</h2>
-            <p class="text-black text-center">click when the screen color change</p>
-            <a href= {"reactiongame"} class="btn btn-info" tabindex="-1" role="button">Play</a>
+            <h2 className="text-black text-center">Reaction Game</h2>
+            <p className="text-black text-center">click when the screen color change</p>
+            <a href= {"reactiongame"} className="btn btn-info" tabindex="-1" role="button">Play</a>
           </div>
       </Carousel.Item>
       {/* <Carousel.Item>

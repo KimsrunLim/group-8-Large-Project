@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import Logo from '../assets/Logo-Black.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Signup() {
@@ -207,7 +208,7 @@ function Signup() {
 
                         { /* Logo */}
                         <div className="logo p-4 text-center m-auto">
-                            <img src="/logo192.png" className='img-fluid' alt="GameOn Logo" style={{ maxWidth: "150px" }} />
+                            <img src={Logo} className='img-fluid' alt="GameOn Logo" style={{ maxWidth: "150px" }} />
                         </div>
 
                         <div className="signup-container">

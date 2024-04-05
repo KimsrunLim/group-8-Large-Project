@@ -61,7 +61,7 @@ function ReactionGame()
     };
 
     return(
-        <div class="text-center">
+        <div className="text-center">
             <div>
                 <h1>ReactionGame</h1>
                 <p>Click the area when color change to <span className="text-success fw-bold">GREEN</span></p>

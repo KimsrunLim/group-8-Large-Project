@@ -1,8 +1,9 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHouse, faRankingStar, faUsers } from '@fortawesome/free-solid-svg-icons';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown } from 'react-bootstrap';
+import Logo from '../assets/GameOnLogoWhite.png';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Navbar() {
 
@@ -27,10 +28,7 @@ function Navbar() {
             <nav className="navbar navbar-expand-lg" style={{
                 backgroundColor: '#000', paddingLeft: '2%', paddingRight: '2%'
             }}>
-                <a className="navbar-brand nav-link d-flex align-items-center" href="/">
-                    <span className="ps-1">Game<img src="/logo192.png" width="30" height="30"
-                        className="d-inline-block ps-1" alt=""/>n</span>
-                </a>
+                <div><img src={Logo} style={{height: "2rem"}}></img></div>
                 {/* Home icon */}
                 <div className="d-flex ms-auto">
                         <div className="nav-item">
@@ -56,7 +54,7 @@ function Navbar() {
 
                         <Dropdown.Menu>
                             <Dropdown.Item href="#/action-2">Log In</Dropdown.Item>
-                            <Dropdown.Item href="#/action-3" onClick={loggingOut}>Log Out</Dropdown.Item>
+                            <Dropdown.Item onClick={loggingOut}>Log Out</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>

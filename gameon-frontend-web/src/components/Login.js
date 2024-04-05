@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
+import Logo from '../assets/Logo-Black.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// local
+
 
 function Login() {
     var username;
@@ -79,7 +80,7 @@ function Login() {
                     <div className="col-md-6">
                         { /* Logo */}
                         <div className="logo p-4 text-center m-auto">
-                            <img src="/logo192.png" className='img-fluid' alt="GameOn Logo" style={{ maxWidth: "150px" }} />
+                            <img src={Logo} className='img-fluid' alt="GameOn Logo" style={{ maxWidth: "150px" }} />
                         </div>
 
                         <div className="login-container">
@@ -132,7 +133,7 @@ function Login() {
 
                             { /* Switch to Signup */}
                             <div className='d-grid py-5'>
-                                <button onClick={handleGuest} class="btn border border-3 border-dark fw-bold" type="button" style={{ maxHeight: "50px", height: "50px" }}>Continue as Guest</button>
+                                <button onClick={handleGuest} className="btn border border-3 border-dark fw-bold" type="button" style={{ maxHeight: "50px", height: "50px" }}>Continue as Guest</button>
                             </div>
                         </div>
                     </div>
