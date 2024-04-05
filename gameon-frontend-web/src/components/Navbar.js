@@ -5,6 +5,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown } from 'react-bootstrap';
 
 function Navbar() {
+
+    const loggingOut = () => {
+        document.cookie = "username= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+        window.location.href = "/";
+    }
+
+
     return (
         <>
             <style>
@@ -49,7 +56,7 @@ function Navbar() {
 
                         <Dropdown.Menu>
                             <Dropdown.Item href="#/action-2">Log In</Dropdown.Item>
-                            <Dropdown.Item href="#/action-3">Log Out</Dropdown.Item>
+                            <Dropdown.Item href="#/action-3" onClick={loggingOut}>Log Out</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>
