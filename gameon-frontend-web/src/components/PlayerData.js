@@ -1,11 +1,14 @@
-const PlayerData = ({players}) => {
-    return(
+import React from "react";
+
+
+const PlayerData = ({ players }) => {
+    return (
         <>
             {
-                players.map((curPlayer,index) => {
-                    const {Username, Accuracy, Speed, Score, Device, Date} = curPlayer;
-                
-                    return(
+                players.map((curPlayer, index) => {
+                    const { Username, Accuracy, Speed, Score, Device, Date } = curPlayer;
+
+                    return (
                         <tr>
                             <td>{index + 1}</td>
                             <td>{Username}</td>
@@ -16,7 +19,7 @@ const PlayerData = ({players}) => {
                             <td>{Date}</td>
                         </tr>
                     )
-                    
+
                 })
             }
         </>

@@ -21,6 +21,15 @@ function Login() {
         }
     }
 
+    const saveCookie = async event => {
+        let minutes = 20;
+        let date = new Date();
+        date.setTime(date.getTime() + (minutes * 60 * 1000));
+        document.cookie = "username=" + username.value +";expires=" + date.toGMTString();
+
+        console.log("save de cookie");
+    }
+
     const doLogin = async event => {
         event.preventDefault();
 
@@ -48,6 +57,7 @@ function Login() {
             else // log in
             {
                 setMessage('');
+                saveCookie();
                 window.location.href = '/home'; // redirect
             }
         }

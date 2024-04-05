@@ -143,10 +143,11 @@ app.post('/api/leaderboard', async (req, res, next) => {
 app.post('/api/userData', async (req, res, next) => {
     const { username } = req.body;
     var error = '';
+    var results;
 
     try {
         const db = client.db("group8large");
-        const results = await
+        results = await
             db.collection('TypingGame').find({ Username: username }).sort({ Score: -1 }).toArray();
 
 
@@ -162,7 +163,7 @@ app.post('/api/userData', async (req, res, next) => {
         error = e;
     }
 
-    var ret = { error: error };
+    var ret = { results: results, error: error };
     res.status(200).json(ret);
 });
 

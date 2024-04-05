@@ -1,11 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import PlayerData from './PlayerData'
-const API = '/api/leaderboard'
 
 const LeaderBoard = () => {
 
-    const [players, setPlayers] = useState([])
-    const app_name = 'group8large-57cfa8808431'
+    const [players, setPlayers] = useState([]);
+    const [curUser, setCurUser] = useState([]);
+    const [curRank, setCurRank] = useState('');
+    const app_name = 'group8large-57cfa8808431';
+
+    let username = "";
+
     function buildPath(route) {
         if (process.env.NODE_ENV === 'production') {
             return 'https://' + app_name + '.herokuapp.com/' + route;
@@ -14,31 +18,69 @@ const LeaderBoard = () => {
             return 'http://localhost:5001/' + route;
         }
     }
-        const fetchPlayer = async (url) => {
-            var obj = { };
-            var js = JSON.stringify(obj);
-            try {
-                const res = await fetch(buildPath('api/leaderboard'),
+
+    useEffect(() => {
+        readCookie();
+        fetchUser();
+        fetchPlayer();
+    }, []);
+
+    const fetchPlayer = async event => {
+        var obj = {};
+        var js = JSON.stringify(obj);
+        try {
+            const res = await fetch(buildPath('api/leaderboard'),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
-                const player = await res.json();
-                if (player.length > 0) {
+            const player = await res.json();
+
+            setPlayers(player.results);
+
+            var count = 1;
+            players.forEach(element => {
+                if (element.Username === username) {
+                    setCurRank(count);
                 }
-                setPlayers(player.results);
-                console.log("This One: ", player);
-            } catch (e) {
-                console.error(e)
-            }
+                count += 1;
+            });
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    const fetchUser = async event => {
+        var obj = { username };
+        var js = JSON.stringify(obj);
+        try {
+            const res = await fetch(buildPath('api/userData'),
+                { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
+
+            const user = await res.json();
+
+            setCurUser(user.results);
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    function readCookie() {
+        let data = document.cookie;
+        let tokens = data.split("=");
+        if (tokens[0] == "username") {
+            username = tokens[1];
         }
 
-        useEffect(() => {
-            fetchPlayer(API.results);
-        }, []);
+        if (username == "") {
+            console.log("Dont display current user");
+        } else {
+            console.log("Display current user");
+        }
+    }
 
-        return <>
+    return <>
         <div class='row align-items-center'>
             {/* Detail */}
-            <div class='p-5 col-4'> 
+            <div class='p-5 col-4'>
                 <div class="card" >
                     <div class="card-body">
                         <h3 class="card-title">Player Name: </h3>
@@ -56,14 +98,8 @@ const LeaderBoard = () => {
                 <table class="table table-striped">
 
                     <thead class="bg-info">
+                        {/* <PlayerData players={curUser}/> */}
                         <tr>
-                            <td>curPlayer</td>
-                            <td>temp</td>
-                            <td>123</td>
-                            <td>123</td>
-                            <td>456</td>
-                            <td>device</td>
-                            <td>2025-13-13</td>
                         </tr>
                         <th>Rank</th>
                         <th>Name</th>
@@ -74,33 +110,13 @@ const LeaderBoard = () => {
                         <th>Date</th>
                     </thead>
                     <tbody>
-                        <PlayerData players={filt(players)} /> 
+                        <PlayerData players={players} />
                     </tbody>
                 </table>
 
             </div>
         </div>
-       </>
-}
-
-// filter
-function filt(data){
-    console.log(data);
-
-    // TBD
-    let filter = data.filter(val => {
-        return val;
-    })
-
-    // sort with asending order
-    return filter.sort((a, b) => {
-        if ( a.score === b.score){
-            return b.score - a.score;
-        } else{
-            return b.score - a.score;
-        }
-    })
-
+    </>
 }
 
 export default LeaderBoard;
