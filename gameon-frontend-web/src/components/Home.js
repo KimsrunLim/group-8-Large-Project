@@ -22,42 +22,40 @@ const gameView = [
     overview: 'click when the screen color change',
     link: "reactiongame"
   },
-  {
-    name: 'game3',
-    img: temp3,
-    overview: 'game description 3',
-    link: "reactiongame"
-  },
+  // {
+  //   name: 'game3',
+  //   img: temp3,
+  //   overview: 'game description 3',
+  //   link: "reactiongame"
+  // },
 ];
 
 function Home()
 {
   const settings = {
-
     slidesToScroll: 1,
     centerMode: true,
     infinite: true,
     centerPadding: "0px",
-    slidesToShow: 3,
-    autoplay: true,
-    autoplaySpeed: 2000,
+    slidesToShow: 2,
+    // autoplay: true,
+    // autoplaySpeed: 2000,
     speed: 500
   };
 
   return (
-  <div className="center w-3/4">
+  <div className="center items-center">
     <div className="mt-20">
       <Slider {...settings}>
         {gameView.map((item) => (
           <div>
             <div className="text-center">
-              <img src={item.img} alt="gameimg" className="h-44 w-44 rounded-full block mx-auto" />
+              <img src={item.img} alt="gameimg" height="500rh" className="h-44 w-44 rounded-full block mx-auto" />
             </div>
             
             <div className="flex flex-col justify-center items-center gap-4 p-4">
-              <p className="text-xl font-semibold text-center">{item.name}</p>
+              <h1 className="text-xl font-semibold text-center" >{item.name}</h1>
               <p className="text-center">{item.overview}</p>
-              {/* <button className="bg-black text-white text-lg">Play</button> */}
               <a href= {item.link} class="btn btn-info" tabindex="-1" role="button">Play</a>
             </div>
           </div>
