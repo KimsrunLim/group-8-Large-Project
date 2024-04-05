@@ -24,17 +24,11 @@ const LeaderBoard = () => {
         fetchPlayer();
     }, []);
 
-    function readCookie() {
+    const readCookie = () => {
         let data = document.cookie;
         let tokens = data.split("=");
-        if (tokens[0] == "username") {
+        if (tokens[0] === "username") {
             username = tokens[1];
-        }
-
-        if (username == "") {
-            console.log("Dont display current user");
-        } else {
-            console.log("Display current user");
         }
     }
 
@@ -60,10 +54,11 @@ const LeaderBoard = () => {
     }
 
     return <>
-        <div className='row align-items-center'>
+        <div className='d-flex p-5 align-items-center justify-content-center' style={{ height: "90vh" }}>
+            {/* <div> */}
             {/* Detail */}
-            <div className='p-5 col-4'>
-                <div className="card" >
+            <div className='align-items-center me-5 col-4 my-auto'>
+                <div className="card text-center">
                     <div className="card-body">
                         <h3 className="card-title">Player Name: </h3>
                         <h5 className="card-subtitle mb-2 text-muted">Best Score:</h5>
@@ -76,10 +71,9 @@ const LeaderBoard = () => {
             </div>
 
             {/* Rank list */}
-            <div className="p-5 col-7">
+            <div className="w-auto overflow-auto h-100" style={{ border: "2px solid black" }}>
                 <table className="table table-striped">
-
-                    <thead className="bg-info">
+                    <thead className='sticky-top'>
                         <tr>
                             <td>{curUser.Rank}</td>
                             <td>{curUser.Username}</td>
@@ -89,16 +83,14 @@ const LeaderBoard = () => {
                             <td>{curUser.Device}</td>
                             <td>{curUser.Date}</td>
                         </tr>
-
-
                         <tr>
-                            <th>Rank</th>
-                            <th>Name</th>
-                            <th>Accuracy</th>
-                            <th>Speed</th>
-                            <th>Score</th>
-                            <th>Device</th>
-                            <th>Date</th>
+                            <th className='bg-info bg-gradient'>Rank</th>
+                            <th className='bg-info bg-gradient'>Name</th>
+                            <th className='bg-info bg-gradient'>Accuracy</th>
+                            <th className='bg-info bg-gradient'>Speed</th>
+                            <th className='bg-info bg-gradient'>Score</th>
+                            <th className='bg-info bg-gradient'>Device</th>
+                            <th className='bg-info bg-gradient'>Date</th>
                         </tr>
                     </thead>
                     <tbody>
