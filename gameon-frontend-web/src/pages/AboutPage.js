@@ -7,7 +7,7 @@ export default function AboutPage() {
 
     <div>
         <Navbar />
-        <div class="row align-items-center">
+        <div class="row align-items-center" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "85vh" }}>
                 <div class="col-6 col-md-2">
                         <div class="card text-center">
                             <img class="card-img-top" height="200" src={temp1} alt="Card image cap"/>

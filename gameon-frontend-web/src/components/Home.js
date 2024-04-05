@@ -8,6 +8,8 @@ import temp2 from "../assets/celebrating.png";
 import temp3 from "../assets/taken.png";
 import "../pages/SpeedTypingPage"
 
+import Carousel from 'react-bootstrap/Carousel';
+// import ExampleCarouselImage from 'components/ExampleCarouselImage';
 // add more as games built
 const gameView = [
   {
@@ -33,6 +35,7 @@ const gameView = [
 function Home()
 {
   const settings = {
+    lazeload: true,
     slidesToScroll: 1,
     centerMode: true,
     infinite: true,
@@ -44,25 +47,33 @@ function Home()
   };
 
   return (
-  <div className="center items-center">
-    <div className="mt-20">
-      <Slider {...settings}>
-        {gameView.map((item) => (
-          <div>
-            <div className="text-center">
-              <img src={item.img} alt="gameimg" height="500rh" className="h-44 w-44 rounded-full block mx-auto" />
-            </div>
-            
-            <div className="flex flex-col justify-center items-center gap-4 p-4">
-              <h1 className="text-xl font-semibold text-center" >{item.name}</h1>
-              <p className="text-center">{item.overview}</p>
-              <a href= {item.link} class="btn btn-info" tabindex="-1" role="button">Play</a>
-            </div>
+    <Carousel indicators={false} data-bs-theme="dark">
+      <Carousel.Item withinterval={5000}>
+          <div className="text-center">
+            <img src={temp1} alt='#' class="bg-black"/>
+            <h2 class="text-black">Type Racer</h2>
+            <p class="text-black">type as fast as you can</p>
+            <a href= {"speedtyping"} class="btn btn-info" tabindex="-1" role="button">Play</a>
           </div>
-        ))}
-      </Slider>
-    </div>
-  </div>
+      </Carousel.Item>
+      <Carousel.Item interval={5000}>
+          <div className="text-center">
+            <img src={temp2} alt='#'/>
+            <h2 class="text-black text-center">Reaction Game</h2>
+            <p class="text-black text-center">click when the screen color change</p>
+            <a href= {"reactiongame"} class="btn btn-info" tabindex="-1" role="button">Play</a>
+          </div>
+      </Carousel.Item>
+      {/* <Carousel.Item>
+      <img src={temp3} alt='#'/>
+        <Carousel.Caption>
+          <h3>Third slide label</h3>
+          <p>
+            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+          </p>
+        </Carousel.Caption>
+      </Carousel.Item> */}
+    </Carousel>
   );
 }
 
