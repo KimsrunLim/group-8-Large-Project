@@ -86,7 +86,17 @@ function SpeedTyping() {
     // useEffect with [index]: runs when 'index' changes.
     useEffect(() => {
         const charWidth = getCharacterWidth(); 
-        const translation = index * charWidth; // translate based on index & char width
+        let translation = index * charWidth; // translate based on index & char width
+
+        // calc additional offset for spaces
+        const halfSpaceWidth = charWidth / 2;
+        const typedChars = typed.slice(0, index); // get typed chars up to index
+        const spaceCount = typedChars.filter(({char}) => char === ' ').length;
+        const reductionOffset = spaceCount * halfSpaceWidth;
+
+        // apply additional space offset to translation
+        translation -= reductionOffset;
+
         textDisplayRef.current.style.transform = `translateX(-${translation}px)`;
     }, [index]); 
 
@@ -106,6 +116,7 @@ function SpeedTyping() {
         }
 
         setIndex(prevIndex => prevIndex + 1);
+
         setInput('');
     };
 
