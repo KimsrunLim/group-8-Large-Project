@@ -89,6 +89,8 @@ app.post('/api/users', async (req, res, next) => {
     var error = '';
 
     const { username, password } = req.body;
+    var userName = '';
+    var email = '';
 
     try {
         const db = client.db("group8large");
@@ -101,16 +103,15 @@ app.post('/api/users', async (req, res, next) => {
         var ln = '';
 
         if (results.length > 0) {
-            id = results[0]._id;
-            fn = results[0].FirstName;
-            ln = results[0].LastName;
+            userName = results[0].Username;
+            email = results[0].Email;
         }
     }
     catch (e) {
         error = e;
     }
 
-    var ret = { id: id, firstName: fn, lastName: ln, error: '' };
+    var ret = { username: userName, email: email, error: '' };
     res.status(200).json(ret);
 });
 
