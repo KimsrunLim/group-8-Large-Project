@@ -79,13 +79,16 @@ function SpeedTyping() {
     const [userInput, setUserInput] = useState('');
     const [charIndex, setCharIndex] = useState(0);
     const [numMistakes, setNumMistakes] = useState(0);
-    const [wordsPerMinute, setWordsPerMinute] = useState(0);
     const [timer, setTimer] = useState(60);
     const [words, setWords] = useState('');
     const [validatedInputHistory, setValidatedInputHistory] = useState([]);
     const [hasStarted, setHasStarted] = useState(false);
+    const [wordsPerMinute, setWordsPerMinute] = useState(0);
+    const [accuracy, setAccuracy] = useState(0);
+    const [score, setScore] = useState(0);
     const textDisplayRef = useRef(null); 
     const charRefs = useRef(new Array(100).fill(null));  // Assume a maximum of 100 chars for refs
+    const userInputRef = useRef(null); 
     
     const wordList = [
         "the", "be", "to", "of", "and", "a", "saxophone", "that", "have", "I",
@@ -108,6 +111,30 @@ function SpeedTyping() {
         "rocket", "space", "planet", "jupiter", "saturn", "mars", "pluto", "neptune", "galaxy", "light",
     ];
 
+    // This will be triggered when the input loses focus
+    useEffect(() => {
+    const handleFocus = (event) => {
+        // Prevent default behavior of losing focus
+        event.preventDefault();
+
+        // Check if the game has started and the timer is not 0
+        if (hasStarted && timer > 0) {
+            // If the current target is not the input, refocus it
+            if (document.activeElement !== userInputRef.current) {
+                userInputRef.current.focus();
+            }
+        }
+    };
+
+        // Add the focus listener when the component mounts or when dependencies change
+        document.addEventListener('focusin', handleFocus, true);
+
+        // Cleanup the listener when the component unmounts or when dependencies change
+        return () => {
+            document.removeEventListener('focusin', handleFocus, true);
+        };
+    }, [hasStarted, timer]); 
+
     // Generate random words string on component mount.
     useEffect(() => {
         setWords(generateRandomWords(wordList, 100));
@@ -123,13 +150,21 @@ function SpeedTyping() {
         }
     }, [hasStarted, timer]);
 
-    // Calculate WPM when timer hits 0.
+    const getStats = () => {
+        const totalTypedChars = validatedInputHistory.length;
+        const correctChars = validatedInputHistory.filter(entry => entry.isCorrect).length;
+        const accuracyCalc = totalTypedChars > 0 ? (correctChars / totalTypedChars) * 100 : 0;
+        setWordsPerMinute(correctChars / 5); // Average word length = 5 chars
+        setAccuracy(accuracyCalc);
+        setScore(correctChars - numMistakes);
+    };
+
+    // Calculate stats when timer ends.
     useEffect(() => {
         if (timer === 0) {
-            const correctChars = validatedInputHistory.filter(input => input.isCorrect).length;
-            setWordsPerMinute(correctChars / 5); // Average word length = 5 chars
+            getStats();
         }
-    }, [timer, validatedInputHistory]);
+    }, [timer, validatedInputHistory, numMistakes]);
 
     const updateLeftwardScroll = (char) => {
         const charWidth = calculateCharWidth(char, document);
@@ -182,33 +217,33 @@ function SpeedTyping() {
     const pulseAnimation = `
         @keyframes pulse {
         0%, 100% {
-            transform: translateY(100%)
+            transform: translateY(120%)
         }
         50% {
-            transform: translateY(90%)
+            transform: translateY(110%)
         }
         }
     `;
     const startBubblePulse = { animation: 'pulse 2s infinite' };
     const startBubbleTailStyle = {
-        borderLeft: '10px solid transparent',
-        borderRight: '10px solid transparent',
-        borderBottom: '10px solid'
+        borderLeft: '0.5rem solid transparent',
+        borderRight: '0.5rem solid transparent',
+        borderTop: '0.5rem solid'
     };
-    let startBubbleContainerStyle = "position-absolute top-50 start-30 mt-3 pt-3 ms-4 mb-0 d-flex flex-column align-items-center z-1";
-    let startBubbleStyle = "p-2 text-center fw-bold bg-dark text-light";
+    let startBubbleContainerStyle = "position-absolute top-40 start-30 mt-5 pt-5 ms-4 mb-0 d-flex flex-column align-items-center z-1";
+    let startBubbleStyle = "px-2 py-0 text-center fw-bold bg-dark text-light fs-4";
     
     // General Bootstrap styles
-    let cardStyle = "justify-content-center m-3 p-1 pb-3 mb-5 fs-1 h-100 overflow-hidden font-monospace";
+    let cardStyle = "justify-content-center m-3 p-1 pt-0 pb-3 mb-5 fs-1 h-70 w-90 overflow-hidden font-monospace";
     let wordsStyle = "position-relative start-50 pt-4 ms-2 ps-1 overflow-visible border-0 d-flex flex-row align-items-flex-start z-2";
     let inputAreaStyle = "position-absolute start-50 mt-4 mb-0 fs-1 fw-bold border-0 bg-transparent";
 
     return (
         <div className="container-fluid d-flex flex-column align-items-center justify-content-center">
             {/* Header */}
-            <div id="header" className="row text-center mt-5 pt-5 mb-1">
-                <h1 id="game-title" className="mb-5 fw-bolder">Speed Typing</h1>
-                <h5 id="timer-title" className="mb-0 ms-1 fw-bold">Timer</h5>
+            <div id="header" className="row text-center mt-4 pt-5 mb-1">
+                <h1 id="game-title" className="mb-5 pb-2 fw-bolder">Speed Typing</h1>
+                <h5 id="timer-title" className="mb-0 mt-3 ms-1 fw-bold">Timer</h5>
 
                 {/* Circular Timer */}
                 <div className="mt-2 mb-1" style={circleContainerStyle}>
@@ -235,9 +270,10 @@ function SpeedTyping() {
                         <h6 className="top-0">seconds</h6>
                     </div>
                 </div>
-
+                
+                {/* Mistakes Count */}
                 <div>
-                    <h5 className="ms-3 mb-5 text-danger fw-bold">Mistakes: {numMistakes}</h5>
+                    <h5 className="ms-3 mt-2 pb-2 mb-5 text-danger fw-bold">Mistakes: {numMistakes}</h5>
                 </div>
             </div>
                 
@@ -245,16 +281,16 @@ function SpeedTyping() {
             <style>{pulseAnimation}</style>
             {!hasStarted && (
                 <div className={startBubbleContainerStyle} style={startBubblePulse}>
-                    <div style={startBubbleTailStyle}></div>
                     <div className={startBubbleStyle}>
                         Type to start!
                     </div>
+                    <div style={startBubbleTailStyle}></div>
                 </div>
             )}
 
             {/* Body */}
             <div id="text-container" className={`card ${cardStyle}`} style={{boxShadow: '0 3px 6px rgba(0, 0, 0, 0.3)'}}>
-                <textarea id="user-input"
+                <textarea id="user-input" ref={userInputRef}
                     className={`form-control ${inputAreaStyle}`}
                     style={{ width: '2%', resize: 'none', boxShadow: 'none'}}
                     value={userInput}
@@ -275,64 +311,42 @@ function SpeedTyping() {
 
             {/* Footer */}
             {/* End of game stats */}
-            {timer === 0 &&
-                <p>Words per minute (WPM): {wordsPerMinute.toFixed(2)}</p>}
-                
-        {/* <div id="end-game-scores" className="card">
-                <div className="header">
-                    <h1 id="user-name" className="mb-5 fw-bolder">Username/Guest scores</h1>
-                </div>
-                <div className="row">
-                    <div className="col">
-                        <h5>Accuracy: {calculateAccuracy}</h5>
+            {timer == 0 && (
+                <div class="d-flex justify-content-center align-items-center mt-1">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            <h2 class="card-title">Username/Guest Scores</h2>
+                        </div>
+                        <div class="card-body pt-2 pb-1">
+                            <div class="pt-1 mb-2">
+                                <h5>Accuracy: {accuracy}%</h5>
+                            </div>
+                            <div class="pb-0">
+                                <h5>Words Per Minute (WPM): {wordsPerMinute}</h5>
+                            </div>
+                            <hr class="hr mb-2" />
+                            <div class="pb-0 mb-0">
+                                <h3>Total Score: {score}</h3>
+                            </div>
+                        </div>
+                        <div class="card-footer py-3">
+                            <a href="/speedtyping" class="btn btn-primary start-0 me-5">Play Again</a>
+                            <a href="/leaderboard" class="btn btn-secondary start-end">View Leaderboard</a>
+                        </div>
                     </div>
-                    <div className "col">
-                        <h5>Words Per Minute: {wordsPerMinute}</h5>
-                    </div>
                 </div>
-                <div className="row">
-                    <h4>Score: {calculateScore}</h4>
-                </div>
-                <div className="footer">
-                    <button>Play again</button>
-                    <button>View global scores</button>
-                </div>
-            </div>
-                
-                
-                
-                
-                
-                Rank list 
-                <div className="text-center mt-5">
-                    <p>Words per minute (WPM): {WPM.toFixed(2)}</p>
-                    <p>Rank: {currUser.rank}</p>
-                    <p>Accuracy: {currUser.accuracy}%</p>
-                    <p>Speed: {currUser.speed} WPM</p>
-                    <p>Score: {currUser.score}</p>
-                    <p>Date: {currUser.date}</p>
-                </div> */}
 
-            
-            
-            
+            )}
         </div>
     )
 }
 
 export default SpeedTyping;
 
-// accuracy
-// score
-// speed
-// date 
-// try again / route to leaderboard button
-// wait for API: store into leaderboard
-// check if inputs worthy adding
-// draw scores for specific users
-// use specific leaderboard
-// sizing speech bubble
-// 
+// TODOs
+// connect to API (only store 1 user score if greater than top)
+// user can't click back in
+// go to specific leaderboard
 
 // leaderboard top 3
 // check for user top score 
