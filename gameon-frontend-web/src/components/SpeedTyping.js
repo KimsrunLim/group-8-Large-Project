@@ -150,19 +150,52 @@ function SpeedTyping() {
         }
     }, [hasStarted, timer]);
 
-    const getStats = () => {
+    const createPayload = (validatedInputHistory, numMistakes, username = 'Guest') => {
         const totalTypedChars = validatedInputHistory.length;
         const correctChars = validatedInputHistory.filter(entry => entry.isCorrect).length;
         const accuracyCalc = totalTypedChars > 0 ? (correctChars / totalTypedChars) * 100 : 0;
-        setWordsPerMinute(correctChars / 5); // Average word length = 5 chars
-        setAccuracy(accuracyCalc);
-        setScore(correctChars - numMistakes);
+        const wpmCalc = correctChars / 5; // Average word length = 5 chars
+
+        return {
+            accuracy: accuracyCalc.toFixed(2), // Formatting for better readability
+            date: new Date().toISOString(),
+            device: navigator.userAgent,
+            score: correctChars - numMistakes,
+            speed: wpmCalc.toFixed(2),
+            username: username
+        };
+    };
+
+    const submitStats = async (payload) => {
+        try {
+            const response = await fetch('/api/addTypingData', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const result = await response.json();
+            if (result.error) {
+                console.error('Error submitting typing data:', result.error);
+            } else {
+                console.log('Typing data submitted successfully.');
+            }
+        } catch (error) {
+            console.error('Failed to send typing data:', error);
+        }
     };
 
     // Calculate stats when timer ends.
     useEffect(() => {
         if (timer === 0) {
-            getStats();
+            const payload = createPayload(validatedInputHistory, numMistakes);
+            submitStats(payload);
+
+            setWordsPerMinute(payload.speed);
+            setAccuracy(payload.accuracy);
+            setScore(payload.score);
         }
     }, [timer, validatedInputHistory, numMistakes]);
 
@@ -311,7 +344,7 @@ function SpeedTyping() {
 
             {/* Footer */}
             {/* End of game stats */}
-            {timer == 0 && (
+            {timer === 0 && (
                 <div class="d-flex justify-content-center align-items-center mt-1">
                     <div class="card text-center">
                         <div class="card-header">
