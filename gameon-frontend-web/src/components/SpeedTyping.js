@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 
-const generateRandomWords = (wordList, wordCount) => {
+export const generateRandomWords = (wordList, wordCount) => {
     let randomWords = [];
     for (let i = 0; i < wordCount; i++) {
         randomWords.push(wordList[Math.floor(Math.random() * wordList.length)]);
@@ -9,15 +9,77 @@ const generateRandomWords = (wordList, wordCount) => {
     return randomWords.join(' ');
 };
 
-const validateChar = (inputChar, expectedChar) => {
+export const validateChar = (inputChar, expectedChar) => {
     return inputChar === expectedChar;
+};
+
+// Leftward scrolling helpers.
+export const createSpanElement = (char, fontFamily, fontWeight, fontSize) => {
+    const span = document.createElement('span');
+    span.style.visibility = 'hidden';
+    span.style.fontFamily = fontFamily;
+    span.style.fontWeight = fontWeight;
+    span.style.fontSize = fontSize;
+    span.textContent = char;
+    return span;
+}
+export const getSpanWidth = (span, document) => {
+    document.body.appendChild(span);
+    const width = span.getBoundingClientRect().width;
+    document.body.removeChild(span);
+    return width;
+};
+export const calculateCharWidth = (char, document) => {
+    const span = createSpanElement(char, 'monospace', 'bold', '2.25rem');
+    return getSpanWidth(span, document);
+};
+export const calculateScrollAmount = (element, scrollAmount) => {
+    if (element && element.style) {
+        element.style.transform = `translateX(-${scrollAmount}px)`;
+    }
+};
+export const updateScroll = (scrollFunc, element, scrollAmount) => {
+  if (element) {
+    element.style.transform = `translateX(-${scrollAmount}px)`;
+  }
+};
+
+// Centering helpers.
+export const calculateOffset = (element, currentIndex, adjustment = 4) => {
+    if (!element || currentIndex < 0) return 0;
+
+    const span = element.children[currentIndex];
+    return span ? span.offsetLeft - adjustment : 0;
+};
+export const centerCurrentCharacter = (element, currentIndex, adjustment = 4) => {
+    const offset = calculateOffset(element, currentIndex, adjustment);
+    if (element) {
+        element.style.transform = `translateX(-${offset}px)`;
+    }
+};
+
+// Validation coloring helpers.
+export const getCharacterClass = (historyEntry) => {
+    return historyEntry?.isCorrect ? "text-success" : "text-danger";
+};
+export const renderCharacterSpan = (char, index, charClass = "", charRefs) => {
+    const style = char === ' ' ? { paddingRight: '0.4em' } : undefined;
+    return (
+        <span key={index}
+              ref={el => charRefs.current[index] = el}
+              className={charClass}
+              style={style}
+        >
+            {char}
+        </span>
+    );
 };
 
 function SpeedTyping() {
     const [userInput, setUserInput] = useState('');
     const [charIndex, setCharIndex] = useState(0);
     const [numMistakes, setNumMistakes] = useState(0);
-    const [WPM, setWPM] = useState(0);
+    const [wordsPerMinute, setWordsPerMinute] = useState(0);
     const [timer, setTimer] = useState(60);
     const [words, setWords] = useState('');
     const [validatedInputHistory, setValidatedInputHistory] = useState([]);
@@ -65,9 +127,16 @@ function SpeedTyping() {
     useEffect(() => {
         if (timer === 0) {
             const correctChars = validatedInputHistory.filter(input => input.isCorrect).length;
-            setWPM(correctChars / 5); // Average word length = 5 chars
+            setWordsPerMinute(correctChars / 5); // Average word length = 5 chars
         }
     }, [timer, validatedInputHistory]);
+
+    const updateLeftwardScroll = (char) => {
+        const charWidth = calculateCharWidth(char, document);
+        const currentScrollAmount = textDisplayRef.current ? parseFloat(getComputedStyle(textDisplayRef.current).transform.split(',')[4]) : 0;
+        const newScrollAmount = calculateScrollAmount(charWidth, currentScrollAmount);
+        updateScroll(textDisplayRef.current, newScrollAmount);
+    };
 
     // Validate last user-entered character then reset input. 
     const handleUserInput = (event) => {
@@ -79,15 +148,7 @@ function SpeedTyping() {
         const expectedChar = words.charAt(charIndex);
         const isCharValid = validateChar(inputValue, expectedChar);
 
-        // Calculate and scroll here.
-        if (textDisplayRef.current) {
-            const additionalWidth = calculateCharWidth(expectedChar); // Use expectedChar to include space width
-            const currentTransform = textDisplayRef.current.style.transform;
-            const currentScrollAmount = currentTransform ? parseFloat(currentTransform.replace('translateX(-', '').replace('px)', '')) : 0;
-            const newScrollAmount = currentScrollAmount + additionalWidth;
-            textDisplayRef.current.style.transform = `translateX(-${newScrollAmount}px)`;
-        }
-
+        updateLeftwardScroll(expectedChar);
         setValidatedInputHistory((prevHistory) => [...prevHistory, { char: inputValue, isCorrect: isCharValid }, ]);
         setCharIndex(prevIndex => prevIndex + 1);
         setUserInput('');
@@ -96,47 +157,14 @@ function SpeedTyping() {
             setNumMistakes((prevNumMistakes) => prevNumMistakes + 1);
         }
 
-        centerCurrentCharacter(charIndex + 1)
-    };
-
-    const calculateCharWidth = (char) => {
-        const span = document.createElement('span');
-        span.style.visibility = 'hidden'; 
-        span.style.fontFamily = 'monospace';
-        span.style.fontWeight = 'bold';
-        span.style.fontSize = '2.25rem'; 
-        span.textContent = char;
-        document.body.appendChild(span);
-        const width = span.getBoundingClientRect().width;
-        document.body.removeChild(span);
-        return width;
-    };
-
-    const centerCurrentCharacter = (currentIndex) => {
-        if (textDisplayRef.current) {
-            const span = textDisplayRef.current.children[currentIndex];
-            const offset = span ? span.offsetLeft - 4 : 0;
-            textDisplayRef.current.style.transform = `translateX(-${offset}px)`;
-        }
+        centerCurrentCharacter(textDisplayRef.current, charIndex + 1)
     };
 
     // Render each character of the words list with validity styling.
     const renderedWords = words.split('').map((char, index) => {
         const historyEntry = validatedInputHistory[index];
-        let charClass = ""; // default class
-        if (historyEntry !== undefined) {
-            charClass = historyEntry.isCorrect ? "text-success" : "text-danger";
-        }
-
-        const style = char === ' ' ? { paddingRight: '0.4em' } : undefined;
-
-        return (<span key={index}
-                      ref={el => charRefs.current[index] = el}
-                      className={charClass}
-                      style={style}
-                >
-                    {char}
-                </span>);
+        const charClass = historyEntry ? getCharacterClass(historyEntry) : ""; // Ensures there is a default class if historyEntry is undefined
+        return renderCharacterSpan(char, index, charClass, charRefs);
     });
 
     // Circular timer calculations & style.
@@ -171,7 +199,7 @@ function SpeedTyping() {
     let startBubbleStyle = "p-2 text-center fw-bold bg-dark text-light";
     
     // General Bootstrap styles
-    let cardStyle = "justify-content-center m-3 p-1 pb-3 mb-5 fs-1 h-100 overflow-auto font-monospace";
+    let cardStyle = "justify-content-center m-3 p-1 pb-3 mb-5 fs-1 h-100 overflow-hidden font-monospace";
     let wordsStyle = "position-relative start-50 pt-4 ms-2 ps-1 overflow-visible border-0 d-flex flex-row align-items-flex-start z-2";
     let inputAreaStyle = "position-absolute start-50 mt-4 mb-0 fs-1 fw-bold border-0 bg-transparent";
 
@@ -246,11 +274,36 @@ function SpeedTyping() {
             </div>
 
             {/* Footer */}
-                {/* Show leaderboard */}
-                {timer === 0 &&
-                    <p>Words per minute (WPM): {WPM.toFixed(2)}</p>}
+            {/* End of game stats */}
+            {timer === 0 &&
+                <p>Words per minute (WPM): {wordsPerMinute.toFixed(2)}</p>}
                 
-                {/* Rank list 
+        {/* <div id="end-game-scores" className="card">
+                <div className="header">
+                    <h1 id="user-name" className="mb-5 fw-bolder">Username/Guest scores</h1>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <h5>Accuracy: {calculateAccuracy}</h5>
+                    </div>
+                    <div className "col">
+                        <h5>Words Per Minute: {wordsPerMinute}</h5>
+                    </div>
+                </div>
+                <div className="row">
+                    <h4>Score: {calculateScore}</h4>
+                </div>
+                <div className="footer">
+                    <button>Play again</button>
+                    <button>View global scores</button>
+                </div>
+            </div>
+                
+                
+                
+                
+                
+                Rank list 
                 <div className="text-center mt-5">
                     <p>Words per minute (WPM): {WPM.toFixed(2)}</p>
                     <p>Rank: {currUser.rank}</p>
@@ -287,3 +340,4 @@ export default SpeedTyping;
 // leaderboard filtering 
 // navbar cookies
 // reaction game button
+// sticky top + navbar issue
