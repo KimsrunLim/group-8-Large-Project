@@ -127,8 +127,9 @@ app.post('/api/addReactionData', async (req, res, next) => {
             db.collection('ReactionGame').find({ Username: username }).toArray();
         
         if (results.length > 0) {
-            if (time < results.time) {
-                db.collection('ReactionGame').deleteOne(results[0]._id);
+            if (time < results[0].Time) {
+                const query = { Username: username }
+                const result = await db.collection("ReactionGame").deleteOne(query);
                 db.collection('ReactionGame').insertOne(newData);
             }
         }
@@ -152,7 +153,7 @@ app.post('/api/ReactionLeaderboard', async (req, res, next) => {
     try {
         const db = client.db("group8large");
         results = await
-            db.collection('TypingGame').find().sort({Time: 1}).toArray();
+            db.collection('ReactionGame').find().sort({Time: 1}).toArray();
 
         // console.log(results);
         // console.log("Number of Scores: ", results.length);
@@ -183,8 +184,9 @@ app.post('/api/addTypingData', async (req, res, next) => {
             db.collection('TypingGame').find({ Username: username }).toArray();
         
         if (results.length > 0) {
-            if (score > results.score) {
-                db.collection('TypingGame').deleteOne(results[0]._id);
+            if (score > results[0].Score) {
+                const query = { Username: username }
+                const result = await db.collection("TypingGame").deleteOne(query);
                 db.collection('TypingGame').insertOne(newData);
             }
         }
@@ -245,7 +247,7 @@ app.post('/api/userTypingData', async (req, res, next) => {
             error = "No User Exists";
         }
         
-        var userScore = results[0].score;
+        var userScore = results[0].Score;
     }
     catch (e) {
         error = e;
@@ -273,7 +275,7 @@ app.post('/api/userReactionData', async (req, res, next) => {
             error = "No User Exists";
         }
 
-        var userTime = results[0].time;
+        var userTime = results[0].Time;
     }
     catch (e) {
         error = e;
