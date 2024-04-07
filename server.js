@@ -115,7 +115,96 @@ app.post('/api/users', async (req, res, next) => {
     res.status(200).json(ret);
 });
 
-app.post('/api/leaderboard', async (req, res, next) => {
+app.post('/api/addReactionData', async (req, res, next) => {
+
+    const { username, time, date, device} = req.body;
+    const newData = { Username: username, Time: time, Date: date, Device: device };
+    
+    var error = '';
+
+    try {
+        const db = client.db("group8large");
+        const results = await
+            db.collection('ReactionGame').find({ Username: username }).toArray();
+        
+        if (results.length > 0) {
+            if (time < results[0].Time) {
+                const query = { Username: username }
+                const result = await db.collection("ReactionGame").deleteOne(query);
+                db.collection('ReactionGame').insertOne(newData);
+            }
+        }
+        else {
+            const result = db.collection('ReactionGame').insertOne(newData);
+        }
+    }
+    catch (e) {
+        error = e;
+    }
+
+    var ret = { error: error };
+    res.status(200).json(ret);
+});
+
+app.post('/api/ReactionLeaderboard', async (req, res, next) => {
+    // const { username, accuracy, speed, score, device, date } = req.body;
+    var error = '';
+    var results;
+
+    try {
+        const db = client.db("group8large");
+        results = await
+            db.collection('ReactionGame').find().sort({Time: 1}).toArray();
+
+        // console.log(results);
+        // console.log("Number of Scores: ", results.length);
+
+        if (results.length <= 0)
+        {
+            error = "No Data";
+        }
+    }
+    catch (e) {
+        error = e;
+    }
+
+    var ret = { results: results, error: error };
+    res.status(200).json(ret);
+});
+
+app.post('/api/addTypingData', async (req, res, next) => {
+
+    const { accuracy, date, device, score, speed, username} = req.body;
+    const newData = { Accuracy: accuracy, Date: date, Device: device, Score: score, Speed: speed, Username: username };
+    
+    var error = '';
+
+    try {
+        const db = client.db("group8large");
+        const results = await
+            db.collection('TypingGame').find({ Username: username }).toArray();
+        
+        if (results.length > 0) {
+            if (score > results[0].Score) {
+                const query = { Username: username }
+                const result = await db.collection("TypingGame").deleteOne(query);
+                db.collection('TypingGame').insertOne(newData);
+            }
+        }
+        else {
+            const db = client.db("group8large");
+            const result = db.collection('TypingGame').insertOne(newData);
+        }
+    }
+    catch (e) {
+        error = e;
+    }
+
+    var ret = { error: error };
+    res.status(200).json(ret);
+});
+
+app.post('/api/TypingLeaderboard', async (req, res, next) => {
     // const { username, accuracy, speed, score, device, date } = req.body;
     var error = '';
     var results;
@@ -141,15 +230,15 @@ app.post('/api/leaderboard', async (req, res, next) => {
     res.status(200).json(ret);
 });
 
-app.post('/api/userData', async (req, res, next) => {
+app.post('/api/userTypingData', async (req, res, next) => {
     const { username } = req.body;
     var error = '';
     var results;
 
     try {
         const db = client.db("group8large");
-        results = await
-            db.collection('TypingGame').find({ Username: username }).sort({ Score: -1 }).toArray();
+        const results = await
+            db.collection('TypingGame').find({ Username: username }).toArray();
 
 
         // console.log(results);
@@ -159,12 +248,42 @@ app.post('/api/userData', async (req, res, next) => {
         {
             error = "No User Exists";
         }
+        
+        var userScore = results[0].Score;
     }
     catch (e) {
         error = e;
     }
 
-    var ret = { results: results, error: error };
+    var ret = { userScore: userScore, error: error };
+    res.status(200).json(ret);
+});
+
+app.post('/api/userReactionData', async (req, res, next) => {
+    const { username } = req.body;
+    var error = '';
+
+    try {
+        const db = client.db("group8large");
+        const results = await
+            db.collection('ReactionGame').find({ Username: username }).toArray();
+
+
+        // console.log(results);
+        // console.log("Number of Scores: ", results.length);
+
+        if (results.length <= 0)
+        {
+            error = "No User Exists";
+        }
+
+        var userTime = results[0].Time;
+    }
+    catch (e) {
+        error = e;
+    }
+
+    var ret = { userTime: userTime, error: error };
     res.status(200).json(ret);
 });
 
