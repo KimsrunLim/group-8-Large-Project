@@ -57,21 +57,18 @@ const LeaderBoard = () => {
         <div className='d-flex p-5 align-items-center justify-content-center' style={{ height: "90vh" }}>
             {/* <div> */}
             {/* Detail */}
-            <div className='align-items-center me-5 col-4 my-auto'>
-                <div className="card text-center">
-                    <div className="card-body">
-                        <h3 className="card-title">Player Name: </h3>
-                        <h5 className="card-subtitle mb-2 text-muted">Best Score:</h5>
-                        <p className="card-text">Other Scores1</p>
-                        <p className="card-text">Other Scores2</p>
-                        <a href="#" className="card-link">Card link</a>
-                        <a href="#" className="card-link">Another link</a>
-                    </div>
+            <div class="card border-info mb-3 me-5 col-3">
+                <div class="card-header text-black bg-info mb-3">
+                    <h2>Name: {curUser.Username}</h2></div>
+                <div class="card-body">
+                    <h5 class="card-title">Best Score:</h5>
+                    <h5 class="card-title">Best Speed:</h5>
+                
                 </div>
             </div>
 
             {/* Rank list */}
-            <div className="w-auto overflow-auto h-100" style={{ border: "2px solid black" }}>
+            <div className="col-7 overflow-auto h-100" style={{ border: "2px solid black", borderRadius:"10px" }}>
                 <table className="table table-striped">
                     <thead className='sticky-top'>
                         <tr>

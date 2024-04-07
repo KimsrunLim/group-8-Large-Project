@@ -8,7 +8,7 @@ export default function AboutPage() {
     <div>
         <Header />
         <div className="row align-items-center" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "85vh" }}>
-                <div className="col-6 col-md-2">
+                    <div className="col-6 col-md-2">
                         <div className="card text-center">
                             <img className="card-img-top" height="200" src={temp1} alt="Card image cap"/>
                             <div className="card-body">
@@ -27,7 +27,7 @@ export default function AboutPage() {
                 
 
             
-        <div className="col-12 col-md-8">
+        <div className="col-12 col-md-6">
             <div className="row mb-4">
                 <div className="col">
                     <div className="col">
