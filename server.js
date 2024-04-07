@@ -124,20 +124,16 @@ app.post('/api/addReactionData', async (req, res, next) => {
     try {
         const db = client.db("group8large");
         const results = await
-            db.collection('ReactionGame').find({ Username: username }).sort({Time: +1}).toArray();
+            db.collection('ReactionGame').find({ Username: username }).toArray();
         
-        if (results.length <= 2) {
-            const db = client.db("group8large");
-            const result = db.collection('ReactionGame').insertOne(newData);
-        }
-        else if (results.length > 3) {
-            error = "Too many leaderboard entries from this user";
-        }
-        else {
-            if (time < results[2].time) {
-                db.collection('ReactionGame').deleteOne(results[2]._id);
+        if (results.length > 0) {
+            if (time < results.time) {
+                db.collection('ReactionGame').deleteOne(results[0]._id);
                 db.collection('ReactionGame').insertOne(newData);
             }
+        }
+        else {
+            const result = db.collection('ReactionGame').insertOne(newData);
         }
     }
     catch (e) {
@@ -156,7 +152,7 @@ app.post('/api/ReactionLeaderboard', async (req, res, next) => {
     try {
         const db = client.db("group8large");
         results = await
-            db.collection('TypingGame').find().sort({Time: +1}).toArray();
+            db.collection('TypingGame').find().sort({Time: 1}).toArray();
 
         // console.log(results);
         // console.log("Number of Scores: ", results.length);
@@ -184,20 +180,17 @@ app.post('/api/addTypingData', async (req, res, next) => {
     try {
         const db = client.db("group8large");
         const results = await
-            db.collection('TypingGame').find({ Username: username }).sort({Score: -1}).toArray();
+            db.collection('TypingGame').find({ Username: username }).toArray();
         
-        if (results.length <= 2) {
-            const db = client.db("group8large");
-            const result = db.collection('TypingGame').insertOne(newData);
-        }
-        else if (results.length > 3) {
-            error = "Too many leaderboard entries from this user";
-        }
-        else {
-            if (score > results[2].score) {
-                db.collection('TypingGame').deleteOne(results[2]._id);
+        if (results.length > 0) {
+            if (score > results.score) {
+                db.collection('TypingGame').deleteOne(results[0]._id);
                 db.collection('TypingGame').insertOne(newData);
             }
+        }
+        else {
+            const db = client.db("group8large");
+            const result = db.collection('TypingGame').insertOne(newData);
         }
     }
     catch (e) {
@@ -241,7 +234,7 @@ app.post('/api/userTypingData', async (req, res, next) => {
     try {
         const db = client.db("group8large");
         const results = await
-            db.collection('TypingGame').find({ Username: username }).sort({ Score: -1 }).toArray();
+            db.collection('TypingGame').find({ Username: username }).toArray();
 
 
         // console.log(results);
@@ -252,17 +245,13 @@ app.post('/api/userTypingData', async (req, res, next) => {
             error = "No User Exists";
         }
         
-        var userScores = [];
-
-        for (let i = 0; i < results.length; i++) {
-            userScores[i] = results[i].score;
-        }
+        var userScore = results[0].score;
     }
     catch (e) {
         error = e;
     }
 
-    var ret = { userScores: userScores, error: error };
+    var ret = { userScore: userScore, error: error };
     res.status(200).json(ret);
 });
 
@@ -273,7 +262,7 @@ app.post('/api/userReactionData', async (req, res, next) => {
     try {
         const db = client.db("group8large");
         const results = await
-            db.collection('ReactionGame').find({ Username: username }).sort({ Time: +1 }).toArray();
+            db.collection('ReactionGame').find({ Username: username }).toArray();
 
 
         // console.log(results);
@@ -284,17 +273,13 @@ app.post('/api/userReactionData', async (req, res, next) => {
             error = "No User Exists";
         }
 
-        var userTimes = [];
-
-        for (let i = 0; i < results.length; i++) {
-            userTimes[i] = results[i].time;
-        }
+        var userTime = results[0].time;
     }
     catch (e) {
         error = e;
     }
 
-    var ret = { userTimes: userTimes, error: error };
+    var ret = { userTime: userTime, error: error };
     res.status(200).json(ret);
 });
 
