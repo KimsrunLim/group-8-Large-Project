@@ -136,13 +136,15 @@ app.post('/api/addReactionData', async (req, res, next) => {
     const { username, time, date, device} = req.body;
     const newData = { Username: username, Time: time, Date: date, Device: device };
     
+    console.log("New Data: ", newData);
+
     var error = '';
 
     try {
         const db = client.db("group8large");
         const results = await
             db.collection('ReactionGame').find({ Username: username }).toArray();
-        
+
         if (results.length > 0) {
             if (time < results[0].Time) {
                 const query = { Username: username }
@@ -157,7 +159,6 @@ app.post('/api/addReactionData', async (req, res, next) => {
     catch (e) {
         error = e;
     }
-
     var ret = { error: error };
     res.status(200).json(ret);
 });
