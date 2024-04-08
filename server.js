@@ -86,11 +86,9 @@ app.post('/api/userCheck', async (req, res, next) => {
 
 // login
 app.post('/api/users', async (req, res, next) => {
-    var error = '';
+    var error = "";
 
     const { username, password } = req.body;
-    var userName = '';
-    var email = '';
 
     try {
         const db = client.db("group8large");
@@ -98,20 +96,38 @@ app.post('/api/users', async (req, res, next) => {
         const results = await
             db.collection('users').find({ Username: username, Password: password }).toArray();
 
-        var id = -1;
-        var fn = '';
-        var ln = '';
-
-        if (results.length > 0) {
-            userName = results[0].Username;
-            email = results[0].Email;
+        if (results.length <= 0) {
+            error = "No Account Exists";
         }
     }
     catch (e) {
         error = e;
     }
 
-    var ret = { username: userName, email: email, error: '' };
+    var ret = { error: error };
+    res.status(200).json(ret);
+});
+
+app.post('/api/email', async (req, res, next) => {
+    var error = "";
+
+    const { email } = req.body;
+
+    try {
+        const db = client.db("group8large");
+
+        const results = await
+            db.collection('users').find({ Email: email }).toArray();
+
+        if (results.length <= 0) {
+            error = "No Email Found";
+        }
+    }
+    catch (e) {
+        error = e;
+    }
+
+    var ret = { error: error };
     res.status(200).json(ret);
 });
 
