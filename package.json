@@ -26,5 +26,8 @@
         "slick": "^1.12.2",
         "slick-carousel": "^1.8.1",
         "stream": "^0.0.2"
+    },
+    "devDependencies": {
+        "jasmine": "^5.1.0"
     }
 }
