@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import Slider from "react-slick";
+// import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import temp1 from "../assets/astronaut.png";
 import temp2 from "../assets/celebrating.png";
-import temp3 from "../assets/taken.png";
+// import temp3 from "../assets/taken.png";
 import "../pages/SpeedTypingPage"
 
 import Carousel from 'react-bootstrap/Carousel';

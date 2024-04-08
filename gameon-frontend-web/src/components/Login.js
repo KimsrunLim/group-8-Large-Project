@@ -100,7 +100,7 @@ function Login() {
                                             <label className="pb-1 text-secondary fw-bold">Username</label>
                                             <div className="input-group mb-3">
                                                 <span className="input-group-text"><FontAwesomeIcon icon={faUser} /></span>
-                                                <input type="text" id="username" className="form-control" placeholder="Username" ref={(c) => username = c} />
+                                                <input type="text" id="username" data-testid="username-input" className="form-control" placeholder="Username" ref={(c) => username = c} />
                                             </div>
                                         </div>
 
@@ -109,19 +109,19 @@ function Login() {
                                             <label className="pb-1 text-secondary fw-bold">Password</label>
                                             <div className="input-group mb-3">
                                                 <span className="input-group-text"><FontAwesomeIcon icon={faLock} /></span>
-                                                <input type="password" id="password" className="form-control" placeholder="Password" ref={(c) => password = c} />
+                                                <input type="password" id="password" data-testid="password-input" className="form-control" placeholder="Password" ref={(c) => password = c} />
                                             </div>
                                         </div>
                                         { /* Error Feedback */}
                                         { /* idea: red container highlight on error message... flash/until type */}
                                         {message &&
-                                            <div className="text-danger mt-1 mb-2 pt-2 pb-2 text-center mx-auto fs-6 fw-bold">
+                                            <div data-testid="error-message" className="text-danger mt-1 mb-2 pt-2 pb-2 text-center mx-auto fs-6 fw-bold">
                                                 {message}
                                             </div>
                                         }
 
                                         { /* Submit */}
-                                        <button type="submit" className="btn bg-black w-100 mt-3 mb-1 fs-5 text-white fw-bold">Submit</button>
+                                        <button type="submit" data-testid="submit-button" className="btn bg-black w-100 mt-3 mb-1 fs-5 text-white fw-bold">Submit</button>
                                     </form>
 
                                     <div className='d-flex justify-content-center align-items-center text-center p-2 fw-medium'>
