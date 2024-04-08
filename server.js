@@ -117,7 +117,7 @@ app.post('/api/email', async (req, res, next) => {
         const db = client.db("group8large");
 
         const results = await
-            db.collection('users').find({ Email: email }).toArray();
+            db.collection('users').find({ Email: email.toLowerCase() }).toArray();
 
         if (results.length <= 0) {
             error = "No Email Found";
