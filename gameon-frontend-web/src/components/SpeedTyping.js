@@ -113,27 +113,18 @@ function SpeedTyping() {
 
     // This will be triggered when the input loses focus
     useEffect(() => {
-    const handleFocus = (event) => {
-        // Prevent default behavior of losing focus
-        event.preventDefault();
-
-        // Check if the game has started and the timer is not 0
-        if (hasStarted && timer > 0) {
-            // If the current target is not the input, refocus it
-            if (document.activeElement !== userInputRef.current) {
-                userInputRef.current.focus();
-            }
-        }
-    };
-
-        // Add the focus listener when the component mounts or when dependencies change
-        document.addEventListener('focusin', handleFocus, true);
-
-        // Cleanup the listener when the component unmounts or when dependencies change
-        return () => {
-            document.removeEventListener('focusin', handleFocus, true);
+        const handleClickAnywhere = () => {
+            userInputRef.current.focus();
         };
-    }, [hasStarted, timer]); 
+
+        // Add event listener to the whole document
+        document.addEventListener('click', handleClickAnywhere);
+
+        // Cleanup function to remove the event listener
+        return () => {
+            document.removeEventListener('click', handleClickAnywhere);
+        };
+    }, []);
 
     // Generate random words string on component mount.
     useEffect(() => {
