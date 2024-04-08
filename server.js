@@ -33,7 +33,7 @@ client.connect();
 app.post('/api/signup', async (req, res, next) => {
 
     const { username, email, password } = req.body;
-    const newUser = { Username: username, Email: email, Password: password };
+    const newUser = { Username: username, Email: email.toLowerCase(), Password: password };
 
     var error = '';
 
