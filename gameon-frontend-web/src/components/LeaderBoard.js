@@ -36,7 +36,7 @@ const LeaderBoard = () => {
         var obj = {};
         var js = JSON.stringify(obj);
         try {
-            const res = await fetch(buildPath('api/leaderboard'),
+            const res = await fetch(buildPath('api/TypingLeaderboard'),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
             const player = await res.json();
