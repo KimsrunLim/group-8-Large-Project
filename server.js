@@ -98,7 +98,7 @@ app.post('/api/users', async (req, res, next) => {
         const results = await
             db.collection('users').find({ Username: username }).toArray();
 
-        const match = await bcrypt.compare(password, results.Password);
+        const match = await bcrypt.compare(password, results[0].Password);
 
         if (!match) {
             error = "Password does not match";
