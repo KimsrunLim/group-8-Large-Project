@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faRankingStar, faUsers, faUser, faUserPlus, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faRankingStar, faUsers, faUser, faUserPlus, faSignInAlt, faSignOutAlt,
+    faTimes, faBars
+ } from '@fortawesome/free-solid-svg-icons';
 import { Container, Navbar, Nav, Dropdown } from 'react-bootstrap';
 import Logo from '../assets/GameOnLogoWhite.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -66,6 +68,7 @@ const readCookie = () => {
 function Header() {
     const [username, setUsername] = useState(null);
     const [collapsible, setCollapsible] = useState(window.innerWidth <= 768); // "md"
+    const [expanded, setExpanded] = useState(false);
 
     // Read cookie and set username on component mount.
     useEffect(() => {
@@ -100,12 +103,11 @@ function Header() {
         : "py-0 my-0"; 
 
     const navItemClass = collapsible 
-        ? "ms-3 my-1 py-2 d-flex justify-content-center align-items-center rounded"
-        : "my-0 mx-0 px-3 pt-3 pb-4 align-items-center"; 
+        ? "my-0 py-3 d-flex justify-content-center align-items-center"
+        : "my-0 mx-0 px-4 pt-3 pb-4 align-items-center"; 
 
     const navLinks = [
         { to: '/home', icon: faHouse, text: 'Home' },
-        { to: '/about', icon: faUsers, text: 'About' },
         { to: '/leaderboard', icon: faRankingStar, text: 'Ranks' }
     ];
 
@@ -115,14 +117,19 @@ function Header() {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
-        width: '40%',
-        left:'34%',
+        width: '25%',
         textAlign: 'center',
-        paddingLeft: collapsible ? '0' : 'paddingValue',
+        borderRadius: '0',
+        left: '50%', // Position halfway across the container
+        transform: 'translateX(-50%)', // Shift it back by half its own width
     };
 
-    // Conditionally apply centered styles if collapsible
-    const dropdownContainer = collapsible ? centeredDropdownContainer : {};
+    const centeredDropdownMenu = {
+        textAlign: 'center', // Center align the text within the dropdown
+        display: 'block',
+    };
+
+    const toggleNavbar = () => setExpanded(prevExpanded => !prevExpanded);
 
     return (
         <>
@@ -134,8 +141,10 @@ function Header() {
                     </Navbar.Brand>
 
                     {/* Automatically collapse navbar on selected screens */}
-                    <Navbar.Toggle aria-controls="responsive-navbar-nav" data-bs-theme="dark"/>
-
+                    <Navbar.Toggle aria-controls="responsive-navbar-nav" onClick={toggleNavbar}>
+                        <FontAwesomeIcon className="text-white fs-2" icon={expanded ? faTimes : faBars} />
+                    </Navbar.Toggle>
+                    
                     {/* Navigation items that are collapsed on selected screens */}
                     <Navbar.Collapse id="responsive-navbar-nav" className="w-100">
 
@@ -157,15 +166,16 @@ function Header() {
                                 </React.Fragment>
                             ))}
 
-                            <Dropdown className={`bg-dark flex-col m-0 p-0 border-0 me-5`}
-                                style={dropdownContainer}>
-                                <Dropdown.Toggle as={CustomNavLink} className={`${navItemClass}`}>
+                            <Dropdown className={`bg-dark flex-col m-0 me-5 
+                                                 ${collapsible ? 'mt-2' : ''}`}
+                                style={ collapsible ? centeredDropdownContainer : {}}>
+                                <Dropdown.Toggle isDropdownItem as={CustomNavLink} className={`${navItemClass}`}>
                                         <FontAwesomeIcon icon={faUser} />
-                                        <span className="ps-2 pe-1">User</span>
+                                        <span className="ps-2 pe-1 px-3">User</span>
                                 </Dropdown.Toggle>
 
-                                <Dropdown.Menu className="bg-dark m-0 p-0 z-200">
-                                    <Dropdown.Header className="pb-0 text-white ps-3">
+                                <Dropdown.Menu className="bg-dark p-0 m-0" style={ collapsible ? centeredDropdownMenu : {}}>
+                                    <Dropdown.Header className="pb-0 px-3 text-white">
                                         <h5>{username}</h5>
                                     </Dropdown.Header>
                                     
