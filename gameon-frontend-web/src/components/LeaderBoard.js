@@ -100,12 +100,20 @@ const LeaderBoard = () => {
 
             setPlayers(player.results);
 
-
+            // add case when user not found in leaderboard
             var ourUser = player.results.find(x => x.Username === username);
-            console.log("before:", username);
-            ourUser.Rank = await player.results.findIndex(x => x.Username === username) + 1;
-            console.log("after:", username);
-            setCurUser(ourUser);
+            if (ourUser) {
+                // Found a user, do something with ourUser
+                console.log(`User ${ourUser.Username} found!`);
+                ourUser.Rank = await player.results.findIndex(x => x.Username === username) + 1;
+                console.log("hereh",ourUser);
+                setCurUser(ourUser);
+
+            } else {
+                // User not found
+                console.log("User not found");
+                setCurUser("");
+            }
     
         } catch (e) {
             console.error(e)

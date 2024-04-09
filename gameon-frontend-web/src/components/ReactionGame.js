@@ -91,7 +91,7 @@ function ReactionGame()
         if (!isNaN(+result))
         {
             // send the score to leaderboard
-            var obj = { username: user, time: result, date: "smaple", device: "phone" };
+            var obj = { username: user, time: result, date: "2024-04-06T01:27:00.000Z", device: "phone" };
             var js = JSON.stringify(obj);
 
             try {
