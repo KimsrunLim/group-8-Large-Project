@@ -9,7 +9,8 @@ const LeaderBoard = () => {
 
     const app_name = 'group8large-57cfa8808431';
 
-    let username = "";
+    const [username, setUsername] =useState("");
+    // let username;
     var rank = 1;
     const reactionHeader = () => {
         return(
@@ -40,25 +41,29 @@ const LeaderBoard = () => {
             <th className='bg-info bg-gradient'>Score</th>
             <th className='bg-info bg-gradient'>Device</th>
             <th className='bg-info bg-gradient'>Date</th> 
-
             </tr>
             </>
-        )
+        )  
     }
+
     const [header, setHeader] = useState(speedTypingHeader());
-    const [gameData, setGameData] = useState('api/TypingLeaderboard');
+    // var gameData = 'api/ReactionLeaderboard';
+    var gameData = 'api/TypingLeaderboard';
     
     const handleSelect = (selectedKey) => {
+        console.log("here?", username);
         if (selectedKey === "link-1") {
             setHeader(speedTypingHeader());
-            setGameData('api/ReactionLeaderboard');
+            gameData = 'api/TypingLeaderboard';
+            console.log("Speed userData:", curUser);
+
         } else if (selectedKey === "link-2") {
             setHeader(reactionHeader());
-            setGameData('api/TypingLeaderboard');
-
+            gameData = 'api/ReactionLeaderboard';
+            console.log("React userData:", curUser);
         }
+        
         fetchPlayer();
-
     };
 
 
@@ -80,15 +85,14 @@ const LeaderBoard = () => {
         let data = document.cookie;
         let tokens = data.split("=");
         if (tokens[0] === "username") {
-            username = tokens[1];
+            setUsername(tokens[1]);
         }
     }
 
-    const fetchPlayer = async event => {
+    const fetchPlayer = async () => {
         var obj = {};
         var js = JSON.stringify(obj);
         try {
-            // const res = await fetch(buildPath('api/TypingLeaderboard'),
             const res = await fetch(buildPath(gameData),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
@@ -96,30 +100,31 @@ const LeaderBoard = () => {
 
             setPlayers(player.results);
 
+
             var ourUser = player.results.find(x => x.Username === username);
-            ourUser.Rank = player.results.findIndex(x => x.Username === username) + 1;
-
+            console.log("before:", username);
+            ourUser.Rank = await player.results.findIndex(x => x.Username === username) + 1;
+            console.log("after:", username);
             setCurUser(ourUser);
-
     
         } catch (e) {
             console.error(e)
         }
     }
 
+    
     return <>
                
         <div className='d-flex p-5 align-items-center justify-content-center' style={{ height: "90vh" }}>
             {/* Detail */}
-            <div class="card border-info mb-3 me-5 col-3">
+            {/* <div class="card border-info mb-3 me-5 col-3">
                 <div class="card-header text-black bg-info mb-3">
                     <h2>Name: {curUser.Username}</h2></div>
                 <div class="card-body">
                     <h5 class="card-title">Best Score:</h5>
                     <h5 class="card-title">Best Speed:</h5>
-                
                 </div>
-            </div>
+            </div> */}
             {/* <div> */}
             
 
