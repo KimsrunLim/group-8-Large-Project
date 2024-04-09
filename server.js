@@ -376,7 +376,7 @@ app.get('/verify-email', async (req, res) => {
 
     console.log(4);
     
-    res.redirect('https://group8large-57cfa8808431.herokuapp.com/'); // Redirect the user to login page or wherever you want
+    res.redirect('https://group8large-57cfa8808431.herokuapp.com/login'); // Redirect the user to login page or wherever you want
 
     console.log(5);
 });
