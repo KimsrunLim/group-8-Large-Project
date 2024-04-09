@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+const bcrypt = require("bcrypt");
 require('dotenv').config();
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
