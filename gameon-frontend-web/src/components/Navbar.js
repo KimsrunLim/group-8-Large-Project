@@ -14,10 +14,10 @@ function Header() {
 
     return (
         <>
-            <Navbar className="bg-black">
+            <Navbar className="bg-black" style={{zIndex: 1030}}>
                 <Container>
                 <Navbar.Brand>
-                <img src={Logo} style={{height: "2rem"}}></img>
+                    <img src={Logo} style={{height: "2rem"}}></img>
                 </Navbar.Brand>
                 <Nav>
                     <Nav.Link className="text-white me-4" href="/home">
