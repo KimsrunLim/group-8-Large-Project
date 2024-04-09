@@ -88,7 +88,8 @@ function ReactionGame()
     };
 
     const submitStats = async (payload) => {
-        if (!isNaN(+result))
+        console.log("username:",user);
+        if ((!isNaN(+result)) && (!user===""))
         {
             // send the score to leaderboard
             var obj = { username: user, time: result, date: "2024-04-06T01:27:00.000Z", device: "phone" };

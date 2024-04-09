@@ -149,17 +149,7 @@ const LeaderBoard = () => {
                             <td>{curUser.Device}</td>
                             <td>{curUser.Date}</td>
                         </tr>
-                        {/* <tr> */}
- 
                         {header}
-                            {/* <th className='bg-info bg-gradient'>Rank</th>
-                            <th className='bg-info bg-gradient'>Name</th>
-                            <th className='bg-info bg-gradient'>Accuracy</th>
-                            <th className='bg-info bg-gradient'>Speed</th>
-                            <th className='bg-info bg-gradient'>Score</th>
-                            <th className='bg-info bg-gradient'>Device</th>
-                            <th className='bg-info bg-gradient'>Date</th> */}
-                        {/* </tr> */}
                     </thead>
                     <tbody>
                         {players.map(player => (
@@ -175,9 +165,6 @@ const LeaderBoard = () => {
                             </tr>
                         ))}
                     </tbody>
-                    {/* <tbody>
-                        <PlayerData players={players} />
-                    </tbody> */}
                 </table>
 
             </div>
