@@ -317,7 +317,7 @@ app.post('/send-email', async (req, res) => {
 
     // Save this verification token in your database along with the user's emailR
 
-    const message = 'Hello,\n\nPlease click the link below to verify your email and reset your password:\t\thttps://group8large-57cfa8808431.herokuapp.com/' + PORT + `/verify-email?token=${emailR}`;
+    const message = `Hello,\n\nPlease click the link below to verify your email and reset your password:\t\thttps://group8large-57cfa8808431.herokuapp.com/verify-email?token=${emailR}`;
 
     // Create a nodemailer transporter
     let transporter = nodemailer.createTransport({
@@ -365,12 +365,10 @@ app.get('/verify-email', async (req, res) => {
         return res.status(400).send('Invalid verification token');
     }
 
-    console.log(user);
-
-    res.redirect('https://group8large-57cfa8808431.herokuapp.com/'); // Redirect the user to login page or wherever you want
     const filter = { Email: token };
-
     await db.collection('users').updateOne(filter, { $set: { Validate: true } });
+    
+    res.redirect('/'); // Redirect the user to login page or wherever you want
 });
 // Email Verification End
 
