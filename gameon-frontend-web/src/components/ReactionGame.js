@@ -84,15 +84,22 @@ function ReactionGame()
         setUnit(null);
         setEndTime(null);
         getStartingtime(changeColorTime);
-
     };
 
     const submitStats = async (payload) => {
-        console.log("username:",user);
+
+        
         if ((!isNaN(+result)) && (!user===""))
         {
+            let time = new Date();
+            const month = time.getMonth() + 1;
+            const year = time.getFullYear();
+            const date = time.getDate();
+            let day = `${month}/${date}/${year}`;
+            console.log("date: " , day);
+
             // send the score to leaderboard
-            var obj = { username: user, time: result, date: "2024-04-06T01:27:00.000Z", device: "phone" };
+            var obj = { username: user, time: result, date: day, device: "computer" };
             var js = JSON.stringify(obj);
 
             try {

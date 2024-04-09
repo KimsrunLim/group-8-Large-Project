@@ -410,17 +410,3 @@ function SpeedTyping() {
 }
 
 export default SpeedTyping;
-
-// TODOs
-// connect to API (only store 1 user score if greater than top)
-// user can't click back in
-// go to specific leaderboard
-// store date
-
-// leaderboard top 3
-// check for user top score 
-// one score per user
-// leaderboard filtering 
-// navbar cookies
-// reaction game button
-// sticky top + navbar issue

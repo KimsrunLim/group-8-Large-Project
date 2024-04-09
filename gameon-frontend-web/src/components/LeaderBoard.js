@@ -89,9 +89,6 @@ const LeaderBoard = () => {
         }
     }
 
-
-    // initial table without user data row cuz call 
-    //readCookie() and fetchplayer at the same time, computer hasnot got username yet
     const fetchPlayer = async () => {
         var obj = {};
         var js = JSON.stringify(obj);
@@ -128,7 +125,7 @@ const LeaderBoard = () => {
                
         <div className='d-flex p-5 align-items-center justify-content-center' style={{ height: "90vh" }}>
             {/* Rank list */}
-            <div className="col-8 overflow-auto h-100" style={{ border: "2px solid black", borderRadius:"10px" }}>
+            <div className="col-9 overflow-auto h-100" style={{ border: "2px solid black", borderRadius:"10px" }}>
                 <Nav justify variant="tabs" defaultActiveKey="/home" onSelect={handleSelect}>
                     <Nav.Item>
                         <Nav.Link eventKey="link-1">Type Racer</Nav.Link>
