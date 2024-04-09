@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../assets/Logo-Black.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 
-function Login() {
-    var username;
-    var password;
+function ForgotPassword() {
+    var email;
 
     const [message, setMessage] = useState('');
 
@@ -22,44 +21,41 @@ function Login() {
         }
     }
 
-    const saveCookie = async event => {
-        let minutes = 20;
-        let date = new Date();
-        date.setTime(date.getTime() + (minutes * 60 * 1000));
-        document.cookie = "username=" + username.value +";expires=" + date.toGMTString();
-
-        console.log("save de cookie");
-    }
-
-    const doLogin = async event => {
+    const doForgot = async event => {
         event.preventDefault();
 
-        // ensure that both username and password fields are not empty
-        if (!username.value || !password.value) {
-            setMessage('Please enter both a username and password.');
+        // ensure email feild not empty
+        if (!email.value) {
+            setMessage('Please enter email.');
             return;
         }
 
-        var obj = { username: username.value, password: password.value };
+        var obj = { email: email.value };
         var js = JSON.stringify(obj);
 
         try {
-            const response = await fetch(buildPath('api/users'),
+            const response = await fetch(buildPath('api/email'),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
             console.log(response);
 
             var res = JSON.parse(await response.text());
 
-            if (res.id <= 0) // can't log in
+            console.log("Res: ", res);
+
+            if (res.error === 'No Email Found') // can't log in
             {
-                setMessage('Username/password combination incorrect.');
+                setMessage('No Email Found');
             }
             else // log in
             {
-                setMessage('');
-                saveCookie();
-                window.location.href = '/home'; // redirect
+                setMessage('Email Has Been Sent');
+
+                var obj = { emailR: email.value };
+                var js = JSON.stringify(obj);
+
+                await fetch(buildPath('send-email'),
+                    { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
             }
         }
         catch (e) {
@@ -68,8 +64,8 @@ function Login() {
         }
     };
 
-    const handleGuest = () => {
-        window.location.href = "/home";
+    const handleGoBack = () => {
+        window.location.href = "/login";
         return;
     };
 
@@ -89,27 +85,18 @@ function Login() {
                             <div className="card">
 
                                 { /* Title */}
-                                <h1 className="card-header p-3 text-center align-middle fw-bold text-black">Log In</h1>
+                                <h1 className="card-header p-3 text-center align-middle fw-bold text-black">Forgot Password</h1>
                                 <div className="card-body">
 
                                     { /* Form */}
-                                    <form onSubmit={doLogin}>
+                                    <form onSubmit={doForgot}>
 
-                                        { /* Username */}
-                                        <div className="form-group pt-4">
-                                            <label className="pb-1 text-secondary fw-bold">Username</label>
-                                            <div className="input-group mb-3">
-                                                <span className="input-group-text"><FontAwesomeIcon icon={faUser} /></span>
-                                                <input type="text" id="username" data-testid="username-input" className="form-control" placeholder="Username" ref={(c) => username = c} />
-                                            </div>
-                                        </div>
-
-                                        { /* Password */}
+                                        { /* Email */}
                                         <div className="form-group pt-1">
-                                            <label className="pb-1 text-secondary fw-bold">Password</label>
+                                            <label className="pb-1 text-secondary fw-bold">Email</label>
                                             <div className="input-group mb-3">
-                                                <span className="input-group-text"><FontAwesomeIcon icon={faLock} /></span>
-                                                <input type="password" id="password" data-testid="password-input" className="form-control" placeholder="Password" ref={(c) => password = c} />
+                                                <span className="input-group-text"><FontAwesomeIcon icon={faEnvelope} /></span>
+                                                <input type="text" id="email" data-testid="email-input" className="form-control" placeholder="Email" ref={(c) => email = c} />
                                             </div>
                                         </div>
                                         { /* Error Feedback */}
@@ -125,10 +112,6 @@ function Login() {
                                     </form>
 
                                     <div className='d-flex justify-content-center align-items-center text-center p-2 fw-medium'>
-                                        <a href="/forgotpassword" className='link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover ps-3'>Forgot Passowrd?</a>
-                                    </div>
-
-                                    <div className='d-flex justify-content-center align-items-center text-center p-2 fw-medium'>
                                         New to GameOn?
                                         <a href="/signup" className='link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover ps-3'>Sign Up</a>
                                     </div>
@@ -137,7 +120,7 @@ function Login() {
 
                             { /* Switch to Signup */}
                             <div className='d-grid py-5'>
-                                <button onClick={handleGuest} className="btn border border-3 border-dark fw-bold" type="button" style={{ maxHeight: "50px", height: "50px" }}>Continue as Guest</button>
+                                <button onClick={handleGoBack} className="btn border border-3 border-dark fw-bold" type="button" style={{ maxHeight: "50px", height: "50px" }}>Back to Login</button>
                             </div>
                         </div>
                     </div>
@@ -147,4 +130,4 @@ function Login() {
     );
 };
 
-export default Login;
+export default ForgotPassword;

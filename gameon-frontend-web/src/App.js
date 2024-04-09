@@ -8,6 +8,8 @@ import HomePage from './pages/HomePage.js';
 import LeaderBoardPage from './pages/LeaderBoardPage.js';
 import SpeedTypingPage from './pages/SpeedTypingPage.js';
 import ReactionGamePage from './pages/ReactionGamePage.js';
+import ForgotPasswordPage from './pages/ForgotPasswordPage.js';
+import ChangePasswordPage from './pages/ChangePasswordPage.js';
 import AboutPage from './pages/AboutPage.js';
 
 function App() {
@@ -22,6 +24,8 @@ function App() {
         <Route path="/speedtyping" index element={<SpeedTypingPage />} />
         <Route path="/reactiongame" index element={<ReactionGamePage />} />
         <Route path="/about" index element={<AboutPage/>} />
+        <Route path="/forgotpassword" index element={<ForgotPasswordPage/>} />
+        <Route path="/changepassword" index element={<ChangePasswordPage/>} />
       </Routes>
     </BrowserRouter>
   );
