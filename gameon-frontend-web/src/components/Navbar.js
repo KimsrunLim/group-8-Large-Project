@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faHouse, faRankingStar, faUsers } from '@fortawesome/free-solid-svg-icons';
-import { Dropdown, Navbar, Container, Nav } from 'react-bootstrap';
+import { faHouse, faRankingStar, faUsers, faUser, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { Container, Navbar, Nav, Dropdown } from 'react-bootstrap';
 import Logo from '../assets/GameOnLogoWhite.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -14,33 +14,47 @@ function Header() {
 
     return (
         <>
-            <Navbar className="bg-black">
+            <Navbar collapseOnSelect expand="md" className="bg-black" style={{zIndex: 1030}}>
                 <Container>
-                <Navbar.Brand>
-                <img src={Logo} style={{height: "2rem"}}></img>
-                </Navbar.Brand>
-                <Nav>
-                    <Nav.Link className="text-white me-4" href="/home">
-                        <FontAwesomeIcon icon={faHouse} />
-                    </Nav.Link>
-                    <Nav.Link className="text-white me-4" href="/about">
-                        <FontAwesomeIcon icon={faUsers} />
-                    </Nav.Link>
-                    <Nav.Link className="text-white me-4" href="/leaderboard">
-                        <FontAwesomeIcon icon={faRankingStar} />
-                    </Nav.Link>
-                    <Dropdown>
-                        <Dropdown.Toggle variant="light" id="dropdown-basic">
-                        <FontAwesomeIcon icon={faUser} />
-                        </Dropdown.Toggle>
+                    <Navbar.Brand>
+                        <img src={Logo} style={{height: "2rem"}} alt="GameOn Logo"></img>
+                    </Navbar.Brand>
 
-                        <Dropdown.Menu>
-                            <Dropdown.Item href="#/action-2">Log In</Dropdown.Item>
-                            <Dropdown.Item onClick={loggingOut}>Log Out</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Nav>
-                
+                    {/* Automatically collapse navbar on selected screens */}
+                    <Navbar.Toggle aria-controls="responsive-navbar-nav" data-bs-theme="dark"/>
+                    {/* Navigation items that are collapsed on selected screens */}
+                    <Navbar.Collapse id="responsive-navbar-nav" className="d-flex justify-content-end">
+                        <Nav>
+                            <Nav.Link className="text-white pe-5" href="/home">
+                                <FontAwesomeIcon icon={faHouse} /><span className="ps-2"></span>
+                            </Nav.Link>
+                            
+                            <Nav.Link className="text-white pe-5" href="/about">
+                                <FontAwesomeIcon icon={faUsers} /><span className="ps-2"></span>
+                            </Nav.Link>
+
+                            <Nav.Link className="text-white pe-5" href="/leaderboard">
+                                <FontAwesomeIcon icon={faRankingStar} /><span className="ps-2"></span>
+                            </Nav.Link>
+
+                            <Dropdown>
+                                <Dropdown.Toggle variant="light" id="dropdown-basic">
+                                    <FontAwesomeIcon icon={faUser} />
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    <Dropdown.Item href="/login">
+                                        <FontAwesomeIcon icon={faSignInAlt} />
+                                        <span className="ps-2">Log In</span>
+                                    </Dropdown.Item>
+                                    <Dropdown.Item onClick={loggingOut}>
+                                        <FontAwesomeIcon icon={faSignOutAlt} />
+                                        <span className="ps-2">Log Out</span>
+                                    </Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </Nav>
+                    </Navbar.Collapse>
                 </Container>
             </Navbar>
         </>
