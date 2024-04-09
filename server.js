@@ -31,9 +31,9 @@ client.connect();
 
 // signup
 app.post('/api/signup', async (req, res, next) => {
-
+    const verificationCode = Math.floor(100000 + Math.random() * 900000);
     const { username, email, password } = req.body;
-    const newUser = { Username: username, Email: email.toLowerCase(), Password: password, Validate: false };
+    const newUser = { Username: username, Email: email.toLowerCase(), Password: password, Validate: false, VerifyCode: verificationCode };
 
     var error = '';
 
@@ -310,11 +310,32 @@ const uuid = require('uuid');
 
 // POST route to send email
 app.post('/send-email', async (req, res) => {
-    const { emailR } = req.body;
+    const { emailR, username } = req.body;
+    var message = '';
 
-    // Save this verification token in your database along with the user's emailR
 
-    const message = `Hello,\n\nPlease click the link below to verify your email and reset your password:\t\thttps://group8large-57cfa8808431.herokuapp.com/verify-email?token=${emailR}`;
+    if (username === null && emailR) {
+        // Reset Password
+        const db = client.db("group8large");
+        const results = await
+            db.collection('users').findOne({ emailR }).toArray();
+
+        message = `Hello,\n\nPlease input the code to your password:\t\tlocalhost:5001/verify-email?token=${verificationToken}`;
+    }
+    else if (emailR && username) {
+        // Get this verification code in your database along with the user's emailR
+        const db = client.db("group8large");
+        const results = await
+            db.collection('users').findOne({ Username: username, Email: emailR });
+
+
+        const newLink = `https://group8large-57cfa8808431.herokuapp.com/verify-email?token=${emailR}`
+        message = `Welcome to GameOn!\n\nClick the link to verify your account : ${newLink}`;
+    }
+    else {
+        console.log("error getting username or email");
+        res.status(500).send('Error sending email');
+    }
 
     // Create a nodemailer transporter
     let transporter = nodemailer.createTransport({
@@ -350,6 +371,25 @@ app.post('/send-email', async (req, res) => {
 
 });
 
+// app.post('/verify', async (req, res) => {
+//     const { email, code } = req.body;
+//     var error = '';
+
+//     const db = client.db("group8large");
+//     const results = await
+//         db.collection('users').findOne({ Email: email });
+
+//     if (results.VerifyCode)
+//     {
+//         console.log("Verificaion Code: ", results.ver)
+//     }
+
+//     console.log("Email: ", email, "\t Code: ", code);
+
+//     var ret = { error: error };
+//     res.status(200).json(ret);
+// });
+
 // Endpoint to handle verification
 app.get('/verify-email', async (req, res) => {
     const { token } = req.query;
@@ -369,10 +409,11 @@ app.get('/verify-email', async (req, res) => {
     console.log(3);
 
     const filter = { Email: token };
+    db = client.db("group8large");
     await db.collection('users').updateOne(filter, { $set: { Validate: true } });
 
     console.log(4);
-    
+
     res.redirect('https://group8large-57cfa8808431.herokuapp.com/login'); // Redirect the user to login page or wherever you want
 
     console.log(5);
