@@ -1,14 +1,66 @@
 import React, { useEffect, useState } from 'react';
+import Nav from 'react-bootstrap/Nav';
 
 const LeaderBoard = () => {
 
     const [players, setPlayers] = useState([]);
     const [curUser, setCurUser] = useState([]);
 
+
     const app_name = 'group8large-57cfa8808431';
 
     let username = "";
     var rank = 1;
+    const reactionHeader = () => {
+        return(
+            <>
+            <tr class="col-7 overflow-auto">
+                <th className='bg-info bg-gradient'>Rank</th>
+                <th className='bg-info bg-gradient'>Player</th>
+                <th className='bg-info bg-gradient'></th>
+                <th className='bg-info bg-gradient'></th>
+                <th className='bg-info bg-gradient'>Time</th>
+                <th className='bg-info bg-gradient'></th>
+                <th className='bg-info bg-gradient'>Device</th>
+                <th className='bg-info bg-gradient'>Date</th>
+            </tr>
+            </>
+        )
+    }
+
+    const speedTypingHeader = () => {
+        return(
+            <>
+            <tr class="col-7 overflow-auto">
+            <th className='bg-info bg-gradient'>Rank</th>
+            <th className='bg-info bg-gradient'>Name</th>
+            <th className='bg-info bg-gradient'>Accuracy</th>
+            <th className='bg-info bg-gradient'>Speed</th>
+            <th className='bg-info bg-gradient'></th>
+            <th className='bg-info bg-gradient'>Score</th>
+            <th className='bg-info bg-gradient'>Device</th>
+            <th className='bg-info bg-gradient'>Date</th> 
+
+            </tr>
+            </>
+        )
+    }
+    const [header, setHeader] = useState(speedTypingHeader());
+    const [gameData, setGameData] = useState('api/TypingLeaderboard');
+    
+    const handleSelect = (selectedKey) => {
+        if (selectedKey === "link-1") {
+            setHeader(speedTypingHeader());
+            setGameData('api/ReactionLeaderboard');
+        } else if (selectedKey === "link-2") {
+            setHeader(reactionHeader());
+            setGameData('api/TypingLeaderboard');
+
+        }
+        fetchPlayer();
+
+    };
+
 
     function buildPath(route) {
         if (process.env.NODE_ENV === 'production') {
@@ -36,7 +88,8 @@ const LeaderBoard = () => {
         var obj = {};
         var js = JSON.stringify(obj);
         try {
-            const res = await fetch(buildPath('api/TypingLeaderboard'),
+            // const res = await fetch(buildPath('api/TypingLeaderboard'),
+            const res = await fetch(buildPath(gameData),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
             const player = await res.json();
@@ -48,14 +101,15 @@ const LeaderBoard = () => {
 
             setCurUser(ourUser);
 
+    
         } catch (e) {
             console.error(e)
         }
     }
 
     return <>
+               
         <div className='d-flex p-5 align-items-center justify-content-center' style={{ height: "90vh" }}>
-            {/* <div> */}
             {/* Detail */}
             <div class="card border-info mb-3 me-5 col-3">
                 <div class="card-header text-black bg-info mb-3">
@@ -66,9 +120,19 @@ const LeaderBoard = () => {
                 
                 </div>
             </div>
+            {/* <div> */}
+            
 
             {/* Rank list */}
-            <div className="col-7 overflow-auto h-100" style={{ border: "2px solid black", borderRadius:"10px" }}>
+            <div className="col-8 overflow-auto h-100" style={{ border: "2px solid black", borderRadius:"10px" }}>
+                <Nav justify variant="tabs" defaultActiveKey="/home" onSelect={handleSelect}>
+                    <Nav.Item>
+                        <Nav.Link eventKey="link-1">Type Racer</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link eventKey="link-2">Reaction Game</Nav.Link>
+                    </Nav.Item>
+                </Nav>
                 <table className="table table-striped">
                     <thead className='sticky-top'>
                         <tr>
@@ -76,19 +140,22 @@ const LeaderBoard = () => {
                             <td>{curUser.Username}</td>
                             <td>{curUser.Accuracy}</td>
                             <td>{curUser.Speed}</td>
+                            <td>{curUser.Time}</td>
                             <td>{curUser.Score}</td>
                             <td>{curUser.Device}</td>
                             <td>{curUser.Date}</td>
                         </tr>
-                        <tr>
-                            <th className='bg-info bg-gradient'>Rank</th>
+                        {/* <tr> */}
+ 
+                        {header}
+                            {/* <th className='bg-info bg-gradient'>Rank</th>
                             <th className='bg-info bg-gradient'>Name</th>
                             <th className='bg-info bg-gradient'>Accuracy</th>
                             <th className='bg-info bg-gradient'>Speed</th>
                             <th className='bg-info bg-gradient'>Score</th>
                             <th className='bg-info bg-gradient'>Device</th>
-                            <th className='bg-info bg-gradient'>Date</th>
-                        </tr>
+                            <th className='bg-info bg-gradient'>Date</th> */}
+                        {/* </tr> */}
                     </thead>
                     <tbody>
                         {players.map(player => (
@@ -97,6 +164,7 @@ const LeaderBoard = () => {
                                 <td>{player.Username}</td>
                                 <td>{player.Accuracy}</td>
                                 <td>{player.Speed}</td>
+                                <td>{player.Time}</td>
                                 <td>{player.Score}</td>
                                 <td>{player.Device}</td>
                                 <td>{player.Date}</td>
