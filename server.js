@@ -33,7 +33,7 @@ client.connect();
 app.post('/api/signup', async (req, res, next) => {
 
     const { username, email, password } = req.body;
-    const newUser = { Username: username, Email: email.toLowerCase(), Password: password };
+    const newUser = { Username: username, Email: email.toLowerCase(), Password: password, Validate: false };
 
     var error = '';
 
@@ -99,6 +99,10 @@ app.post('/api/users', async (req, res, next) => {
         if (results.length <= 0) {
             error = "No Account Exists";
         }
+
+        if (results.Validate === false) {
+            error = "Account Not Validated";
+        }
     }
     catch (e) {
         error = e;
@@ -133,9 +137,9 @@ app.post('/api/email', async (req, res, next) => {
 
 app.post('/api/addReactionData', async (req, res, next) => {
 
-    const { username, time, date, device} = req.body;
+    const { username, time, date, device } = req.body;
     const newData = { Username: username, Time: time, Date: date, Device: device };
-    
+
     console.log("New Data: ", newData);
 
     var error = '';
@@ -171,13 +175,12 @@ app.post('/api/ReactionLeaderboard', async (req, res, next) => {
     try {
         const db = client.db("group8large");
         results = await
-            db.collection('ReactionGame').find().sort({Time: 1}).toArray();
+            db.collection('ReactionGame').find().sort({ Time: 1 }).toArray();
 
         // console.log(results);
         // console.log("Number of Scores: ", results.length);
 
-        if (results.length <= 0)
-        {
+        if (results.length <= 0) {
             error = "No Data";
         }
     }
@@ -191,16 +194,16 @@ app.post('/api/ReactionLeaderboard', async (req, res, next) => {
 
 app.post('/api/addTypingData', async (req, res, next) => {
 
-    const { accuracy, date, device, score, speed, username} = req.body;
+    const { accuracy, date, device, score, speed, username } = req.body;
     const newData = { Accuracy: accuracy, Date: date, Device: device, Score: score, Speed: speed, Username: username };
-    
+
     var error = '';
 
     try {
         const db = client.db("group8large");
         const results = await
             db.collection('TypingGame').find({ Username: username }).toArray();
-        
+
         if (results.length > 0) {
             if (score > results[0].Score) {
                 const query = { Username: username }
@@ -229,13 +232,12 @@ app.post('/api/TypingLeaderboard', async (req, res, next) => {
     try {
         const db = client.db("group8large");
         results = await
-            db.collection('TypingGame').find().sort({Score: -1}).toArray();
+            db.collection('TypingGame').find().sort({ Score: -1 }).toArray();
 
         // console.log(results);
         // console.log("Number of Scores: ", results.length);
 
-        if (results.length <= 0)
-        {
+        if (results.length <= 0) {
             error = "No Data";
         }
     }
@@ -261,11 +263,10 @@ app.post('/api/userTypingData', async (req, res, next) => {
         // console.log(results);
         // console.log("Number of Scores: ", results.length);
 
-        if (results.length <= 0)
-        {
+        if (results.length <= 0) {
             error = "No User Exists";
         }
-        
+
         var userScore = results[0].Score;
     }
     catch (e) {
@@ -289,8 +290,7 @@ app.post('/api/userReactionData', async (req, res, next) => {
         // console.log(results);
         // console.log("Number of Scores: ", results.length);
 
-        if (results.length <= 0)
-        {
+        if (results.length <= 0) {
             error = "No User Exists";
         }
 
@@ -303,6 +303,77 @@ app.post('/api/userReactionData', async (req, res, next) => {
     var ret = { userTime: userTime, error: error };
     res.status(200).json(ret);
 });
+
+// Email Verification Start
+const nodemailer = require('nodemailer');
+const uuid = require('uuid');
+
+// POST route to send email
+app.post('/send-email', async (req, res) => {
+    const { emailR } = req.body;
+
+    // Generate a unique verification token (you can use a library like `uuid` for this)
+    const verificationToken = uuid.v4();
+
+    // Save this verification token in your database along with the user's emailR
+
+    const message = `Hello,\n\nPlease click the link below to verify your email and reset your password:\t\tlocalhost:5001/verify-email?token=${emailR}`;
+
+    // Create a nodemailer transporter
+    let transporter = nodemailer.createTransport({
+        service: 'gmail', // Use Gmail as the email service
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        auth: {
+            user: "cop4331gameon008@gmail.com", // Your Gmail email address
+            pass: "vtpq muwx fomn njcv", // Your Gmail password (consider using app-specific password)
+        },
+    });
+
+    // Define email options
+    let mailOptions = {
+        from: 'cop4331gameon008@gmail.com', // Sender email address
+        to: emailR, // Recipient email address
+        subject: 'GameOn Email Verification', // Email subject
+        text: message, // Plain text body
+    };
+
+
+    // Send email
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Error sending email:', error);
+            res.status(500).send('Error sending email');
+        } else {
+            console.log('Email sent:', info.response);
+            res.status(200).send('Email sent successfully');
+        }
+    });
+
+});
+
+// Endpoint to handle verification
+app.get('/verify-email', async (req, res) => {
+    const { token } = req.query;
+
+    // Look up the user in the database using the token
+    const db = client.db("group8large");
+    const user = await db.collection('users').find({ Email: token }).toArray();
+
+    if (!user) {
+        return res.status(400).send('Invalid verification token');
+    }
+
+    console.log(user);
+
+    const filter = { Email: token };
+    await db.collection('users').updateOne(filter, { $set: { Validate: true } });
+
+
+    res.redirect('http://localhost:3000/'); // Redirect the user to login page or wherever you want
+});
+// Email Verification End
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
