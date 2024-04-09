@@ -357,18 +357,28 @@ app.post('/send-email', async (req, res) => {
 app.get('/verify-email', async (req, res) => {
     const { token } = req.query;
 
+    console.log(1);
+
     // Look up the user in the database using the token
     const db = client.db("group8large");
     const user = await db.collection('users').find({ Email: token }).toArray();
+
+    console.log(2);
 
     if (!user) {
         return res.status(400).send('Invalid verification token');
     }
 
+    console.log(3);
+
     const filter = { Email: token };
     await db.collection('users').updateOne(filter, { $set: { Validate: true } });
+
+    console.log(4);
     
-    res.redirect('/'); // Redirect the user to login page or wherever you want
+    res.redirect('https://group8large-57cfa8808431.herokuapp.com/'); // Redirect the user to login page or wherever you want
+
+    console.log(5);
 });
 // Email Verification End
 
