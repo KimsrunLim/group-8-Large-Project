@@ -149,8 +149,7 @@ function Signup() {
         else if (conPass !== password) {
             setConPassError('Password does not match');
         }
-        else
-        {
+        else {
             setConPassError('');
         }
 
@@ -173,7 +172,13 @@ function Signup() {
             }
             else {
                 setMessage('User has been added');
-                // window.location.href = '/login';
+                obj = { username: username, emailR: email };
+                js = JSON.stringify(obj);
+
+                const response2 = await fetch(buildPath('api/send-email'),
+                    { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
+                localStorage.setItem('username', username);
+                window.location.href = '/verifyaccount';
             }
         }
         catch (e) {
@@ -196,7 +201,7 @@ function Signup() {
             setMessage('');
             return;
         }
-        
+
         addUser();
     };
 

@@ -63,10 +63,11 @@ app.post('/api/userCheck', async (req, res, next) => {
 
     const { username } = req.body;
     var error = '';
+    var results;
 
     try {
         const db = client.db("group8large");
-        const results = await
+        results = await
             db.collection('users').find({ Username: username }).toArray();
 
         if (results.length == 0) {
@@ -80,7 +81,7 @@ app.post('/api/userCheck', async (req, res, next) => {
         error = e;
     }
 
-    var ret = { error: error };
+    var ret = { result : results, error: error };
     res.status(200).json(ret);
 });
 
@@ -309,7 +310,7 @@ const nodemailer = require('nodemailer');
 const uuid = require('uuid');
 
 // POST route to send email
-app.post('/send-email', async (req, res) => {
+app.post('/api/send-email', async (req, res) => {
     const { emailR, username } = req.body;
     var message = '';
 
@@ -328,9 +329,9 @@ app.post('/send-email', async (req, res) => {
         const results = await
             db.collection('users').findOne({ Username: username, Email: emailR });
 
+        // console.log('Verification Code: ', results.VerifyCode);
 
-        const newLink = `https://group8large-57cfa8808431.herokuapp.com/verify-email?token=${emailR}`
-        message = `Welcome to GameOn!\n\nClick the link to verify your account : ${newLink}`;
+        message = `Welcome to GameOn!\n\nYour verificaion code is : ${results.VerifyCode}`;
     }
     else {
         console.log("error getting username or email");
@@ -371,42 +372,22 @@ app.post('/send-email', async (req, res) => {
 
 });
 
-// app.post('/verify', async (req, res) => {
-//     const { email, code } = req.body;
-//     var error = '';
+app.post('/api/verify', async (req, res) => {
+    const { email, code } = req.body;
+    var error = '';
 
-//     const db = client.db("group8large");
-//     const results = await
-//         db.collection('users').findOne({ Email: email });
-
-//     if (results.VerifyCode)
-//     {
-//         console.log("Verificaion Code: ", results.ver)
-//     }
-
-//     console.log("Email: ", email, "\t Code: ", code);
-
-//     var ret = { error: error };
-//     res.status(200).json(ret);
-// });
-
-// Endpoint to handle verification
-app.get('/verify-email', async (req, res) => {
-    res.redirect('https://group8large-57cfa8808431.herokuapp.com/login'); // Redirect the user to login page or wherever you want
-    const token = req.query.token;
-
-    // Look up the user in the database using the token
     const db = client.db("group8large");
-    const user = await db.collection('users').find({ Email: token }).toArray();
+    const results = await
+        db.collection('users').findOne({ Email: email });
 
-    if (!user) {
-        return res.status(400).send('Invalid verification token');
+    if (results.VerifyCode === code) {
+        const filter = { Email: email };
+        db.collection('users').updateOne(filter, { $set: { Validate: true } });
     }
 
-    const filter = { Email: token };
-    await db.collection('users').updateOne(filter, { $set: { Validate: true } });
+    var ret = { error: error };
+    res.status(200).json(ret);
 });
-// Email Verification End
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
