@@ -312,9 +312,6 @@ const uuid = require('uuid');
 app.post('/send-email', async (req, res) => {
     const { emailR } = req.body;
 
-    // Generate a unique verification token (you can use a library like `uuid` for this)
-    const verificationToken = uuid.v4();
-
     // Save this verification token in your database along with the user's emailR
 
     const message = `Hello,\n\nPlease click the link below to verify your email and reset your password:\t\thttps://group8large-57cfa8808431.herokuapp.com/verify-email?token=${emailR}`;
