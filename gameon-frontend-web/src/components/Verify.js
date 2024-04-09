@@ -49,8 +49,10 @@ function Verify() {
                 obj = { email: result.result[0].Email, code: result.result[0].VerifyCode };
                 js = JSON.stringify(obj);
 
-                await fetch(buildPath('api/verify'),
+                const res = await fetch(buildPath('api/verify'),
                     { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
+
+                // Check if good 
             }
         }
         catch (e) {
