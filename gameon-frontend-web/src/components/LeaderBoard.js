@@ -89,6 +89,9 @@ const LeaderBoard = () => {
         }
     }
 
+
+    // initial table without user data row cuz call 
+    //readCookie() and fetchplayer at the same time, computer hasnot got username yet
     const fetchPlayer = async () => {
         var obj = {};
         var js = JSON.stringify(obj);
@@ -102,8 +105,8 @@ const LeaderBoard = () => {
 
             // add case when user not found in leaderboard
             var ourUser = player.results.find(x => x.Username === username);
+            console.log(username);
             if (ourUser) {
-                // Found a user, do something with ourUser
                 console.log(`User ${ourUser.Username} found!`);
                 ourUser.Rank = await player.results.findIndex(x => x.Username === username) + 1;
                 console.log("hereh",ourUser);
@@ -124,18 +127,6 @@ const LeaderBoard = () => {
     return <>
                
         <div className='d-flex p-5 align-items-center justify-content-center' style={{ height: "90vh" }}>
-            {/* Detail */}
-            {/* <div class="card border-info mb-3 me-5 col-3">
-                <div class="card-header text-black bg-info mb-3">
-                    <h2>Name: {curUser.Username}</h2></div>
-                <div class="card-body">
-                    <h5 class="card-title">Best Score:</h5>
-                    <h5 class="card-title">Best Speed:</h5>
-                </div>
-            </div> */}
-            {/* <div> */}
-            
-
             {/* Rank list */}
             <div className="col-8 overflow-auto h-100" style={{ border: "2px solid black", borderRadius:"10px" }}>
                 <Nav justify variant="tabs" defaultActiveKey="/home" onSelect={handleSelect}>

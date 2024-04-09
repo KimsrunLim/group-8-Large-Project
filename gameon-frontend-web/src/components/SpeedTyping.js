@@ -75,6 +75,59 @@ export const renderCharacterSpan = (char, index, charClass = "", charRefs) => {
     );
 };
 
+// Connect to API 
+const readCookie = () => {
+    let data = document.cookie;
+    let tokens = data.split("=");
+    let username = "Guest"
+    if (tokens[0] === "username") {
+        username = tokens[1];
+    }
+
+    return username;
+}
+
+const app_name = 'group8large-57cfa8808431'
+
+function buildPath(route) {
+    if (process.env.NODE_ENV === 'production') {
+        return 'https://' + app_name + '.herokuapp.com/' + route;
+    }
+    else {
+        return 'http://localhost:5001/' + route;
+    }
+}
+
+const createPayload = (validatedInputHistory, numMistakes, username) => {
+    const totalTypedChars = validatedInputHistory.length;
+    const correctChars = validatedInputHistory.filter(entry => entry.isCorrect).length;
+    const accuracyCalc = totalTypedChars > 0 ? (correctChars / totalTypedChars) * 100 : 0;
+    const wpmCalc = correctChars / 5; // Average word length = 5 chars
+
+    return {
+        accuracy: accuracyCalc.toFixed(2), 
+        date: new Date().toISOString(),
+        device: "Computer",
+        score: correctChars - numMistakes,
+        speed: wpmCalc.toFixed(2),
+        username: username
+    };
+};
+
+const submitStats = async (payload) => {
+    var js = JSON.stringify(payload);
+    try {
+        const response = await fetch(buildPath('api/addTypingData'),
+        { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
+
+        const res = JSON.parse(await response.text());
+        return res;
+        
+    } catch (error) {
+        console.error('Failed to send typing data:', error);
+    }
+};
+
 function SpeedTyping() {
     const [userInput, setUserInput] = useState('');
     const [charIndex, setCharIndex] = useState(0);
@@ -89,6 +142,7 @@ function SpeedTyping() {
     const textDisplayRef = useRef(null); 
     const charRefs = useRef(new Array(100).fill(null));  // Assume a maximum of 100 chars for refs
     const userInputRef = useRef(null); 
+    const [username, setUsername] = useState(null);
     
     const wordList = [
         "the", "be", "to", "of", "and", "a", "saxophone", "that", "have", "I",
@@ -111,93 +165,61 @@ function SpeedTyping() {
         "rocket", "space", "planet", "jupiter", "saturn", "mars", "pluto", "neptune", "galaxy", "light",
     ];
 
-    // This will be triggered when the input loses focus
-    useEffect(() => {
-    const handleFocus = (event) => {
-        // Prevent default behavior of losing focus
-        event.preventDefault();
+    //
+    // Start & end of Game
+    //
 
-        // Check if the game has started and the timer is not 0
-        if (hasStarted && timer > 0) {
-            // If the current target is not the input, refocus it
-            if (document.activeElement !== userInputRef.current) {
-                userInputRef.current.focus();
-            }
-        }
+    const consistentFocus = () => {
+        const handleClickAnywhere = () => {
+            userInputRef.current.focus();
+        };
+
+        // Add event listener to the whole document
+        document.addEventListener('click', handleClickAnywhere);
+
+        // Cleanup function to remove the event listener
+        return () => {
+            document.removeEventListener('click', handleClickAnywhere);
+        };
+    }
+
+    const setStats = async () => {
+        // Submit to API
+        const payload = createPayload(validatedInputHistory, numMistakes, username);
+        await submitStats(payload);
+
+        // Store for game
+        setWordsPerMinute(payload.speed);
+        setAccuracy(payload.accuracy);
+        setScore(payload.score);
     };
 
-        // Add the focus listener when the component mounts or when dependencies change
-        document.addEventListener('focusin', handleFocus, true);
-
-        // Cleanup the listener when the component unmounts or when dependencies change
-        return () => {
-            document.removeEventListener('focusin', handleFocus, true);
-        };
-    }, [hasStarted, timer]); 
-
-    // Generate random words string on component mount.
+    // Startup functions triggered once on component mount & unmount.
     useEffect(() => {
+        setUsername(readCookie());
         setWords(generateRandomWords(wordList, 100));
+        console.log(username);
+        return consistentFocus();
     }, []);
 
-    // Start timer when the game starts.
+    // Startup function for timer.
     useEffect(() => {
-        if (hasStarted && timer > 0) {
-            const intervalId = setInterval(() => {
-                setTimer((prevTimer) => prevTimer - 1);
-            }, 1000);
-            return () => clearInterval(intervalId);
+        if (hasStarted) {
+            if (timer > 0) {
+                const intervalId = setInterval(() => {
+                    setTimer(prevTimer => prevTimer - 1);
+                }, 1000);
+
+                return () => clearInterval(intervalId);
+            } else if (timer === 0) {
+                setStats();
+            }
         }
     }, [hasStarted, timer]);
 
-    const createPayload = (validatedInputHistory, numMistakes, username = 'Guest') => {
-        const totalTypedChars = validatedInputHistory.length;
-        const correctChars = validatedInputHistory.filter(entry => entry.isCorrect).length;
-        const accuracyCalc = totalTypedChars > 0 ? (correctChars / totalTypedChars) * 100 : 0;
-        const wpmCalc = correctChars / 5; // Average word length = 5 chars
-
-        return {
-            accuracy: accuracyCalc.toFixed(2), // Formatting for better readability
-            date: new Date().toISOString(),
-            device: navigator.userAgent,
-            score: correctChars - numMistakes,
-            speed: wpmCalc.toFixed(2),
-            username: username
-        };
-    };
-
-    const submitStats = async (payload) => {
-        try {
-            const response = await fetch('/api/addTypingData', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-            });
-
-            const result = await response.json();
-            if (result.error) {
-                console.error('Error submitting typing data:', result.error);
-            } else {
-                console.log('Typing data submitted successfully.');
-            }
-        } catch (error) {
-            console.error('Failed to send typing data:', error);
-        }
-    };
-
-    // Calculate stats when timer ends.
-    useEffect(() => {
-        if (timer === 0) {
-            const payload = createPayload(validatedInputHistory, numMistakes);
-            submitStats(payload);
-
-            setWordsPerMinute(payload.speed);
-            setAccuracy(payload.accuracy);
-            setScore(payload.score);
-        }
-    }, [timer, validatedInputHistory, numMistakes]);
+    //
+    // During game
+    //
 
     const updateLeftwardScroll = (char) => {
         const charWidth = calculateCharWidth(char, document);
@@ -206,7 +228,6 @@ function SpeedTyping() {
         updateScroll(textDisplayRef.current, newScrollAmount);
     };
 
-    // Validate last user-entered character then reset input. 
     const handleUserInput = (event) => {
         let inputValue = event.target.value;
         if (!hasStarted) {
@@ -218,6 +239,7 @@ function SpeedTyping() {
 
         updateLeftwardScroll(expectedChar);
         setValidatedInputHistory((prevHistory) => [...prevHistory, { char: inputValue, isCorrect: isCharValid }, ]);
+
         setCharIndex(prevIndex => prevIndex + 1);
         setUserInput('');
 
@@ -228,17 +250,24 @@ function SpeedTyping() {
         centerCurrentCharacter(textDisplayRef.current, charIndex + 1)
     };
 
-    // Render each character of the words list with validity styling.
     const renderedWords = words.split('').map((char, index) => {
+        // redner each character with validity styling
         const historyEntry = validatedInputHistory[index];
-        const charClass = historyEntry ? getCharacterClass(historyEntry) : ""; // Ensures there is a default class if historyEntry is undefined
+        // ensured default class of historyEntry undefined
+        const charClass = historyEntry ? getCharacterClass(historyEntry) : ""; 
         return renderCharacterSpan(char, index, charClass, charRefs);
     });
 
+    //
+    // Styling
+    //
+
     // Circular timer calculations & style.
+
     const radius = 54; // radius of the SVG circle
     const circumference = 2 * Math.PI * radius;
     const strokeDashoffset = circumference - ((timer / 60) * circumference);
+
     const circleContainerStyle = {
         position: 'relative',
         width: '120px',
@@ -247,6 +276,7 @@ function SpeedTyping() {
     };
 
     // Start bubble styles.
+
     const pulseAnimation = `
         @keyframes pulse {
         0%, 100% {
@@ -257,17 +287,21 @@ function SpeedTyping() {
         }
         }
     `;
+
     const startBubblePulse = { animation: 'pulse 2s infinite' };
+
     const startBubbleTailStyle = {
         borderLeft: '0.5rem solid transparent',
         borderRight: '0.5rem solid transparent',
         borderTop: '0.5rem solid'
     };
+
     let startBubbleContainerStyle = "position-absolute top-40 start-30 mt-5 pt-5 ms-4 mb-0 d-flex flex-column align-items-center z-1";
     let startBubbleStyle = "px-2 py-0 text-center fw-bold bg-dark text-light fs-4";
     
     // General Bootstrap styles
-    let cardStyle = "justify-content-center m-3 p-1 pt-0 pb-3 mb-5 fs-1 h-70 w-90 overflow-hidden font-monospace";
+
+    let typingCardStyle = "card justify-content-center m-3 p-1 pt-0 pb-3 mb-5 fs-1 h-70 overflow-hidden font-monospace";
     let wordsStyle = "position-relative start-50 pt-4 ms-2 ps-1 overflow-visible border-0 d-flex flex-row align-items-flex-start z-2";
     let inputAreaStyle = "position-absolute start-50 mt-4 mb-0 fs-1 fw-bold border-0 bg-transparent";
 
@@ -322,7 +356,8 @@ function SpeedTyping() {
             )}
 
             {/* Body */}
-            <div id="text-container" className={`card ${cardStyle}`} style={{boxShadow: '0 3px 6px rgba(0, 0, 0, 0.3)'}}>
+            <div id="text-container" className={`col-11 col-md-11 col-lg-10 ${typingCardStyle}`} 
+                 style={{boxShadow: '0 3px 6px rgba(0, 0, 0, 0.3)'}}>
                 <textarea id="user-input" ref={userInputRef}
                     className={`form-control ${inputAreaStyle}`}
                     style={{ width: '2%', resize: 'none', boxShadow: 'none'}}
@@ -348,7 +383,7 @@ function SpeedTyping() {
                 <div class="d-flex justify-content-center align-items-center mt-1">
                     <div class="card text-center">
                         <div class="card-header">
-                            <h2 class="card-title">Username/Guest Scores</h2>
+                            <h2 class="card-title">Scores for {username}</h2>
                         </div>
                         <div class="card-body pt-2 pb-1">
                             <div class="pt-1 mb-2">

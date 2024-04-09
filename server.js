@@ -193,6 +193,7 @@ app.post('/api/addTypingData', async (req, res, next) => {
 
     const { accuracy, date, device, score, speed, username} = req.body;
     const newData = { Accuracy: accuracy, Date: date, Device: device, Score: score, Speed: speed, Username: username };
+    console.log("New Data: ", newData);
     
     var error = '';
 
