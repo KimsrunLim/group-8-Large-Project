@@ -392,7 +392,7 @@ app.post('/send-email', async (req, res) => {
 
 // Endpoint to handle verification
 app.get('/verify-email', async (req, res) => {
-    const { token } = req.query;
+    const token = req.query.token;
 
     console.log(1);
 
