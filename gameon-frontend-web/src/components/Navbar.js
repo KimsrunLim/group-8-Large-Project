@@ -1,29 +1,42 @@
 import React, {useState, useEffect} from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faRankingStar, faUsers, faUser, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faRankingStar, faUsers, faUser, faUserPlus, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { Container, Navbar, Nav, Dropdown } from 'react-bootstrap';
 import Logo from '../assets/GameOnLogoWhite.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// Apply styles to all NavLink items (replaced with "CustomNavLink")
-const CustomNavLink = ({ to, icon, children, className, onClick }) => {
+// Bootstrap colors
+const bPrimary = '#007bff';
+
+// NavLink styles
+const CustomNavLink = ({ to, children, className, isDropdownItem, onClick }) => {
     const [hovering, setHovering] = React.useState(false);
     const location = useLocation();
     const isActive = location.pathname === to;
 
-    // Bootstrap colors
-    const bDark = '#292b2c';
-    const bPrimary = '#007bff';
-
-    const linkStyle = {
+    const baseStyle = {
         display: 'inline-flex',
         alignItems: 'center',
         textDecoration: 'none',
-        color: hovering ? 'black' : isActive ? bPrimary : 'white', 
-        borderTop: isActive ? '0.2rem solid #007bff' : '0.2rem solid transparent',
-        backgroundColor: hovering ? bPrimary : 'transparent', 
+        backgroundColor: hovering ? bPrimary : 'transparent',
+        // color primary if active, black on hover, white otherwise 
+        color: isActive ? bPrimary : (hovering ? 'black' : 'white'),
+        width: '100%',
     };
+
+    // give navbar links primary top border if active
+    const navLinkStyle = {
+        ...baseStyle,
+        borderTop: isActive ? `0.2rem solid ${bPrimary}` : '0.2rem solid transparent',
+    };
+
+    const dropdownItemStyle = {
+        ...baseStyle,
+        display: 'block',
+    };
+
+    const linkStyle = isDropdownItem ? dropdownItemStyle : navLinkStyle;
 
     return (
         <Link
@@ -39,15 +52,33 @@ const CustomNavLink = ({ to, icon, children, className, onClick }) => {
     );
 };
 
+const readCookie = () => {
+    let data = document.cookie;
+    let tokens = data.split("=");
+    let username = "Guest"
+    if (tokens[0] === "username") {
+        username = tokens[1];
+    }
+
+    return username;
+}
+
 function Header() {
+    const [username, setUsername] = useState(null);
     const [collapsible, setCollapsible] = useState(window.innerWidth <= 768); // "md"
 
+    // Read cookie and set username on component mount.
+    useEffect(() => {
+        setUsername(readCookie());
+    }, []);
+
+    // Log out.
     const logOut = () => {
         document.cookie = "username= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
         window.location.href = "/";
     }
-
-    // Screen width measurement (for "collapsible" flag)
+    
+    // Screen width measurement (for collapsible menu toggling).
     useEffect(() => {
         const changeWidth = () => {
             setCollapsible(window.innerWidth <= 768); // "md"
@@ -62,7 +93,7 @@ function Header() {
 
     // Styles
 
-    const navContainer = "bg-black ms-0 me-5 w-100";
+    const navContainer = "bg-black w-100";
 
     const navContainerClass = collapsible 
         ? "py-2"
@@ -72,12 +103,33 @@ function Header() {
         ? "ms-3 my-1 py-2 d-flex justify-content-center align-items-center rounded"
         : "my-0 mx-0 px-3 pt-3 pb-4 align-items-center"; 
 
+    const navLinks = [
+        { to: '/home', icon: faHouse, text: 'Home' },
+        { to: '/about', icon: faUsers, text: 'About' },
+        { to: '/leaderboard', icon: faRankingStar, text: 'Ranks' }
+    ];
+
+    // Updated styles for centering when collapsible
+    const centeredDropdownContainer = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        width: '40%',
+        left:'34%',
+        textAlign: 'center',
+        paddingLeft: collapsible ? '0' : 'paddingValue',
+    };
+
+    // Conditionally apply centered styles if collapsible
+    const dropdownContainer = collapsible ? centeredDropdownContainer : {};
+
     return (
         <>
             <Navbar collapseOnSelect expand="md" className={`${navContainer} ${navContainerClass}}`} 
-                style={{zIndex: 1030}}>
+                style={{ zIndex: 1030}}>
                 <Container className="p-0">
-                    <Navbar.Brand className="pb-2 h-100">
+                    <Navbar.Brand className="ms-0 pb-2 h-100">
                         <img src={Logo} style={{height: "2rem"}} alt="GameOn Logo"></img>
                     </Navbar.Brand>
 
@@ -86,38 +138,63 @@ function Header() {
 
                     {/* Navigation items that are collapsed on selected screens */}
                     <Navbar.Collapse id="responsive-navbar-nav" className="w-100">
+
+                        {/* Map nav links for more condensed display code */}
                         <Nav className={collapsible ? "flex-column" : "flex-row ms-auto my-0"}>
-                            <CustomNavLink to={'/home'} className={`${navItemClass}`}>
-                                <FontAwesomeIcon icon={faHouse} />
-                                <span className="ps-2">Home</span>
-                            </CustomNavLink>
+                            {navLinks.map((link, index) => (
+                                <React.Fragment key={link.text}>
+                                    <CustomNavLink to={link.to} className={navItemClass}>
+                                        <FontAwesomeIcon icon={link.icon} />
+                                        <span className="ps-2">{link.text}</span>
+                                    </CustomNavLink>
+                                    {collapsible && (
+                                        // Simulate divider for navbar
+                                        <Nav.Link disabled className="bg-dark m-0 p-0 opacity-1"
+                                            style={{height: '0.1rem'}}>
+                                            -
+                                        </Nav.Link>
+                                    )}
+                                </React.Fragment>
+                            ))}
 
-                            <CustomNavLink to={'/about'} className={`${navItemClass}`}>
-                                <FontAwesomeIcon icon={faUsers} />
-                                <span className="ps-2">About</span>
-                            </CustomNavLink>
-
-                            <CustomNavLink to={'/leaderboard'} className={`${navItemClass}`}>
-                                <FontAwesomeIcon icon={faRankingStar} />
-                                <span className="ps-2">Ranks</span>
-                            </CustomNavLink>
-
-                            <Dropdown>
+                            <Dropdown className={`bg-dark flex-col m-0 p-0 border-0 me-5`}
+                                style={dropdownContainer}>
                                 <Dropdown.Toggle as={CustomNavLink} className={`${navItemClass}`}>
                                         <FontAwesomeIcon icon={faUser} />
                                         <span className="ps-2 pe-1">User</span>
                                 </Dropdown.Toggle>
 
-                                <Dropdown.Menu className="bg-dark">
-                                    <Dropdown.Item as={CustomNavLink} to={'/login'}>
-                                        <FontAwesomeIcon icon={faSignInAlt} />
-                                        <span className="ps-2">Log In</span>
-                                    </Dropdown.Item>
+                                <Dropdown.Menu className="bg-dark m-0 p-0 z-200">
+                                    <Dropdown.Header className="pb-0 text-white ps-3">
+                                        <h5>{username}</h5>
+                                    </Dropdown.Header>
                                     
-                                    <Dropdown.Item as={CustomNavLink} onClick={logOut}>
-                                        <FontAwesomeIcon icon={faSignOutAlt} />
-                                        <span className="ps-2">Log Out</span>
-                                    </Dropdown.Item>
+                                    <Dropdown.Divider className="bg-primary mt-0 mb-0" /> 
+
+                                    {/* Conditionally display "Log In" and "Sign Up" if username is "Guest" */}
+                                    {username === "Guest" && (
+                                        <>
+                                            <CustomNavLink to={'/signup'} isDropdownItem className="py-2">
+                                                <FontAwesomeIcon icon={faUserPlus} className="ps-3" />
+                                                <span className="ps-2 h-100">Sign Up</span>
+                                            </CustomNavLink>
+
+                                            <Dropdown.Divider className="bg-dark mt-0 mb-0" /> 
+
+                                            <CustomNavLink to={'/login'} isDropdownItem className="py-2"> 
+                                                <FontAwesomeIcon icon={faSignInAlt} className="ps-3"/>
+                                                <span className="ps-2"> Log In</span>
+                                            </CustomNavLink>
+                                        </>
+                                    )}
+
+                                    {/* Display "Log Out" if username is not "Guest" */}
+                                    {username !== "Guest" && (
+                                        <CustomNavLink onClick={logOut} isDropdownItem>
+                                            <FontAwesomeIcon icon={faSignOutAlt} className="ps-3"/>
+                                            <span className="ps-2">Log Out</span>
+                                        </CustomNavLink>
+                                    )}
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Nav>
