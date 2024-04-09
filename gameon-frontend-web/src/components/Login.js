@@ -4,8 +4,6 @@ import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../assets/Logo-Black.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-
 function Login() {
     var username;
     var password;
