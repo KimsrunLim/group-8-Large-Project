@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 require('dotenv').config();
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
@@ -33,7 +34,8 @@ client.connect();
 app.post('/api/signup', async (req, res, next) => {
 
     const { username, email, password } = req.body;
-    const newUser = { Username: username, Email: email.toLowerCase(), Password: password, Validate: false };
+    const hash = await bcrypt.hash(password, 10);
+    const newUser = { Username: username, Email: email.toLowerCase(), Password: hash, Validate: false };
 
     var error = '';
 
@@ -94,7 +96,13 @@ app.post('/api/users', async (req, res, next) => {
         const db = client.db("group8large");
 
         const results = await
-            db.collection('users').find({ Username: username, Password: password }).toArray();
+            db.collection('users').find({ Username: username }).toArray();
+
+        const match = await bcrypt.compare(password, results.Password);
+
+        if (!match) {
+            error = "Password does not match";
+        }
 
         if (results.length <= 0) {
             error = "No Account Exists";
