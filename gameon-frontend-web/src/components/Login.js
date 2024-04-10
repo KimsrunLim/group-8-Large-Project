@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
-import Logo from '../assets/Logo-Black.png';
+import Logo from '../assets/Logo-Blue.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 //
@@ -89,26 +89,25 @@ function Login() {
         <>
             <div className="container">
                 <div className="row justify-content-center">
-                    <div className="col-md-6">
+                    <div className="col-11 col-md-8 col-lg-6">
                         
                         { /* Logo */}
                         <div className="logo pt-5 py-4 d-flex justify-content-center">
                             <img src={Logo} className='img-fluid' alt="GameOn Logo" style={{ maxWidth: "28rem" }} />
                         </div>
 
+                        { /* Login Box */}
                         <div className="login-container">
-
-                            { /* Login Box */}
                             <div className="card">
 
-                                { /* Header: Title */}
+                                { /* Header - Title */}
                                 <h1 className="card-header p-3 text-center align-middle fw-bold 
                                         text-white border-bottom border-5 border-primary bg-black">
                                     Log In
                                 </h1>
                                 
-                                { /* Form */}
-                                <div className="card-body">
+                                { /* Body - Form */}
+                                <div className="card-body mx-2">
                                     <form onSubmit={doLogin}>
 
                                         { /* Username */}
@@ -123,7 +122,9 @@ function Login() {
                                                 <input className="form-control form-control-lg
                                                     border-0 border-end rounded bg-transparent"
                                                     type="text" id="username" data-testid="username-input" 
-                                                    placeholder="Username" ref={(c) => username = c} />
+                                                    placeholder="Username" ref={(c) => username = c} 
+                                                    onChange={() => setMessage('')} // clear error when user starts typing
+                                                />
                                             </div>
                                         </div>
 
@@ -139,15 +140,16 @@ function Login() {
                                                 <input className="form-control form-control-lg 
                                                     border-0 border-end rounded bg-transparent"
                                                     type="password" id="password" data-testid="password-input" 
-                                                    placeholder="Password" ref={(c) => password = c} />
+                                                    placeholder="Password" ref={(c) => password = c}
+                                                    onChange={() => setMessage('')} // clear error when user starts typing
+                                                />
                                             </div>
                                         </div>
 
                                         { /* Error Feedback */}
-                                        { /* idea: red container highlight on error message... flash/until type */}
                                         {message &&
                                             <div data-testid="error-message" className="text-danger 
-                                                mt-1 mb-2 pt-2 pb-2 text-center mx-auto fs-6 fw-bold">
+                                                text-center mx-auto pt-3 pb-1 fs-6 fw-bold">
                                                 {message}
                                             </div>
                                         }
@@ -165,23 +167,25 @@ function Login() {
                                             Submit
                                         </button>
                                     </form>
+                                </div>
 
-                                    {/* Forgot Password */}
-                                    <div className="d-flex justify-content-center align-items-center 
-                                        text-center py3 fs-6 fw-medium text-secondary link-secondary">
-                                        <a href="/forgotpassword" className={`ps-3 link-secondary ${linkHover}`}>
-                                            Forgot Password?
-                                        </a>
-                                    </div>
+                                {/* Body: Forgot Password */}
+                                <div className="d-flex justify-content-center align-items-center 
+                                    text-center pb-4 fs-6 fw-medium text-secondary link-secondary
+                                    bg-transparent">
+                                    <a href="/forgotpassword" className={`ps-3 link-secondary ${linkHover}`}>
+                                        Forgot Password?
+                                    </a>
+                                </div>
 
-                                    { /* Switch to Signup */}
-                                    <div className='footer py-3 border-top border-2 border-dark bg-light 
-                                            d-flex justify-content-center align-items-center text-center 
-                                            fw-medium rounded-bottom fs-6'>
-                                        New to GameOn?
-                                        <a href="/signup" className={`fw-bold ps-3 ${linkHover}`}>Sign Up  
-                                        </a>
-                                    </div>
+                                { /* Footer: Switch to Signup */}
+                                <div className='footer py-3 border-top border-3 border-dark bg-light 
+                                        d-flex justify-content-center align-items-center text-center 
+                                        fw-medium rounded-bottom fs-6'>
+                                    New to GameOn?
+                                    <a href="/signup" className={`fw-bold ps-2 ${linkHover}`}>
+                                        Sign Up  
+                                    </a>
                                 </div>
                             </div>
 
