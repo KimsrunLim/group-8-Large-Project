@@ -48,9 +48,9 @@ function Header() {
                                 <FontAwesomeIcon icon={faHouse} /><span className="ps-2">Home</span>
                             </Nav.Link>
 
-                            <Nav.Link className="text-white pe-5" href="/about">
+                            {/* <Nav.Link className="text-white pe-5" href="/about">
                                 <FontAwesomeIcon icon={faUsers} /><span className="ps-2">About</span>
-                            </Nav.Link>
+                            </Nav.Link> */}
 
                             <Nav.Link className="text-white pe-5" href="/leaderboard">
                                 <FontAwesomeIcon icon={faRankingStar} /><span className="ps-2">Leaderboard</span>
