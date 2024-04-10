@@ -126,7 +126,7 @@ function Login() {
                                     </form>
 
                                     <div className='d-flex justify-content-center align-items-center text-center p-2 fw-medium'>
-                                        <a href="/forgotpassword" className='link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover ps-3'>Forgot Passowrd?</a>
+                                        <a href="/forgotpassword" className='link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover ps-3'>Forgot Password?</a>
                                     </div>
 
                                     <div className='d-flex justify-content-center align-items-center text-center p-2 fw-medium'>
