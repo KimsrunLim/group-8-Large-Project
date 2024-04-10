@@ -81,9 +81,8 @@ function Login() {
     //
 
     const linkHover = "link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover";
-
-    const [isGuestHovered, setIsGuestHovered] = useState(false);
     const [isSubmitHovered, setIsSubmitHovered] = useState(false);
+    const [isGuestHovered, setIsGuestHovered] = useState(false);
 
     return (
         <>

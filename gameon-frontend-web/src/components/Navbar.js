@@ -25,7 +25,6 @@ const CustomNavLink = ({ to, children, className, isDropdownItem, onClick }) => 
         // color primary if active, black on hover, white otherwise 
         color: isActive ? bPrimary : (hovering ? 'black' : 'white'),
         fontWeight: isActive ? 'bold' : '',
-        width: '100%',
     };
 
     // give navbar links primary top border if active
@@ -69,33 +68,35 @@ const readCookie = () => {
 function Header() {
     const [username, setUsername] = useState(null);
     const [collapsible, setCollapsible] = useState(window.innerWidth <= 768); // "md"
-    const [expanded, setExpanded] = useState(false);
+    const [expandedMenu, setExpandedMenu] = useState(false);
+    const [expandedDropdown, setExpandedDropdown] = useState(false);
 
     // Read cookie and set username on component mount.
     useEffect(() => {
         setUsername(readCookie());
     }, []);
 
-    // Log out.
+    // Toggle screen width
+    useEffect(() => {
+        const handleResize = () => setCollapsible(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const logOut = () => {
         document.cookie = "username= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
         window.location.href = "/";
-    }
-    
-    // Screen width measurement (for collapsible menu toggling).
-    useEffect(() => {
-        const changeWidth = () => {
-            setCollapsible(window.innerWidth <= 768); // "md"
-        };
+    };
 
-        window.addEventListener('resize', changeWidth);
+    // Toggles the expanded state which controls the dropdown
+    const toggleDropdown = () => setExpandedDropdown(prevExpanded => !prevExpanded);
 
-        return () => {
-            window.removeEventListener('resize', changeWidth);
-        };
-    }, []);
+    // Toggle the main navbar (responsive behavior)
+    const toggleNavbar = () => setExpandedMenu(prevExpanded => !prevExpanded);
 
+    // 
     // Styles
+    // 
 
     const navContainer = "bg-black w-100 border-none";
 
@@ -130,81 +131,85 @@ function Header() {
         display: 'block',
     };
 
-    const toggleNavbar = () => setExpanded(prevExpanded => !prevExpanded);
-
     return (
         <>
-            <Navbar collapseOnSelect expand="md" className={`${navContainer} ${navContainerClass}}`} 
-                style={{ zIndex: 1030}}>
-                <Container className="p-0">
+            {/* Collapsible Navigation (if screen <= "md") */}
+            <Navbar collapseOnSelect expand="md" className={`${navContainer} ${navContainerClass}`} 
+                style={{ zIndex: 1030 }}>
+                <Container className="p-0 d-flex justify-content-between">
+
+                    {/* Navbar Brand Logo */}
                     <Navbar.Brand className="ms-0 pb-2 h-100">
-                        <img src={Logo} style={{height: "3rem"}} alt="GameOn Logo"></img>
+                        <img src={Logo} alt="GameOn Logo" style={{ height: '3rem' }} />
                     </Navbar.Brand>
 
-                    {/* Automatically collapse navbar on selected screens */}
+                    {/* Hamburger Menu Icon */}
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" onClick={toggleNavbar}>
-                        <FontAwesomeIcon className="text-white fs-2" icon={expanded ? faTimes : faBars} />
+                        <FontAwesomeIcon icon={expandedMenu ? faTimes : faBars} className="text-white fs-2" />
                     </Navbar.Toggle>
-                    
-                    {/* Navigation items that are collapsed on selected screens */}
+
+                    {/* Nav Items */}
                     <Navbar.Collapse id="responsive-navbar-nav" className="w-100">
+                        <Nav className={`align-items-center
+                            ${collapsible ? "flex-col w-100" : "flex-row ms-auto my-0"}`}>
+                            
+                            {/* Navigation Links */}
+                            <CustomNavLink to="/home" className="flex-col py-2 d-flex justify-content-center 
+                                align-items-center text-align-center" style={{width:'40%'}}>
+                                <FontAwesomeIcon icon={faHouse} />
+                                <span className="ps-2">Home</span>
+                            </CustomNavLink>
+                            {collapsible && (
+                                // Simulate divider for navbar
+                                <Nav.Link disabled className="bg-dark m-0 p-0 mt-1"
+                                    style={{height: '0.1rem', width: '40%'}}>
+                                    -
+                                </Nav.Link>
+                            )}
+                            <CustomNavLink to="/leaderboard" className="flex-col py-2 d-flex justify-content-center 
+                                align-items-center text-align-center" style={{width:'40%'}}>
+                                <FontAwesomeIcon icon={faRankingStar} />
+                                <span className="ps-2">Ranks</span>
+                            </CustomNavLink>
 
-                        {/* Map nav links for more condensed display code */}
-                        <Nav className={collapsible ? "flex-column" : "flex-row ms-auto my-0"}>
-                            {navLinks.map((link, index) => (
-                                <React.Fragment key={link.text}>
-                                    <CustomNavLink to={link.to} className={navItemClass}>
-                                        <FontAwesomeIcon icon={link.icon} />
-                                        <span className="ps-2">{link.text}</span>
-                                    </CustomNavLink>
-                                    {collapsible && (
-                                        // Simulate divider for navbar
-                                        <Nav.Link disabled className="bg-dark m-0 p-0 opacity-1"
-                                            style={{height: '0.1rem'}}>
-                                            -
-                                        </Nav.Link>
-                                    )}
-                                </React.Fragment>
-                            ))}
-
-                            <Dropdown className={`bg-dark flex-col m-0 me-5 
-                                                 ${collapsible ? 'mt-2' : ''}`}
-                                style={ collapsible ? centeredDropdownContainer : {}}>
-                                <Dropdown.Toggle isDropdownItem as={CustomNavLink} className={`${navItemClass}`}>
+                            {/* User Dropdown Menu */}
+                            <Dropdown className={`bg-dark flex-col m-0 d-flex justify-content-center
+                                align-items-center text-align-center ${collapsible ? 'mt-1' : ''}`}
+                                style={{  width: '40%', zIndex:'1050', borderRadius: '0' }}
+                                show={expandedDropdown} // Use the 'expanded' state for controlling the Dropdown visibility
+                                onToggle={toggleDropdown} // Attach the toggle function to Dropdown's onToggle
+                            >
+                                <Dropdown.Toggle as={CustomNavLink} to="#" 
+                                    className="my-0 ps-2 py-2 d-flex justify-content-center align-items-center" 
+                                >
                                         <FontAwesomeIcon icon={faUser} />
-                                        <span className="ps-2 pe-1 px-3">User</span>
+                                    <span className="ps-2 pe-1 px-3">User</span>
                                 </Dropdown.Toggle>
 
-                                <Dropdown.Menu className="bg-secondary p-0 m-0" style={ collapsible ? centeredDropdownMenu : {}}>
+                                {/* Dropdown Items */}
+                                <Dropdown.Menu className="bg-dark p-0 m-0" style={{ textAlign: 'center', display: 'block' }}>
                                     <Dropdown.Header className="pb-0 px-3 text-white">
                                         <h5>{username}</h5>
                                     </Dropdown.Header>
-                                    
                                     <Dropdown.Divider className="bg-primary mt-0 mb-0" /> 
 
-                                    {/* Conditionally display "Log In" and "Sign Up" if username is "Guest" */}
-                                    {username === "Guest" && (
+                                    {username === "Guest" ? ( // as Guest
                                         <>
-                                            <CustomNavLink to={'/signup'} isDropdownItem className="py-2">
+                                            <Dropdown.Item href="/signup" className="py-2">
                                                 <FontAwesomeIcon icon={faUserPlus} className="ps-3" />
-                                                <span className="ps-2 h-100">Sign Up</span>
-                                            </CustomNavLink>
-
+                                                <span className="ps-2">Sign Up</span>
+                                            </Dropdown.Item>
                                             <Dropdown.Divider className="bg-dark mt-0 mb-0" /> 
-
-                                            <CustomNavLink to={'/login'} isDropdownItem className="py-2"> 
-                                                <FontAwesomeIcon icon={faSignInAlt} className="ps-3"/>
-                                                <span className="ps-2"> Log In</span>
-                                            </CustomNavLink>
+                                            <Dropdown.Item href="/login" className="py-2">
+                                                <FontAwesomeIcon icon={faSignInAlt} className="ps-3" />
+                                                <span className="ps-2">Log In</span>
+                                            </Dropdown.Item>
                                         </>
-                                    )}
-
-                                    {/* Display "Log Out" if username is not "Guest" */}
-                                    {username !== "Guest" && (
-                                        <CustomNavLink onClick={logOut} isDropdownItem>
-                                            <FontAwesomeIcon icon={faSignOutAlt} className="ps-3"/>
+                                    ) : ( // as Logged In User
+                                        <Dropdown.Item onClick={logOut} className="py-2">
+                                            <FontAwesomeIcon icon={faSignOutAlt} className="ps-3" />
                                             <span className="ps-2">Log Out</span>
-                                        </CustomNavLink>
+                                        </Dropdown.Item>
                                     )}
                                 </Dropdown.Menu>
                             </Dropdown>
@@ -214,6 +219,6 @@ function Header() {
             </Navbar>
         </>
     );
-};
+}
 
 export default Header;

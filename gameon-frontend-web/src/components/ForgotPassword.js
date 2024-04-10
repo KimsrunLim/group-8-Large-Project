@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import Logo from '../assets/Logo-Black.png';
+import Logo from '../assets/Logo-Blue.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -76,58 +76,104 @@ function ForgotPassword() {
         return;
     };
 
+    const linkHover = "link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover";
+    const [isSubmitHovered, setIsSubmitHovered] = useState(false);
+    const [isLoginHovered, setIsLoginHovered] = useState(false);
+
     return (
         <>
             <div className="container">
                 <div className="row justify-content-center">
-                    <div className="col-md-6">
+                    <div className="col-11 col-md-8 col-lg-6">
+
                         { /* Logo */}
-                        <div className="logo p-4 text-center m-auto">
-                            <img src={Logo} className='img-fluid' alt="GameOn Logo" style={{ maxWidth: "150px" }} />
+                        <div className="logo pt-5 py-4 d-flex justify-content-center">
+                            <img src={Logo} className='img-fluid' alt="GameOn Logo" style={{ maxWidth: "28rem" }} />
                         </div>
 
+                        { /* Forgot Password Box */}
                         <div className="login-container">
-
-                            { /* Login Box */}
                             <div className="card">
 
-                                { /* Title */}
-                                <h1 className="card-header p-3 text-center align-middle fw-bold text-black">Forgot Password</h1>
-                                <div className="card-body">
+                                { /* Header - Title */}
+                                <h1 className="card-header p-3 text-center align-middle fw-bold 
+                                        text-white border-bottom border-5 border-primary bg-black">
+                                    Forgot Password
+                                </h1>
 
-                                    { /* Form */}
+                                { /* Form */}                  
+                                <div className="card-body mx-2">
                                     <form onSubmit={doForgot}>
 
                                         { /* Email */}
-                                        <div className="form-group pt-1">
-                                            <label className="pb-1 text-secondary fw-bold">Email</label>
-                                            <div className="input-group mb-3">
-                                                <span className="input-group-text"><FontAwesomeIcon icon={faEnvelope} /></span>
-                                                <input type="text" id="email" data-testid="email-input" value={email} onChange={handleEmailChange} className="form-control" placeholder="Email" />
+                                        <div className="form-group py-2">
+                                            <label className="pb-2 text-dark fw-bold fs-5">
+                                                Email
+                                            </label>
+                                            <div className="input-group border rounded">
+                                                <span className="input-group-text px-3 border-0 border-end">
+                                                    <FontAwesomeIcon icon={faEnvelope} />
+                                                </span>
+                                                <input className="form-control form-control-lg 
+                                                    border-0 border-end rounded bg-transparent"
+                                                    type="text" id="email" placeholder="example@domain.com" 
+                                                    value={email} onChange={handleEmailChange}
+                                                />
                                             </div>
                                         </div>
                                         { /* Error Feedback */}
-                                        { /* idea: red container highlight on error message... flash/until type */}
                                         {message &&
-                                            <div data-testid="error-message" className="text-danger mt-1 mb-2 pt-2 pb-2 text-center mx-auto fs-6 fw-bold">
+                                            <div data-testid="error-message" className="text-danger 
+                                                text-center mx-auto pt-3 pb-0 fs-6 fw-bold">
                                                 {message}
                                             </div>
                                         }
 
                                         { /* Submit */}
-                                        <button type="submit" data-testid="submit-button" className="btn bg-black w-100 mt-3 mb-1 fs-5 text-white fw-bold">Submit</button>
+                                        <button type="submit" data-testid="submit-button" 
+                                            className="btn mt-4 mb-2 w-100 fs-5 fw-bold"
+                                            onMouseEnter={() => setIsSubmitHovered(true)}
+                                            onMouseLeave={() => setIsSubmitHovered(false)}
+                                            style={{
+                                                backgroundColor: isSubmitHovered ? 'black' : '#007bff',
+                                                color: isSubmitHovered ? 'white' : 'black', 
+                                            }}
+                                        >
+                                            Submit
+                                        </button>
                                     </form>
+                                </div>
 
-                                    <div className='d-flex justify-content-center align-items-center text-center p-2 fw-medium'>
-                                        New to GameOn?
-                                        <a href="/signup" className='link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover ps-3'>Sign Up</a>
-                                    </div>
+                                { /* Footer: Switch to Signup */}
+                                <div className='footer py-3 border-top border-3 border-dark bg-light 
+                                        d-flex justify-content-center align-items-center text-center 
+                                        fw-medium rounded-bottom fs-6'>
+                                    New to GameOn?
+                                    <a href="/signup" className={`fw-bold ps-2 ${linkHover}`}>
+                                        Sign Up  
+                                    </a>
                                 </div>
                             </div>
 
-                            { /* Switch to Signup */}
+                            { /* Back to Login */}
                             <div className='d-grid py-5'>
-                                <button onClick={handleGoBack} className="btn border border-3 border-dark fw-bold" type="button" style={{ maxHeight: "50px", height: "50px" }}>Back to Login</button>
+                                <button onSubmit={handleGoBack} type="button" 
+                                    className="btn"
+                                    onMouseEnter={() => setIsLoginHovered(true)}
+                                    onMouseLeave={() => setIsLoginHovered(false)}
+                                    style={{ 
+                                        maxHeight: "50px", 
+                                        height: "50px",
+                                        borderWidth: '3px',
+                                        backgroundColor: isLoginHovered ? 'black' : '#F8F9FA',
+                                        borderColor: isLoginHovered ? '#007bff' : 'black',
+                                        color: isLoginHovered ? 'white' : 'black',
+                                    }
+                                }>
+                                    <h5 className="fw-bold pt-1">
+                                        Back to Login
+                                    </h5>
+                                </button>
                             </div>
                         </div>
                     </div>
