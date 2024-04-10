@@ -143,16 +143,18 @@ const LeaderBoard = () => {
                 <table className="table table-striped">
                     <thead className='sticky-top'>
                         {header}
-                        <tr>
-                            <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Rank}</td>
-                            <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Username}</td>
-                            <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Accuracy}</td>
-                            <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Speed}</td>
-                            <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Time}</td>
-                            <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Score}</td>
-                            <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Device}</td>
-                            <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Date}</td>
-                        </tr>
+                        {(curUser)?  
+                            <tr>
+                                <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Rank}</td>
+                                <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Username}</td>
+                                <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Accuracy}</td>
+                                <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Speed}</td>
+                                <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Time}</td>
+                                <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Score}</td>
+                                <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Device}</td>
+                                <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Date}</td>
+                            </tr>
+                        : console.log("no show")}
                     </thead>
                     <tbody>
                         {players.map(player => (
