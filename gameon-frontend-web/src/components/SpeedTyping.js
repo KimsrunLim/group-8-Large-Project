@@ -104,9 +104,16 @@ const createPayload = (validatedInputHistory, numMistakes, username) => {
     const accuracyCalc = totalTypedChars > 0 ? (correctChars / totalTypedChars) * 100 : 0;
     const wpmCalc = correctChars / 5; // Average word length = 5 chars
 
+    // date format
+    let time = new Date();
+    const month = time.getMonth() + 1;
+    const year = time.getFullYear();
+    const date = time.getDate();
+    let day = `${month}-${date}-${year}`;
+
     return {
         accuracy: accuracyCalc.toFixed(2), 
-        date: new Date().toISOString(),
+        date: day,
         device: "Computer",
         score: correctChars - numMistakes,
         speed: wpmCalc.toFixed(2),
@@ -186,7 +193,10 @@ function SpeedTyping() {
     const setStats = async () => {
         // Submit to API
         const payload = createPayload(validatedInputHistory, numMistakes, username);
-        await submitStats(payload);
+        // not store score if user is guest
+        if (username !== "Guest") {
+            await submitStats(payload);
+        }
 
         // Store for game
         setWordsPerMinute(payload.speed);
