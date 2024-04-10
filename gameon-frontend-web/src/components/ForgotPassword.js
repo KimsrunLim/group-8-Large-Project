@@ -50,7 +50,7 @@ function ForgotPassword() {
 
         validateEmail(email);
 
-        console.log(email);
+        // console.log(email);
 
         // ensure email feild not empty
         if (email === '') {

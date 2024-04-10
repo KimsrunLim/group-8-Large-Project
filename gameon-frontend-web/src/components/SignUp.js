@@ -195,7 +195,7 @@ function Signup() {
         var resPass = validatePass(password);
         var resConPass = validateConPass(conPass);
 
-        console.log("Results: ", resUser, resEmail, resPass, resConPass);
+        // console.log("Results: ", resUser, resEmail, resPass, resConPass);
 
         if (!(resUser) || !(resEmail) || !(resPass) || !(resConPass)) {
             setMessage('');

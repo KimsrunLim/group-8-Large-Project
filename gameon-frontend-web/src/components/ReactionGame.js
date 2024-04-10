@@ -38,7 +38,7 @@ function ReactionGame()
     const randomTime = (max) => {
         let time = Math.floor(Math.random() * Math.floor(max) ) + 1;
         time *= 1000;
-        console.log("time:", time / 1000, "s");
+        // console.log("time:", time / 1000, "s");
         return time;
     }
 
@@ -58,7 +58,7 @@ function ReactionGame()
             if(result === 0) {
                 canvasRef.current.style.backgroundColor = 'rgb(78,197,78)'; //green
             }
-            console.log("starttime:", start);
+            // console.log("starttime:", start);
             canvasRef.current.addEventListener('click', async function() {
                 
                 let date2 = new Date().getTime();
@@ -76,7 +76,7 @@ function ReactionGame()
 
     const startGame = () => {
         canvasRef.current.style.backgroundColor = 'rgb(243,16,16)';
-        console.log("game start");
+        // console.log("game start");
         let changeColorTime = randomTime(8); //max time as 8 sec.
         result = 0;
         setOutput(null);
@@ -92,7 +92,7 @@ function ReactionGame()
         const year = time.getFullYear();
         const date = time.getDate();
         let day = `${month}-${date}-${year}`;
-        console.log("date: " , day);
+        // console.log("date: " , day);
         
         if ((!isNaN(+result)) && (!(user === "")))
         {

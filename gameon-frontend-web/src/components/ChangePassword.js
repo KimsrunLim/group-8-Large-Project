@@ -96,7 +96,7 @@ function ChangePassword() {
         var resPass = validatePass(password);
         var resConPass = validateConPass(conPass);
 
-        console.log("Results: ", resPass, resConPass);
+        // console.log("Results: ", resPass, resConPass);
 
         if (!(resPass) || !(resConPass)) {
             setMessage('');
@@ -106,7 +106,7 @@ function ChangePassword() {
         // Update Password
         const email = localStorage.getItem('email');
 
-        console.log(email);
+        // console.log(email);
 
 
         // call endpoint based on email

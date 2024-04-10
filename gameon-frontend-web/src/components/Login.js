@@ -28,7 +28,7 @@ function Login() {
         date.setTime(date.getTime() + (minutes * 60 * 1000));
         document.cookie = "username=" + username.value + ";expires=" + date.toGMTString();
 
-        console.log("cookie saved");
+        // console.log("cookie saved");
     }
 
     const doLogin = async event => {
@@ -43,7 +43,7 @@ function Login() {
         var obj = { username: username.value, password: password.value };
         var js = JSON.stringify(obj);
 
-        console.log(username.value, password.value);
+        // console.log(username.value, password.value);
 
         try {
             const response = await fetch(buildPath('api/users'),
@@ -51,7 +51,7 @@ function Login() {
 
 
             var res = JSON.parse(await response.text());
-            console.log(res.error);
+            // console.log(res.error);
 
             if (res.result === false || res.error.length > 0) // can't log in
             {

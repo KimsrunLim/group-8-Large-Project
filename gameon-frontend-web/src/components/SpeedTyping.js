@@ -208,7 +208,7 @@ function SpeedTyping() {
     useEffect(() => {
         setUsername(readCookie());
         setWords(generateRandomWords(wordList, 100));
-        console.log(username);
+        // console.log(username);
         return consistentFocus();
     }, []);
 

@@ -57,12 +57,12 @@ const LeaderBoard = () => {
         if (selectedKey === "link-1") {
             setHeader(speedTypingHeader());
             gameData = 'api/TypingLeaderboard';
-            console.log("Speed userData:", curUser);
+            // console.log("Speed userData:", curUser);
 
         } else if (selectedKey === "link-2") {
             setHeader(reactionHeader());
             gameData = 'api/ReactionLeaderboard';
-            console.log("React userData:", curUser);
+            // console.log("React userData:", curUser);
         }
         
         fetchPlayer();
@@ -111,13 +111,13 @@ const LeaderBoard = () => {
             var ourUser = player.results.find(x => x.Username === username);
 
             if (ourUser) {
-                console.log(`User ${ourUser.Username} found!`);
+                // console.log(`User ${ourUser.Username} found!`);
                 ourUser.Rank = await player.results.findIndex(x => x.Username === username) + 1;
                 setCurUser(ourUser);
 
             } else {
                 // User not found
-                console.log("User not found");
+                // console.log("User not found");
                 setCurUser("");
             }
     
