@@ -7,9 +7,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function ForgotPassword() {
-    var email;
 
     const [message, setMessage] = useState('');
+    const [email, setEmail] = useState('');
 
     const app_name = 'group8large-57cfa8808431'
     function buildPath(route) {
@@ -21,11 +21,18 @@ function ForgotPassword() {
         }
     }
 
+    const handleEmailChange = (event) => {
+        const inputEmail = event.target.value;
+        setEmail(inputEmail);
+    }
+
     const doForgot = async event => {
         event.preventDefault();
 
+        console.log(email);
+
         // ensure email feild not empty
-        if (!email.value) {
+        if (email === '') {
             setMessage('Please enter email.');
             return;
         }
@@ -41,24 +48,20 @@ function ForgotPassword() {
 
             var res = JSON.parse(await response.text());
 
-            console.log("Res: ", res);
-
             if (res.error === 'No Email Found') // can't log in
             {
                 setMessage('No Email Found');
             }
-            else
-            {
+            else {
                 setMessage('Email Has Been Sent');
 
-                var obj = { emailR: email.value };
+                var obj = { emailR: email, username: undefined };
                 var js = JSON.stringify(obj);
 
                 await fetch(buildPath('api/send-email'),
                     { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
-
-                localStorage.setItem('email', email.value);
+                localStorage.setItem('email', email);
                 window.location.href = "/reset";
             }
         }
@@ -100,7 +103,7 @@ function ForgotPassword() {
                                             <label className="pb-1 text-secondary fw-bold">Email</label>
                                             <div className="input-group mb-3">
                                                 <span className="input-group-text"><FontAwesomeIcon icon={faEnvelope} /></span>
-                                                <input type="text" id="email" data-testid="email-input" className="form-control" placeholder="Email" ref={(c) => email = c} />
+                                                <input type="text" id="email" data-testid="email-input" value={email} onChange={handleEmailChange} className="form-control" placeholder="Email" />
                                             </div>
                                         </div>
                                         { /* Error Feedback */}

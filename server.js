@@ -83,23 +83,24 @@ app.post('/api/userCheck', async (req, res, next) => {
         error = e;
     }
 
-    var ret = { result : results, error: error };
+    var ret = { result: results, error: error };
     res.status(200).json(ret);
 });
 
 // login
 app.post('/api/users', async (req, res, next) => {
     var error = "";
+    var match;
 
     const { username, password } = req.body;
 
     try {
         const db = client.db("group8large");
 
-        const results = await
+        results = await
             db.collection('users').find({ Username: username }).toArray();
 
-        const match = await bcrypt.compare(password, results[0].Password);
+        match = await bcrypt.compare(password, results[0].Password);
 
         if (!match) {
             error = "Password does not match";
@@ -117,7 +118,7 @@ app.post('/api/users', async (req, res, next) => {
         error = e;
     }
 
-    var ret = { error: error };
+    var ret = { result: match, error: error };
     res.status(200).json(ret);
 });
 
@@ -141,7 +142,7 @@ app.post('/api/email', async (req, res, next) => {
         error = e;
     }
 
-    var ret = { result : results, error: error };
+    var ret = { result: results, error: error };
     res.status(200).json(ret);
 });
 
@@ -317,6 +318,7 @@ app.post('/api/userReactionData', async (req, res, next) => {
 // Email Verification Start
 const nodemailer = require('nodemailer');
 const uuid = require('uuid');
+const { match } = require("assert");
 
 // POST route to send email
 app.post('/api/send-email', async (req, res) => {
@@ -330,7 +332,7 @@ app.post('/api/send-email', async (req, res) => {
         // Reset Password
         const db = client.db("group8large");
         const results = await
-            db.collection('users').findOne({ Email : emailR });
+            db.collection('users').findOne({ Email: emailR });
 
         message = `Welcome to GameOn!\n\nLets reset your password!\nYour reset code is : ${results.VerifyCode}`;
     }
@@ -396,6 +398,24 @@ app.post('/api/verify', async (req, res) => {
     else {
         error = 'Does Not Match!';
     }
+
+    var ret = { error: error };
+    res.status(200).json(ret);
+});
+
+app.post('/api/updatepassword', async (req, res) => {
+    const { email, password } = req.body;
+    var error = '';
+
+    const hash = await bcrypt.hash(password, 10);
+
+    const db = client.db("group8large");
+    const results = await
+        db.collection('users').findOne({ Email: email });
+
+    const filter = { Email: email };
+    db.collection('users').updateOne(filter, { $set: { Password: hash } });
+
 
     var ret = { error: error };
     res.status(200).json(ret);

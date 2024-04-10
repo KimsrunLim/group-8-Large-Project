@@ -26,9 +26,9 @@ function Login() {
         let minutes = 525600;
         let date = new Date();
         date.setTime(date.getTime() + (minutes * 60 * 1000));
-        document.cookie = "username=" + username.value +";expires=" + date.toGMTString();
+        document.cookie = "username=" + username.value + ";expires=" + date.toGMTString();
 
-        console.log("save de cookie");
+        console.log("cookie saved");
     }
 
     const doLogin = async event => {
@@ -47,11 +47,11 @@ function Login() {
             const response = await fetch(buildPath('api/users'),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
-            console.log(response);
 
             var res = JSON.parse(await response.text());
+            console.log(res.result);
 
-            if (res.id <= 0) // can't log in
+            if (res.result === false) // can't log in
             {
                 setMessage('Username/password combination incorrect.');
             }
@@ -59,12 +59,11 @@ function Login() {
             {
                 setMessage('');
                 saveCookie();
-                window.location.href = '/home'; // redirect
+                // window.location.href = '/home'; // redirect
             }
         }
         catch (e) {
             alert(e.toString());
-            return;
         }
     };
 

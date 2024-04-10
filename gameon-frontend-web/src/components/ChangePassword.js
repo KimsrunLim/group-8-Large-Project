@@ -104,11 +104,20 @@ function ChangePassword() {
         }
 
         // Update Password
-        localStorage.getItem('email');
+        const email = localStorage.getItem('email');
 
         // call endpoint based on email
+        var obj = { emailR: email, username: undefined };
+        var js = JSON.stringify(obj);
 
-        
+
+        if (resPass === resConPass)
+        {
+            await fetch(buildPath('api/updatepassword'),
+                { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
+            setMessage('Password Updated, Return to Login');
+        }
+
     };
 
     return (
