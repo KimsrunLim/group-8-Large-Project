@@ -353,7 +353,7 @@ app.post('/api/send-email', async (req, res) => {
         }
         else {
             console.log("error getting username or email");
-            res.status(500).send('Error sending email');
+            res.status(500).send('Error sending email getting user/email');
         }
 
         // Create a nodemailer transporter
@@ -381,7 +381,7 @@ app.post('/api/send-email', async (req, res) => {
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.error('Error sending email:', error);
-                res.status(500).send('Error sending email');
+                res.status(500).send('Error sending email transporter.sendMail');
             } else {
                 console.log('Email sent:', info.response);
                 res.status(200).send('Email sent successfully');
@@ -392,9 +392,6 @@ app.post('/api/send-email', async (req, res) => {
     {
         error = e;
     }
-
-    ret = { error : error };
-    res.status(200).send(ret);
 });
 
 app.post('/api/verify', async (req, res) => {
