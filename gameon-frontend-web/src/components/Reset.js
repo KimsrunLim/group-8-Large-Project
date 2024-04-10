@@ -44,9 +44,9 @@ function ResetPass() {
 
             const result = await response.json();
 
-            if (verificationCode === result.result[0].VerifyCode.toString()) {
+            if (verificationCode === result.result.VerifyCode.toString()) {
 
-                obj = { email: result.result[0].Email, code: result.result[0].VerifyCode };
+                obj = { email: result.result.Email, code: result.result.VerifyCode };
                 js = JSON.stringify(obj);
 
                 const res = await fetch(buildPath('api/verify'),

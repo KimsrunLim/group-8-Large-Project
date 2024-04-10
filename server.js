@@ -130,18 +130,20 @@ app.post('/api/email', async (req, res, next) => {
     const { email } = req.body;
     var results;
 
+    console.log("Backend Email: ", email);
+
     try {
         const db = client.db("group8large");
 
         results = await
-            db.collection('users').find({ Email: email.toLowerCase() }).toArray();
-
-        if (results.length <= 0) {
+            db.collection('users').findOne({ Email: email.toLowerCase() });
+        
+        if (!results.Email) {
             error = "No Email Found";
         }
     }
     catch (e) {
-        error = e;
+        error = "Error Finding Email";
     }
 
     var ret = { result: results, error: error };
