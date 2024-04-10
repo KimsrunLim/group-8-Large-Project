@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faRankingStar, faUsers, faUser, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { Container, Navbar, Nav, Dropdown } from 'react-bootstrap';
-import Logo from '../assets/GameOnLogoWhite.png';
+import Logo from '../assets/NameLogo-Blue.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Header() {

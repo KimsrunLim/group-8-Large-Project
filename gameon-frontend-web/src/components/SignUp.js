@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import Logo from '../assets/Logo-Black.png';
+import Logo from '../assets/Logo-Blue.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+//
+// Functionality
+//
 
 function Signup() {
     const app_name = 'group8large-57cfa8808431'
+
     function buildPath(route) {
         if (process.env.NODE_ENV === 'production') {
             return 'https://' + app_name + '.herokuapp.com/' + route;
@@ -59,17 +64,17 @@ function Signup() {
         var js = JSON.stringify(obj);
 
         if (!username) {
-            errorsUser.push('Username is required');
+            errorsUser.push('Username is required.');
         }
 
         // Checks for correct inputs
         if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-            errorsUser.push('Only letters, numbers, or underscores');
+            errorsUser.push('Only letters, numbers, or underscores.');
         }
 
         // Checks for min length
         if (!username || username.length < 4) {
-            errorsUser.push('Must be at least 4 characters long');
+            errorsUser.push('Must be at least 4 characters long.');
         }
 
         var response = await fetch(buildPath('api/userCheck'),
@@ -79,7 +84,7 @@ function Signup() {
 
         // Checks for existing user
         if (res.error.length > 0) {
-            errorsUser.push('Username already exists');
+            errorsUser.push('Username already exists.');
         }
 
         setUsernameError(errorsUser);
@@ -90,12 +95,12 @@ function Signup() {
 
         // Check for input
         if (!email) {
-            errorsEmail.push('Email is required');
+            errorsEmail.push('Email is required.');
         }
 
         // Check for valid email
         if (!/\S+@\S+\.(com|net|org)$/.test(email)) {
-            errorsEmail.push('Invalid email address');
+            errorsEmail.push('Invalid email address.');
         }
         setEmailError(errorsEmail);
 
@@ -106,32 +111,32 @@ function Signup() {
 
         // Check for input
         if (!password) {
-            errorsPass.push('Password is required');
+            errorsPass.push('Password is required.');
         }
 
         // Number Check
         if (!/(?=.*\d)/.test(password)) {
-            errorsPass.push('At least one number');
+            errorsPass.push('At least one number.');
         }
 
         // Length Check
         if (password.length < 8) {
-            errorsPass.push('At least 8 characters long');
+            errorsPass.push('At least 8 characters long.');
         }
 
         // Lowercase Check
         if (!/(?=.*[a-z])/.test(password)) {
-            errorsPass.push('At least one lowercase letter');
+            errorsPass.push('At least one lowercase letter.');
         }
 
         // Uppercase Check
         if (!/(?=.*[A-Z])/.test(password)) {
-            errorsPass.push('At least one uppercase letter');
+            errorsPass.push('At least one uppercase letter.');
         }
 
         // Special Character Check
         if (!/(?=.*[!@#$%^&*()])/.test(password)) {
-            errorsPass.push('At least one special character');
+            errorsPass.push('At least one special character.');
         }
 
 
@@ -143,11 +148,11 @@ function Signup() {
     const validateConPass = (conPass) => {
 
         if (!conPass) {
-            setConPassError('Confirmation required');
+            setConPassError('Confirmation required.');
             return false;
         }
         else if (conPass !== password) {
-            setConPassError('Password does not match');
+            setConPassError('Password does not match.');
         }
         else {
             setConPassError('');
@@ -171,7 +176,8 @@ function Signup() {
                 setMessage("API Error:" + res.error);
             }
             else {
-                setMessage('User has been added');
+                setMessage('User has been added!');
+
                 obj = { username: username, emailR: email };
                 js = JSON.stringify(obj);
 
@@ -198,121 +204,203 @@ function Signup() {
         // console.log("Results: ", resUser, resEmail, resPass, resConPass);
 
         if (!(resUser) || !(resEmail) || !(resPass) || !(resConPass)) {
+
             setMessage('');
             return;
         }
-
         addUser();
     };
+
+    const handleGuest = () => {
+        window.location.href = "/home";
+        return;
+    };
+
+    //
+    // Styling
+    //
+
+    const linkHover = "link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover";
+
+    const [isGuestHovered, setIsGuestHovered] = useState(false);
+    const [isSubmitHovered, setIsSubmitHovered] = useState(false);
 
     return (
         <>
             <div className="container">
                 <div className="row justify-content-center">
-                    <div className="col-md-6">
+                    <div className="col-11 col-md-8 col-lg-6">
 
                         { /* Logo */}
-                        <div className="logo p-4 text-center m-auto">
-                            <img src={Logo} className='img-fluid' alt="GameOn Logo" style={{ maxWidth: "150px" }} />
+                        <div className="logo pt-4 py-4 d-flex justify-content-center">
+                            <img src={Logo} className='img-fluid' alt="GameOn Logo" style={{ maxWidth: "28rem" }} />
                         </div>
 
+                        { /* Signup Box */}
                         <div className="signup-container">
-
-                            { /* Signup Box */}
                             <div className="card">
 
-                                { /* Title */}
-                                <h1 className="card-header p-3 text-center align-middle fw-bold text-black">Sign Up</h1>
-                                <div className="card-body">
+                                { /* Header - Title */}
+                                <h1 className="card-header p-3 text-center align-middle fw-bold 
+                                        text-white border-bottom border-5 border-primary bg-black">
+                                    Sign Up
+                                </h1>
 
-                                    { /* Form */}
+                                {/* Body - Form */}
+                                <div className="card-body mx-2">
                                     <form onSubmit={doSignup}>
-                                        { /* validation functionality: 
-                                        * - valid -> no effects
-                                        * - invalid -> red text input highlight (replace bootstrap's blue) 
-                                        *              & red icon    */ }
 
                                         { /* Username */}
-                                        <div className="form-group pt-4 pb-2">
-                                            <label className="pb-1 text-secondary fw-bold">Username</label>
-                                            <div className="input-group">
-                                                <span className="input-group-text"><FontAwesomeIcon icon={faUser} /></span>
-                                                <input type="text" id="username" value={username} onChange={handleUNChange} className="form-control" placeholder="Username" />
+                                        <div className="form-group pt-3">
+                                            <label className="pb-1 text-dark fw-bold fs-5">
+                                                Username
+                                            </label>
+                                            <div className="input-group border rounded">
+                                                <span className="input-group-text px-3 border-0 border-end">
+                                                    <FontAwesomeIcon icon={faUser} />
+                                                </span>
+                                                <input className="form-control form-control-lg
+                                                    border-0 border-end rounded bg-transparent"
+                                                    type="text" id="username" placeholder="Username" 
+                                                    value={username} onChange={handleUNChange}
+                                                />
                                             </div>
-                                            {usernameError.length > 0 &&
-                                                (
-                                                    <ul className="align-items-end text-end">
-                                                        {usernameError.map((error, index) => (
-                                                            <li className="text-danger fw-bold" style={{ listStyleType: "none" }} key={index}>{error}</li>
-                                                        ))}
-                                                    </ul>
-                                                )}
                                         </div>
+                                        {usernameError.length > 0 &&
+                                            (
+                                                <ul className="align-items-end text-end mb-0">
+                                                    {usernameError.map((error, index) => (
+                                                        <li className="text-danger fw-bold pe-1" style={{ listStyleType: "none" }} key={index}>{error}</li>
+                                                    ))}
+                                                </ul>
+                                            )}
 
                                         { /* Email */}
                                         <div className="form-group py-2">
-                                            <label className="pb-1 text-secondary fw-bold">Email</label>
-                                            <div className="input-group">
-                                                <span className="input-group-text"><FontAwesomeIcon icon={faEnvelope} /></span>
-                                                <input type="text" id="email" value={email} onChange={handleEmailChange} className="form-control" placeholder="Email" />
+                                            <label className="pb-1 text-dark fw-bold fs-5">
+                                                Email
+                                            </label>
+                                            <div className="input-group border rounded">
+                                                <span className="input-group-text px-3 border-0 border-end">
+                                                    <FontAwesomeIcon icon={faEnvelope} />
+                                                </span>
+                                                <input className="form-control form-control-lg 
+                                                    border-0 border-end rounded bg-transparent"
+                                                    type="text" id="email" placeholder="example@domain.com" 
+                                                    value={email} onChange={handleEmailChange}
+                                                />
                                             </div>
-                                            {emailError.length > 0 &&
-                                                (
-                                                    <ul className="align-items-end text-end">
-                                                        {emailError.map((error, index) => (
-                                                            <li className="text-danger fw-bold" style={{ listStyleType: "none" }} key={index}>{error}</li>
-                                                        ))}
-                                                    </ul>
-                                                )}
                                         </div>
+                                        {emailError.length > 0 &&
+                                            (
+                                                <ul className="align-items-end text-end mb-0">
+                                                    {emailError.map((error, index) => (
+                                                        <li className="text-danger fw-bold pe-1" style={{ listStyleType: "none" }} key={index}>{error}</li>
+                                                    ))}
+                                                </ul>
+                                            )}
 
                                         { /* Password */}
                                         <div className="form-group py-2">
-                                            <label className="pb-1 text-secondary fw-bold">Password</label>
-                                            <div className="input-group">
-                                                <span className="input-group-text"><FontAwesomeIcon icon={faLock} /></span>
-                                                <input type="password" id="password" value={password} onChange={handlePassChange} className="form-control" placeholder="Password" />
+                                            <label className="pb-1 text-dark fw-bold fs-5">
+                                                Password
+                                            </label>
+                                            <div className="input-group border rounded">
+                                                <span className="input-group-text px-3 border-0 border-end">
+                                                    <FontAwesomeIcon icon={faLock} />
+                                                </span>
+                                                <input className="form-control form-control-lg 
+                                                    border-0 border-end rounded bg-transparent"
+                                                    type="password" id="password" placeholder="Password" 
+                                                    value={password} onChange={handlePassChange}
+                                                />
                                             </div>
-                                            {passError.length > 0 &&
-                                                (
-                                                    <ul className="align-items-end text-end">
-                                                        {passError.map((error, index) => (
-                                                            <li className="text-danger fw-bold" style={{ listStyleType: "none" }} key={index}>{error}</li>
-                                                        ))}
-                                                    </ul>
-                                                )}
                                         </div>
+                                        {passError.length > 0 &&
+                                            (
+                                                <ul className="align-items-end text-end mb-0">
+                                                    {passError.map((error, index) => (
+                                                        <li className="text-danger fw-bold pe-1" style={{ listStyleType: "none" }} key={index}>{error}</li>
+                                                    ))}
+                                                </ul>
+                                            )}
 
                                         { /* Confirm Password */}
                                         <div className="form-group py-2">
-                                            <label className="pb-1 text-secondary fw-bold">Confirm Password</label>
-                                            <div className="input-group">
-                                                <span className="input-group-text"><FontAwesomeIcon icon={faLock} /></span>
-                                                <input type="password" id="passwordConfirm" value={conPass} onChange={handleConPassChange} className="form-control" placeholder="Confirm Password" />
+                                            <label className="pb-1 text-dark fw-bold fs-5">
+                                                Password
+                                            </label>
+                                            <div className="input-group border rounded">
+                                                <span className="input-group-text px-3 border-0 border-end">
+                                                    <FontAwesomeIcon icon={faLock} />
+                                                </span>
+                                                <input className="form-control form-control-lg 
+                                                    border-0 border-end rounded bg-transparent"
+                                                    type="password" id="passwordConfirm" 
+                                                    placeholder="Confirm Password" 
+                                                    value={conPass} onChange={handleConPassChange}
+                                                />
                                             </div>
-                                            {conPassError &&
-                                                <div className="text-danger fw-bold text-end">
-                                                    {conPassError}
-                                                </div>
-                                            }
                                         </div>
+                                        {conPassError &&
+                                            <div className="text-danger fw-bold text-end mb-0 pe-1">
+                                                {conPassError}
+                                            </div>
+                                        }
+
                                         { /* Error Feedback */}
-                                        { /* idea: red container highlight on error message... flash/until type */}
                                         {message &&
-                                            <div className="text-success mt-1 mb-2 pt-2 pb-2 text-center mx-auto fs-6 fw-bold">
+                                            <div className="text-danger text-center mx-auto pt-3 
+                                                pb-1 fs-6 fw-bold">
                                                 {message}
                                             </div>
                                         }
 
                                         { /* Submit */}
-                                        <button type="submit" className="btn bg-black w-100 mt-3 mb-1 fs-5 text-white fw-bold">Submit</button>
+                                        <button type="submit" data-testid="submit-button" 
+                                            className="btn mt-4 mb-3 w-100 fs-5 fw-bold"
+                                            onMouseEnter={() => setIsSubmitHovered(true)}
+                                            onMouseLeave={() => setIsSubmitHovered(false)}
+                                            style={{
+                                                backgroundColor: isSubmitHovered ? 'black' : '#007bff',
+                                                color: isSubmitHovered ? 'white' : 'black', 
+                                            }}
+                                        >
+                                            Submit
+                                        </button>
                                     </form>
-
-                                    <div className='d-flex justify-content-center align-items-center text-center p-2 fw-medium'>
-                                        Already have an Account?
-                                        <a href="/login" className='link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover ps-3'>Log In</a>
-                                    </div>
                                 </div>
+                                
+                                { /* Footer: Switch to Login */}
+                                <div className='footer py-3 border-top border-2 border-dark bg-light 
+                                        d-flex justify-content-center align-items-center text-center 
+                                        fw-medium rounded-bottom fs-6'>
+                                    Already have an account?
+                                    <a href="/login" className={`fw-bold ps-2 ${linkHover}`}>
+                                        Log In  
+                                    </a>
+                                </div>
+                            </div>
+
+                            { /* Continue as Guest */}
+                            <div className='d-grid py-5'>
+                                <button onClick={handleGuest} type="button" 
+                                    className="btn"
+                                    onMouseEnter={() => setIsGuestHovered(true)}
+                                    onMouseLeave={() => setIsGuestHovered(false)}
+                                    style={{ 
+                                        maxHeight: "50px", 
+                                        height: "50px",
+                                        borderWidth: '3px',
+                                        backgroundColor: isGuestHovered ? 'black' : '#F8F9FA',
+                                        borderColor: isGuestHovered ? '#007bff' : 'black',
+                                        color: isGuestHovered ? 'white' : 'black',
+                                    }
+                                }>
+                                    <h5 className="fw-bold pt-1">
+                                        Continue as Guest
+                                    </h5>
+                                </button>
                             </div>
                         </div>
                     </div>
