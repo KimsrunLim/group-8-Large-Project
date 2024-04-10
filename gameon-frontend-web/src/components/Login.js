@@ -49,7 +49,6 @@ function Login() {
 
 
             var res = JSON.parse(await response.text());
-            console.log(res.result);
 
             if (res.result === false) // can't log in
             {
@@ -59,7 +58,7 @@ function Login() {
             {
                 setMessage('');
                 saveCookie();
-                // window.location.href = '/home'; // redirect
+                window.location.href = '/home'; // redirect
             }
         }
         catch (e) {
