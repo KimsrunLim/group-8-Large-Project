@@ -110,8 +110,8 @@ function Login() {
                                     <form onSubmit={doLogin}>
 
                                         { /* Username */}
-                                        <div className="form-group py-3">
-                                            <label className="pb-2 text-dark fw-bold fs-5">
+                                        <div className="form-group py-2">
+                                            <label className="pt-3 pb-1 text-dark fw-bold fs-5">
                                                 Username
                                             </label>
                                             <div className="input-group border rounded">
@@ -128,8 +128,8 @@ function Login() {
                                         </div>
 
                                         { /* Password */}
-                                        <div className="form-group py-3">
-                                            <label className="pb-2 text-dark fw-bold fs-5">
+                                        <div className="form-group py-2">
+                                            <label className="pb-1 text-dark fw-bold fs-5">
                                                 Password
                                             </label>
                                             <div className="input-group border rounded">
@@ -155,7 +155,7 @@ function Login() {
 
                                         { /* Submit */}
                                         <button type="submit" data-testid="submit-button" 
-                                            className="btn mt-4 w-100 fs-5 fw-bold"
+                                            className="btn mt-4 b-0 w-100 fs-5 fw-bold"
                                             onMouseEnter={() => setIsSubmitHovered(true)}
                                             onMouseLeave={() => setIsSubmitHovered(false)}
                                             style={{
@@ -168,21 +168,21 @@ function Login() {
                                     </form>
                                 </div>
 
-                                {/* Body: Forgot Password */}
+                                {/* Body - Forgot Password */}
                                 <div className="d-flex justify-content-center align-items-center 
-                                    text-center pb-4 fs-6 fw-medium text-secondary link-secondary
+                                    text-center mb-4 fs-6 fw-medium text-secondary link-secondary
                                     bg-transparent">
-                                    <a href="/forgotpassword" className={`ps-3 link-secondary ${linkHover}`}>
+                                    <a href="/forgotpassword" className={`ps-2 link-secondary ${linkHover}`}>
                                         Forgot Password?
                                     </a>
                                 </div>
 
-                                { /* Footer: Switch to Signup */}
-                                <div className='footer py-3 border-top border-3 border-dark bg-light 
+                                { /* Footer - Switch to Signup */}
+                                <div className='footer py-3 border-top border-2 border-dark bg-light 
                                         d-flex justify-content-center align-items-center text-center 
                                         fw-medium rounded-bottom fs-6'>
                                     New to GameOn?
-                                    <a href="/signup" className={`fw-bold ps-2 ${linkHover}`}>
+                                    <a href="/signup" className={`fw-bolder ps-2 ${linkHover}`}>
                                         Sign Up  
                                     </a>
                                 </div>

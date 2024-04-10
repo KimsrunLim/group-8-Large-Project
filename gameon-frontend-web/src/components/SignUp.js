@@ -35,6 +35,9 @@ function Signup() {
     const [passError, setPassError] = useState('');
     const [conPassError, setConPassError] = useState('');
 
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [isError, setIsError] = useState(false);
+
     const handleUNChange = (event) => {
         const inputUsername = event.target.value;
         setUsername(inputUsername);
@@ -64,17 +67,17 @@ function Signup() {
         var js = JSON.stringify(obj);
 
         if (!username) {
-            errorsUser.push('Username is required');
+            errorsUser.push('Username is required.');
         }
 
         // Checks for correct inputs
         if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-            errorsUser.push('Only letters, numbers, or underscores');
+            errorsUser.push('Only letters, numbers, or underscores.');
         }
 
         // Checks for min length
         if (!username || username.length < 4) {
-            errorsUser.push('Must be at least 4 characters long');
+            errorsUser.push('Must be at least 4 characters long.');
         }
 
         var response = await fetch(buildPath('api/userCheck'),
@@ -84,7 +87,7 @@ function Signup() {
 
         // Checks for existing user
         if (res.error.length > 0) {
-            errorsUser.push('Username already exists');
+            errorsUser.push('Username already exists.');
         }
 
         setUsernameError(errorsUser);
@@ -95,12 +98,12 @@ function Signup() {
 
         // Check for input
         if (!email) {
-            errorsEmail.push('Email is required');
+            errorsEmail.push('Email is required.');
         }
 
         // Check for valid email
         if (!/\S+@\S+\.(com|net|org)$/.test(email)) {
-            errorsEmail.push('Invalid email address');
+            errorsEmail.push('Invalid email address.');
         }
         setEmailError(errorsEmail);
 
@@ -111,32 +114,32 @@ function Signup() {
 
         // Check for input
         if (!password) {
-            errorsPass.push('Password is required');
+            errorsPass.push('Password is required.');
         }
 
         // Number Check
         if (!/(?=.*\d)/.test(password)) {
-            errorsPass.push('At least one number');
+            errorsPass.push('At least one number.');
         }
 
         // Length Check
         if (password.length < 8) {
-            errorsPass.push('At least 8 characters long');
+            errorsPass.push('At least 8 characters long.');
         }
 
         // Lowercase Check
         if (!/(?=.*[a-z])/.test(password)) {
-            errorsPass.push('At least one lowercase letter');
+            errorsPass.push('At least one lowercase letter.');
         }
 
         // Uppercase Check
         if (!/(?=.*[A-Z])/.test(password)) {
-            errorsPass.push('At least one uppercase letter');
+            errorsPass.push('At least one uppercase letter.');
         }
 
         // Special Character Check
         if (!/(?=.*[!@#$%^&*()])/.test(password)) {
-            errorsPass.push('At least one special character');
+            errorsPass.push('At least one special character.');
         }
 
 
@@ -148,11 +151,11 @@ function Signup() {
     const validateConPass = (conPass) => {
 
         if (!conPass) {
-            setConPassError('Confirmation required');
+            setConPassError('Confirmation required.');
             return false;
         }
         else if (conPass !== password) {
-            setConPassError('Password does not match');
+            setConPassError('Password does not match.');
         }
         else {
             setConPassError('');
@@ -173,10 +176,15 @@ function Signup() {
             var res = JSON.parse(await response.text());
 
             if (res.error.length > 0) {
+                setIsSuccess(false);
+                setIsError(true);
                 setMessage("API Error:" + res.error);
             }
             else {
-                setMessage('User has been added');
+                setIsSuccess(true);
+                setIsError(false);
+                setMessage('User has been added!');
+
                 obj = { username: username, emailR: email };
                 js = JSON.stringify(obj);
 
@@ -203,10 +211,10 @@ function Signup() {
         console.log("Results: ", resUser, resEmail, resPass, resConPass);
 
         if (!(resUser) || !(resEmail) || !(resPass) || !(resConPass)) {
-            setMessage('');
+
+            setMessage('All fields must be filled.');
             return;
         }
-
         addUser();
     };
 
@@ -349,8 +357,9 @@ function Signup() {
 
                                         { /* Error Feedback */}
                                         {message &&
-                                            <div className="text-danger text-center 
-                                                mx-auto pt-3 pb-1 fs-6 fw-bold">
+                                            <div className={`text-danger text-center mx-auto pt-3 
+                                                pb-1 fs-6 fw-bold ${ isSuccess ? 'text-success' 
+                                                    : isError ? 'text-danger' : ''}`}>
                                                 {message}
                                             </div>
                                         }
@@ -371,7 +380,7 @@ function Signup() {
                                 </div>
                                 
                                 { /* Footer: Switch to Login */}
-                                <div className='footer py-3 border-top border-3 border-dark bg-light 
+                                <div className='footer py-3 border-top border-2 border-dark bg-light 
                                         d-flex justify-content-center align-items-center text-center 
                                         fw-medium rounded-bottom fs-6'>
                                     Already have an account?

@@ -29,7 +29,7 @@ function Verify() {
         event.preventDefault();
 
         if (!verificationCode) {
-            setMessage('Verification Code Required');
+            setMessage('Verification Code Required.');
             return;
         }
 
@@ -55,7 +55,7 @@ function Verify() {
                 window.location.href = '/login';
             }
             else {
-                setMessage("Invalid Verification Code");
+                setMessage("Invalid Verification Code.");
             }
         }
         catch (e) {

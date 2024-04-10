@@ -33,7 +33,7 @@ function ForgotPassword() {
 
         // ensure email feild not empty
         if (email === '') {
-            setMessage('Please enter email.');
+            setMessage('Please enter an email.');
             return;
         }
 
@@ -50,10 +50,10 @@ function ForgotPassword() {
 
             if (res.error === 'No Email Found') // can't log in
             {
-                setMessage('No Email Found');
+                setMessage('No Email Found.');
             }
             else {
-                setMessage('Email Has Been Sent');
+                setMessage('Email Has Been Sent!');
 
                 var obj = { emailR: email, username: undefined };
                 var js = JSON.stringify(obj);
@@ -106,8 +106,8 @@ function ForgotPassword() {
                                     <form onSubmit={doForgot}>
 
                                         { /* Email */}
-                                        <div className="form-group py-2">
-                                            <label className="pb-2 text-dark fw-bold fs-5">
+                                        <div className="form-group pt-3">
+                                            <label className="pb-1 text-dark fw-bold fs-5">
                                                 Email
                                             </label>
                                             <div className="input-group border rounded">
@@ -131,7 +131,7 @@ function ForgotPassword() {
 
                                         { /* Submit */}
                                         <button type="submit" data-testid="submit-button" 
-                                            className="btn mt-4 mb-2 w-100 fs-5 fw-bold"
+                                            className="btn mt-4 mb-3 w-100 fs-5 fw-bold"
                                             onMouseEnter={() => setIsSubmitHovered(true)}
                                             onMouseLeave={() => setIsSubmitHovered(false)}
                                             style={{
@@ -145,7 +145,7 @@ function ForgotPassword() {
                                 </div>
 
                                 { /* Footer: Switch to Signup */}
-                                <div className='footer py-3 border-top border-3 border-dark bg-light 
+                                <div className='footer py-3 border-top border-2 border-dark bg-light 
                                         d-flex justify-content-center align-items-center text-center 
                                         fw-medium rounded-bottom fs-6'>
                                     New to GameOn?
