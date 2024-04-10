@@ -47,15 +47,19 @@ function ForgotPassword() {
             {
                 setMessage('No Email Found');
             }
-            else // log in
+            else
             {
                 setMessage('Email Has Been Sent');
 
                 var obj = { emailR: email.value };
                 var js = JSON.stringify(obj);
 
-                await fetch(buildPath('send-email'),
+                await fetch(buildPath('api/send-email'),
                     { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
+
+
+                localStorage.setItem('email', email.value);
+                window.location.href = "/reset";
             }
         }
         catch (e) {

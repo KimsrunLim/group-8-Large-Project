@@ -83,8 +83,7 @@ function ChangePassword() {
         else if (conPass !== password) {
             setConPassError('Password does not match');
         }
-        else
-        {
+        else {
             setConPassError('');
         }
 
@@ -103,8 +102,13 @@ function ChangePassword() {
             setMessage('');
             return;
         }
-        
+
         // Update Password
+        localStorage.getItem('email');
+
+        // call endpoint based on email
+
+        
     };
 
     return (
@@ -177,7 +181,7 @@ function ChangePassword() {
                                     </form>
 
                                     <div className='d-flex justify-content-center align-items-center text-center p-2 fw-medium'>
-                                        Back to Login: 
+                                        Back to Login:
                                         <a href="/login" className='link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover ps-3'>Log In</a>
                                     </div>
                                 </div>

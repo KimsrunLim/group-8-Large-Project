@@ -125,11 +125,12 @@ app.post('/api/email', async (req, res, next) => {
     var error = "";
 
     const { email } = req.body;
+    var results;
 
     try {
         const db = client.db("group8large");
 
-        const results = await
+        results = await
             db.collection('users').find({ Email: email.toLowerCase() }).toArray();
 
         if (results.length <= 0) {
@@ -140,7 +141,7 @@ app.post('/api/email', async (req, res, next) => {
         error = e;
     }
 
-    var ret = { error: error };
+    var ret = { result : results, error: error };
     res.status(200).json(ret);
 });
 
@@ -322,22 +323,22 @@ app.post('/api/send-email', async (req, res) => {
     const { emailR, username } = req.body;
     var message = '';
 
+    console.log("EmailR: ", emailR, "    Username: ", username);
 
-    if (username === null && emailR) {
+
+    if (username === undefined && emailR) {
         // Reset Password
         const db = client.db("group8large");
         const results = await
-            db.collection('users').findOne({ emailR }).toArray();
+            db.collection('users').findOne({ Email : emailR });
 
-        message = `Hello,\n\nPlease input the code to your password:\t\tlocalhost:5001/verify-email?token=${verificationToken}`;
+        message = `Welcome to GameOn!\n\nLets reset your password!\nYour reset code is : ${results.VerifyCode}`;
     }
     else if (emailR && username) {
         // Get this verification code in your database along with the user's emailR
         const db = client.db("group8large");
         const results = await
             db.collection('users').findOne({ Username: username, Email: emailR });
-
-        // console.log('Verification Code: ', results.VerifyCode);
 
         message = `Welcome to GameOn!\n\nYour verificaion code is : ${results.VerifyCode}`;
     }
@@ -391,6 +392,9 @@ app.post('/api/verify', async (req, res) => {
     if (results.VerifyCode === code) {
         const filter = { Email: email };
         db.collection('users').updateOne(filter, { $set: { Validate: true } });
+    }
+    else {
+        error = 'Does Not Match!';
     }
 
     var ret = { error: error };

@@ -10,6 +10,7 @@ import SpeedTypingPage from './pages/SpeedTypingPage.js';
 import ReactionGamePage from './pages/ReactionGamePage.js';
 import ForgotPasswordPage from './pages/ForgotPasswordPage.js';
 import VerifyPage from './pages/VerifyPage.js';
+import ResetPage from './pages/ResetPage.js';
 import ChangePasswordPage from './pages/ChangePasswordPage.js';
 import AboutPage from './pages/AboutPage.js';
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/about" index element={<AboutPage/>} />
         <Route path="/forgotpassword" index element={<ForgotPasswordPage/>} />
         <Route path="/changepassword" index element={<ChangePasswordPage/>} />
+        <Route path="/reset" index element={<ResetPage/>} />
       </Routes>
     </BrowserRouter>
   );

@@ -4,7 +4,7 @@ import { faLock } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../assets/Logo-Black.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Verify() {
+function ResetPass() {
     const app_name = 'group8large-57cfa8808431'
     function buildPath(route) {
         if (process.env.NODE_ENV === 'production') {
@@ -33,13 +33,13 @@ function Verify() {
             return;
         }
 
-        const username = localStorage.getItem('username');
+        const email = localStorage.getItem('email');
 
-        var obj = { username: username };
+        var obj = { email: email };
         var js = JSON.stringify(obj);
 
         try {
-            const response = await fetch(buildPath('api/userCheck'),
+            const response = await fetch(buildPath('api/email'),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
             const result = await response.json();
@@ -52,7 +52,7 @@ function Verify() {
                 const res = await fetch(buildPath('api/verify'),
                     { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
-                window.location.href = '/login';
+                window.location.href = '/changepassword';
             }
             else {
                 setMessage("Invalid Verification Code");
@@ -82,7 +82,7 @@ function Verify() {
                             <div className="card">
 
                                 { /* Title */}
-                                <h1 className="card-header p-3 text-center align-middle fw-bold text-black">Verify Account</h1>
+                                <h1 className="card-header p-3 text-center align-middle fw-bold text-black">Reset Code</h1>
                                 <div className="card-body">
 
                                     { /* Form */}
@@ -94,7 +94,7 @@ function Verify() {
 
                                         { /* Verify Code */}
                                         <div className="form-group pt-4 pb-2">
-                                            <label className="pb-1 text-secondary fw-bold">Verificaion Code</label>
+                                            <label className="pb-1 text-secondary fw-bold">Reset Code</label>
                                             <div className="input-group">
                                                 <span className="input-group-text"><FontAwesomeIcon icon={faLock} /></span>
                                                 <input type="text" id="verificationCode" value={verificationCode} onChange={handleChange} className="form-control" placeholder="XXXXXX" />
@@ -127,4 +127,4 @@ function Verify() {
     );
 };
 
-export default Verify;
+export default ResetPass;
