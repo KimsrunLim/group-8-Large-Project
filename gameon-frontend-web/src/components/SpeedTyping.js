@@ -115,7 +115,7 @@ const createPayload = (validatedInputHistory, numMistakes, username) => {
         accuracy: accuracyCalc.toFixed(2), 
         date: day,
         device: "Computer",
-        score: correctChars - numMistakes,
+        score: wpmCalc.toFixed(2) * accuracyCalc.toFixed(2),
         speed: wpmCalc.toFixed(2),
         username: username
     };
