@@ -1,4 +1,3 @@
-import { faL } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef, useEffect } from "react";
 
 function ReactionGame()
@@ -66,7 +65,7 @@ function ReactionGame()
                 if(result === 0) {
                     setEndTime(date2 - start);
                     result = endTime;
-                    setOutput("Time: ", result, " ms");
+                    setOutput("Time: ");
                     setUnit(" ms");
                     
                 }
@@ -84,14 +83,21 @@ function ReactionGame()
         setUnit(null);
         setEndTime(null);
         getStartingtime(changeColorTime);
-
     };
 
-    const submitStats = async (payload) => {
-        if (!isNaN(+result) && user !== "")
+    const submitStats = async () => {
+
+        let time = new Date();
+        const month = time.getMonth() + 1;
+        const year = time.getFullYear();
+        const date = time.getDate();
+        let day = `${month}-${date}-${year}`;
+        console.log("date: " , day);
+        
+        if ((!isNaN(+result)) && (!(user === "")))
         {
             // send the score to leaderboard
-            var obj = { username: user, time: result, date: "smaple", device: "Computer" };
+            var obj = { username: user, time: result, date: day, device: "computer" };
             var js = JSON.stringify(obj);
 
             try {
