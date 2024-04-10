@@ -102,6 +102,8 @@ app.post('/api/users', async (req, res, next) => {
 
         match = await bcrypt.compare(password, results[0].Password);
 
+        console.log(match);
+
         if (!match) {
             error = "Password does not match";
         }
@@ -114,8 +116,8 @@ app.post('/api/users', async (req, res, next) => {
             error = "Account Not Validated";
         }
     }
-    catch (e) {
-        error = e;
+    catch {
+        error = "Error Occured";
     }
 
     var ret = { result: match, error: error };

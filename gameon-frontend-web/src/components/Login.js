@@ -43,14 +43,17 @@ function Login() {
         var obj = { username: username.value, password: password.value };
         var js = JSON.stringify(obj);
 
+        console.log(username.value, password.value);
+
         try {
             const response = await fetch(buildPath('api/users'),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
 
             var res = JSON.parse(await response.text());
+            console.log(res.error);
 
-            if (res.result === false) // can't log in
+            if (res.result === false || res.error.length > 0) // can't log in
             {
                 setMessage('Username/password combination incorrect.');
             }
