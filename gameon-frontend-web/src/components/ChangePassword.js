@@ -106,8 +106,11 @@ function ChangePassword() {
         // Update Password
         const email = localStorage.getItem('email');
 
+        console.log(email);
+
+
         // call endpoint based on email
-        var obj = { emailR: email, username: undefined };
+        var obj = { email: email, password: password };
         var js = JSON.stringify(obj);
 
 

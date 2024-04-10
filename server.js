@@ -407,15 +407,23 @@ app.post('/api/updatepassword', async (req, res) => {
     const { email, password } = req.body;
     var error = '';
 
+    console.log("This is the password: ", email);
+
     const hash = await bcrypt.hash(password, 10);
 
-    const db = client.db("group8large");
-    const results = await
-        db.collection('users').findOne({ Email: email });
-
-    const filter = { Email: email };
-    db.collection('users').updateOne(filter, { $set: { Password: hash } });
-
+    try 
+    {
+        const db = client.db("group8large");
+        const results = await
+            db.collection('users').findOne({ Email: email });
+    
+        const filter = { Email: email };
+        await db.collection('users').updateOne(filter, { $set: { Password: hash } });
+    }
+    catch(e)
+    {
+        error = e;
+    }
 
     var ret = { error: error };
     res.status(200).json(ret);
