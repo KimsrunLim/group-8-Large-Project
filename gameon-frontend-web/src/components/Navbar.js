@@ -40,21 +40,20 @@ function Header() {
                         <img src={Logo} style={{ height: "2rem" }} alt="GameOn Logo"></img>
                     </Navbar.Brand>
 
-                    {/* Automatically collapse navbar on selected screens */}
-                    <Navbar.Toggle aria-controls="responsive-navbar-nav" data-bs-theme="dark" />
-                    {/* Navigation items that are collapsed on selected screens */}
-                    <Navbar.Collapse id="responsive-navbar-nav" className="d-flex justify-content-end">
+                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+
+                    <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
                         <Nav>
                             <Nav.Link className="text-white pe-5" href="/home">
-                                <FontAwesomeIcon icon={faHouse} /><span className="ps-2"></span>
+                                <FontAwesomeIcon icon={faHouse} /><span className="ps-2">Home</span>
                             </Nav.Link>
 
                             <Nav.Link className="text-white pe-5" href="/about">
-                                <FontAwesomeIcon icon={faUsers} /><span className="ps-2"></span>
+                                <FontAwesomeIcon icon={faUsers} /><span className="ps-2">About</span>
                             </Nav.Link>
 
                             <Nav.Link className="text-white pe-5" href="/leaderboard">
-                                <FontAwesomeIcon icon={faRankingStar} /><span className="ps-2"></span>
+                                <FontAwesomeIcon icon={faRankingStar} /><span className="ps-2">Leaderboard</span>
                             </Nav.Link>
 
                             <Dropdown>
