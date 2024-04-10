@@ -120,7 +120,7 @@ app.post('/api/users', async (req, res, next) => {
         error = "Error Occured";
     }
 
-    var ret = { result: match , error: error };
+    var ret = { result: match, user: results[0].Username, error: error };
     res.status(200).json(ret);
 });
 

@@ -54,10 +54,12 @@ function Login() {
             
             if (res.result === false || res.error.length > 0) // can't log in
             {
-                console.log("Error: ", typeof(res.error));
+                // console.log("Error: ", res.user);
                 if (res.error === "Account Not Validated")
                 {
+                    localStorage.setItem('username', res.user)
                     setMessage('Account Not Validated');
+                    window.location.href = "/verifyaccount";
                 }
                 else {
                     setMessage('Username/password combination incorrect.');
@@ -67,7 +69,7 @@ function Login() {
             {
                 setMessage('');
                 saveCookie();
-                // window.location.href = '/home'; // redirect
+                window.location.href = '/home'; // redirect
             }
         }
         catch (e) {
