@@ -8,6 +8,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function ForgotPassword() {
 
+    const errorsEmail = [];
+
     const [message, setMessage] = useState('');
     const [email, setEmail] = useState('');
 
@@ -24,10 +26,29 @@ function ForgotPassword() {
     const handleEmailChange = (event) => {
         const inputEmail = event.target.value;
         setEmail(inputEmail);
+        validateEmail(inputEmail);
     }
+
+    const validateEmail = (email) => {
+
+        // Check for input
+        if (!email) {
+            errorsEmail.push('Email is required');
+        }
+
+        // Check for valid email
+        if (!/\S+@\S+\.(com|net|org)$/.test(email)) {
+            errorsEmail.push('Invalid email address');
+        }
+        setMessage(errorsEmail);
+
+        return errorsEmail.length > 0 ? false : true;
+    };
 
     const doForgot = async event => {
         event.preventDefault();
+
+        validateEmail(email);
 
         console.log(email);
 
@@ -37,26 +58,24 @@ function ForgotPassword() {
             return;
         }
 
-        var obj = { email: email.value };
+        var obj = { email: email };
         var js = JSON.stringify(obj);
 
         try {
             const response = await fetch(buildPath('api/email'),
                 { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
 
-            console.log(response);
-
             var res = JSON.parse(await response.text());
 
-            if (res.error === 'No Email Found') // can't log in
+            if (res.error.length > 0) // can't log in
             {
                 setMessage('No Email Found');
             }
             else {
                 setMessage('Email Has Been Sent');
 
-                var obj = { emailR: email, username: undefined };
-                var js = JSON.stringify(obj);
+                obj = { emailR: email, username: undefined };
+                js = JSON.stringify(obj);
 
                 await fetch(buildPath('api/send-email'),
                     { method: 'POST', body: js, headers: { 'Content-Type': 'application/json' } });
