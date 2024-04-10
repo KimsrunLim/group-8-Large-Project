@@ -23,7 +23,7 @@ function Login() {
     }
 
     const saveCookie = async event => {
-        let minutes = 20;
+        let minutes = 525600;
         let date = new Date();
         date.setTime(date.getTime() + (minutes * 60 * 1000));
         document.cookie = "username=" + username.value +";expires=" + date.toGMTString();
