@@ -211,7 +211,7 @@ function SpeedTyping() {
                 }, 1000);
 
                 return () => clearInterval(intervalId);
-            } else if (timer === 0) {
+            } else if (timer === 0 && username !== "Guest") {
                 setStats();
             }
         }
@@ -379,7 +379,7 @@ function SpeedTyping() {
 
             {/* Footer */}
             {/* End of game stats */}
-            {timer === 0 && (
+            {timer === 0 && username !== "Guest" (
                 <div class="d-flex justify-content-center align-items-center mt-1">
                     <div class="card text-center">
                         <div class="card-header">

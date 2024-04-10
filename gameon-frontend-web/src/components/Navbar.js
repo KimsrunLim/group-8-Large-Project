@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faRankingStar, faUsers, faUser, faUserPlus, faSignInAlt, faSignOutAlt,
+import { faHouse, faRankingStar, faUser, faUserPlus, faSignInAlt, faSignOutAlt,
     faTimes, faBars
  } from '@fortawesome/free-solid-svg-icons';
 import { Container, Navbar, Nav, Dropdown } from 'react-bootstrap';
-import Logo from '../assets/GameOnLogoWhite.png';
+import Logo from '../assets/blue-logo-name.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// Bootstrap colors
+// colors
 const bPrimary = '#007bff';
 
 // NavLink styles
@@ -24,6 +24,7 @@ const CustomNavLink = ({ to, children, className, isDropdownItem, onClick }) => 
         backgroundColor: hovering ? bPrimary : 'transparent',
         // color primary if active, black on hover, white otherwise 
         color: isActive ? bPrimary : (hovering ? 'black' : 'white'),
+        fontWeight: isActive ? 'bold' : '',
         width: '100%',
     };
 
@@ -96,7 +97,7 @@ function Header() {
 
     // Styles
 
-    const navContainer = "bg-black w-100";
+    const navContainer = "bg-black w-100 border-none";
 
     const navContainerClass = collapsible 
         ? "py-2"
@@ -137,7 +138,7 @@ function Header() {
                 style={{ zIndex: 1030}}>
                 <Container className="p-0">
                     <Navbar.Brand className="ms-0 pb-2 h-100">
-                        <img src={Logo} style={{height: "2rem"}} alt="GameOn Logo"></img>
+                        <img src={Logo} style={{height: "3rem"}} alt="GameOn Logo"></img>
                     </Navbar.Brand>
 
                     {/* Automatically collapse navbar on selected screens */}
@@ -174,7 +175,7 @@ function Header() {
                                         <span className="ps-2 pe-1 px-3">User</span>
                                 </Dropdown.Toggle>
 
-                                <Dropdown.Menu className="bg-dark p-0 m-0" style={ collapsible ? centeredDropdownMenu : {}}>
+                                <Dropdown.Menu className="bg-secondary p-0 m-0" style={ collapsible ? centeredDropdownMenu : {}}>
                                     <Dropdown.Header className="pb-0 px-3 text-white">
                                         <h5>{username}</h5>
                                     </Dropdown.Header>
