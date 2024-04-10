@@ -224,6 +224,10 @@ app.post('/api/addTypingData', async (req, res, next) => {
                 db.collection('TypingGame').insertOne(newData);
             }
         }
+        else if (username === "Guest") 
+        {
+            error = "Guest Account";
+        }
         else {
             const db = client.db("group8large");
             const result = db.collection('TypingGame').insertOne(newData);
