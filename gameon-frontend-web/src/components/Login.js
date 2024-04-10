@@ -51,17 +51,23 @@ function Login() {
 
 
             var res = JSON.parse(await response.text());
-            // console.log(res.error);
-
+            
             if (res.result === false || res.error.length > 0) // can't log in
             {
-                setMessage('Username/password combination incorrect.');
+                console.log("Error: ", typeof(res.error));
+                if (res.error === "Account Not Validated")
+                {
+                    setMessage('Account Not Validated');
+                }
+                else {
+                    setMessage('Username/password combination incorrect.');
+                }
             }
             else // log in
             {
                 setMessage('');
                 saveCookie();
-                window.location.href = '/home'; // redirect
+                // window.location.href = '/home'; // redirect
             }
         }
         catch (e) {

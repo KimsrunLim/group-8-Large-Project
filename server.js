@@ -112,7 +112,7 @@ app.post('/api/users', async (req, res, next) => {
             error = "No Account Exists";
         }
 
-        if (results.Validate === false) {
+        if (results[0].Validate === false) {
             error = "Account Not Validated";
         }
     }
@@ -120,7 +120,7 @@ app.post('/api/users', async (req, res, next) => {
         error = "Error Occured";
     }
 
-    var ret = { result: match, error: error };
+    var ret = { result: match , error: error };
     res.status(200).json(ret);
 });
 
