@@ -35,9 +35,6 @@ function Signup() {
     const [passError, setPassError] = useState('');
     const [conPassError, setConPassError] = useState('');
 
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [isError, setIsError] = useState(false);
-
     const handleUNChange = (event) => {
         const inputUsername = event.target.value;
         setUsername(inputUsername);
@@ -176,13 +173,9 @@ function Signup() {
             var res = JSON.parse(await response.text());
 
             if (res.error.length > 0) {
-                setIsSuccess(false);
-                setIsError(true);
                 setMessage("API Error:" + res.error);
             }
             else {
-                setIsSuccess(true);
-                setIsError(false);
                 setMessage('User has been added!');
 
                 obj = { username: username, emailR: email };
@@ -212,7 +205,7 @@ function Signup() {
 
         if (!(resUser) || !(resEmail) || !(resPass) || !(resConPass)) {
 
-            setMessage('All fields must be filled.');
+            setMessage('');
             return;
         }
         addUser();
@@ -357,9 +350,8 @@ function Signup() {
 
                                         { /* Error Feedback */}
                                         {message &&
-                                            <div className={`text-danger text-center mx-auto pt-3 
-                                                pb-1 fs-6 fw-bold ${ isSuccess ? 'text-success' 
-                                                    : isError ? 'text-danger' : ''}`}>
+                                            <div className="text-danger text-center mx-auto pt-3 
+                                                pb-1 fs-6 fw-bold">
                                                 {message}
                                             </div>
                                         }
