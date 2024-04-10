@@ -224,8 +224,7 @@ app.post('/api/addTypingData', async (req, res, next) => {
                 db.collection('TypingGame').insertOne(newData);
             }
         }
-        else if (username === "Guest") 
-        {
+        else if (username === "Guest") {
             error = "Guest Account";
         }
         else {
@@ -330,63 +329,72 @@ const { match } = require("assert");
 app.post('/api/send-email', async (req, res) => {
     const { emailR, username } = req.body;
     var message = '';
+    var error = '';
 
     console.log("EmailR: ", emailR, "    Username: ", username);
 
+    try {
 
-    if (username === undefined && emailR) {
-        // Reset Password
-        const db = client.db("group8large");
-        const results = await
-            db.collection('users').findOne({ Email: emailR });
+        if (username === undefined && emailR) {
+            // Reset Password
+            const db = client.db("group8large");
+            const results = await
+                db.collection('users').findOne({ Email: emailR });
 
-        message = `Welcome to GameOn!\n\nLets reset your password!\nYour reset code is : ${results.VerifyCode}`;
-    }
-    else if (emailR && username) {
-        // Get this verification code in your database along with the user's emailR
-        const db = client.db("group8large");
-        const results = await
-            db.collection('users').findOne({ Username: username, Email: emailR });
-
-        message = `Welcome to GameOn!\n\nYour verificaion code is : ${results.VerifyCode}`;
-    }
-    else {
-        console.log("error getting username or email");
-        res.status(500).send('Error sending email');
-    }
-
-    // Create a nodemailer transporter
-    let transporter = nodemailer.createTransport({
-        service: 'gmail', // Use Gmail as the email service
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false,
-        auth: {
-            user: "cop4331gameon008@gmail.com", // Your Gmail email address
-            pass: "vtpq muwx fomn njcv", // Your Gmail password (consider using app-specific password)
-        },
-    });
-
-    // Define email options
-    let mailOptions = {
-        from: 'cop4331gameon008@gmail.com', // Sender email address
-        to: emailR, // Recipient email address
-        subject: 'GameOn Email Verification', // Email subject
-        text: message, // Plain text body
-    };
-
-
-    // Send email
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Error sending email:', error);
-            res.status(500).send('Error sending email');
-        } else {
-            console.log('Email sent:', info.response);
-            res.status(200).send('Email sent successfully');
+            message = `Welcome to GameOn!\n\nLets reset your password!\nYour reset code is : ${results.VerifyCode}`;
         }
-    });
+        else if (emailR && username) {
+            // Get this verification code in your database along with the user's emailR
+            const db = client.db("group8large");
+            const results = await
+                db.collection('users').findOne({ Username: username, Email: emailR });
 
+            message = `Welcome to GameOn!\n\nYour verificaion code is : ${results.VerifyCode}`;
+        }
+        else {
+            console.log("error getting username or email");
+            res.status(500).send('Error sending email');
+        }
+
+        // Create a nodemailer transporter
+        let transporter = nodemailer.createTransport({
+            service: 'gmail', // Use Gmail as the email service
+            host: "smtp.gmail.com",
+            port: 587,
+            secure: false,
+            auth: {
+                user: "cop4331gameon008@gmail.com", // Your Gmail email address
+                pass: "vtpq muwx fomn njcv", // Your Gmail password (consider using app-specific password)
+            },
+        });
+
+        // Define email options
+        let mailOptions = {
+            from: 'cop4331gameon008@gmail.com', // Sender email address
+            to: emailR, // Recipient email address
+            subject: 'GameOn Email Verification', // Email subject
+            text: message, // Plain text body
+        };
+
+
+        // Send email
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending email:', error);
+                res.status(500).send('Error sending email');
+            } else {
+                console.log('Email sent:', info.response);
+                res.status(200).send('Email sent successfully');
+            }
+        });
+    }
+    catch(e) 
+    {
+        error = e;
+    }
+
+    ret = { error : error };
+    res.status(200).send(ret);
 });
 
 app.post('/api/verify', async (req, res) => {
@@ -417,17 +425,15 @@ app.post('/api/updatepassword', async (req, res) => {
 
     const hash = await bcrypt.hash(password, 10);
 
-    try 
-    {
+    try {
         const db = client.db("group8large");
         const results = await
             db.collection('users').findOne({ Email: email });
-    
+
         const filter = { Email: email };
         await db.collection('users').updateOne(filter, { $set: { Password: hash } });
     }
-    catch(e)
-    {
+    catch (e) {
         error = e;
     }
 
