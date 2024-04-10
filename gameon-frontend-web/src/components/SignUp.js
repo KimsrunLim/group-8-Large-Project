@@ -250,8 +250,8 @@ function Signup() {
                                     <form onSubmit={doSignup}>
 
                                         { /* Username */}
-                                        <div className="form-group py-2">
-                                            <label className="pb-2 text-dark fw-bold fs-5">
+                                        <div className="form-group pt-3">
+                                            <label className="pb-1 text-dark fw-bold fs-5">
                                                 Username
                                             </label>
                                             <div className="input-group border rounded">
@@ -276,7 +276,7 @@ function Signup() {
 
                                         { /* Email */}
                                         <div className="form-group py-2">
-                                            <label className="pb-2 text-dark fw-bold fs-5">
+                                            <label className="pb-1 text-dark fw-bold fs-5">
                                                 Email
                                             </label>
                                             <div className="input-group border rounded">
@@ -301,7 +301,7 @@ function Signup() {
 
                                         { /* Password */}
                                         <div className="form-group py-2">
-                                            <label className="pb-2 text-dark fw-bold fs-5">
+                                            <label className="pb-1 text-dark fw-bold fs-5">
                                                 Password
                                             </label>
                                             <div className="input-group border rounded">
@@ -326,7 +326,7 @@ function Signup() {
 
                                         { /* Confirm Password */}
                                         <div className="form-group py-2">
-                                            <label className="pb-2 text-dark fw-bold fs-5">
+                                            <label className="pb-1 text-dark fw-bold fs-5">
                                                 Password
                                             </label>
                                             <div className="input-group border rounded">

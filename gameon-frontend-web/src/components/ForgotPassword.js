@@ -157,7 +157,7 @@ function ForgotPassword() {
 
                             { /* Back to Login */}
                             <div className='d-grid py-5'>
-                                <button onSubmit={handleGoBack} type="button" 
+                                <button onClick={handleGoBack} type="button" 
                                     className="btn"
                                     onMouseEnter={() => setIsLoginHovered(true)}
                                     onMouseLeave={() => setIsLoginHovered(false)}

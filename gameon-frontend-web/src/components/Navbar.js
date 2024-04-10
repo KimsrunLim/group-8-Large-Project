@@ -98,15 +98,15 @@ function Header() {
     // Styles
     // 
 
-    const navContainer = "bg-black w-100 border-none";
+    const navContainer = "p-0 m-0 px-5 w-100 bg-black border-none";
 
     const navContainerClass = collapsible 
         ? "py-2"
-        : "py-0 my-0"; 
+        : "py-0 my-0 px-4"; 
 
     const navItemClass = collapsible 
         ? "my-0 py-3 d-flex justify-content-center align-items-center"
-        : "my-0 mx-0 px-4 pt-3 pb-4 align-items-center"; 
+        : "px-4 justify-content-center align-items-center"; 
 
     const navLinks = [
         { to: '/home', icon: faHouse, text: 'Home' },
@@ -134,9 +134,9 @@ function Header() {
     return (
         <>
             {/* Collapsible Navigation (if screen <= "md") */}
-            <Navbar collapseOnSelect expand="md" className={`${navContainer} ${navContainerClass}`} 
+            <Navbar collapseOnSelect expand="md" className={navContainer} 
                 style={{ zIndex: 1030 }}>
-                <Container className="p-0 d-flex justify-content-between">
+                <Container className="p-0 my-0 d-flex justify-content-between align-items-center">
 
                     {/* Navbar Brand Logo */}
                     <Navbar.Brand className="ms-0 pb-2 h-100">
@@ -149,15 +149,18 @@ function Header() {
                     </Navbar.Toggle>
 
                     {/* Nav Items */}
-                    <Navbar.Collapse id="responsive-navbar-nav" className="w-100">
-                        <Nav className={`align-items-center
+                    <Navbar.Collapse id="responsive-navbar-nav" className={navContainerClass}>
+                        <Nav className={`d-flex justify-content-center align-items-center px-3
                             ${collapsible ? "flex-col w-100" : "flex-row ms-auto my-0"}`}>
                             
                             {/* Navigation Links */}
-                            <CustomNavLink to="/home" className="flex-col py-2 d-flex justify-content-center 
-                                align-items-center text-align-center" style={{width:'40%'}}>
+                            <CustomNavLink to="/home" className={collapsible 
+                                ? "py-2 d-flex justify-content-center align-items-center text-align-center" 
+                                : "py-2 d-flex jutify-content-center align-items-center text-align-center"
+                                }
+                                style={{width:'40%'}}>
                                 <FontAwesomeIcon icon={faHouse} />
-                                <span className="ps-2">Home</span>
+                                <span className="ps-2 px-5 text-align-center">Home</span>
                             </CustomNavLink>
                             {collapsible && (
                                 // Simulate divider for navbar
@@ -166,10 +169,13 @@ function Header() {
                                     -
                                 </Nav.Link>
                             )}
-                            <CustomNavLink to="/leaderboard" className="flex-col py-2 d-flex justify-content-center 
-                                align-items-center text-align-center" style={{width:'40%'}}>
+                            <CustomNavLink to="/leaderboard" className={collapsible 
+                                ? "py-2 d-flex justify-content-center align-items-center text-align-center" 
+                                : "py-2 d-flex jutify-content-center align-items-center text-align-center"
+                                } 
+                                style={{width:'40%'}}>
                                 <FontAwesomeIcon icon={faRankingStar} />
-                                <span className="ps-2">Ranks</span>
+                                <span className="ps-2 px-5">Leaderboard</span>
                             </CustomNavLink>
 
                             {/* User Dropdown Menu */}
@@ -180,28 +186,30 @@ function Header() {
                                 onToggle={toggleDropdown} // Attach the toggle function to Dropdown's onToggle
                             >
                                 <Dropdown.Toggle as={CustomNavLink} to="#" 
-                                    className="my-0 ps-2 py-2 d-flex justify-content-center align-items-center" 
+                                    className="my-0 ps-2 pe-2 py-2 d-flex justify-content-center 
+                                        align-items-center text-primary border border-1 border-primary" 
                                 >
                                         <FontAwesomeIcon icon={faUser} />
-                                    <span className="ps-2 pe-1 px-3">User</span>
+                                    <span className="ps-2 pe-1 px-5">User</span>
                                 </Dropdown.Toggle>
 
                                 {/* Dropdown Items */}
                                 <Dropdown.Menu className="bg-dark p-0 m-0" style={{ textAlign: 'center', display: 'block' }}>
-                                    <Dropdown.Header className="pb-0 px-3 text-white">
-                                        <h5>{username}</h5>
+                                    <Dropdown.Header className="pb-1 px-3 bg-primary text-black 
+                                        border-bottom border-3 border-black
+                                        d-flex justify-content-center align-content-center">
+                                        <h5 className="fw-bolder">{username}</h5>
                                     </Dropdown.Header>
-                                    <Dropdown.Divider className="bg-primary mt-0 mb-0" /> 
 
                                     {username === "Guest" ? ( // as Guest
                                         <>
-                                            <Dropdown.Item href="/signup" className="py-2">
-                                                <FontAwesomeIcon icon={faUserPlus} className="ps-3" />
+                                            <Dropdown.Item href="/signup" className="py-2 text-white">
+                                                <FontAwesomeIcon icon={faUserPlus} />
                                                 <span className="ps-2">Sign Up</span>
                                             </Dropdown.Item>
-                                            <Dropdown.Divider className="bg-dark mt-0 mb-0" /> 
-                                            <Dropdown.Item href="/login" className="py-2">
-                                                <FontAwesomeIcon icon={faSignInAlt} className="ps-3" />
+                                             <Dropdown.Divider className="bg-primary mt-0 mb-0" />
+                                            <Dropdown.Item href="/login" className="py-2 text-white">
+                                                <FontAwesomeIcon icon={faSignInAlt} />
                                                 <span className="ps-2">Log In</span>
                                             </Dropdown.Item>
                                         </>
