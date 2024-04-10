@@ -10,7 +10,10 @@ const LeaderBoard = () => {
     const app_name = 'group8large-57cfa8808431';
 
     const [username, setUsername] =useState("");
+
+
     // let username;
+
     var rank = 1;
     const reactionHeader = () => {
         return(
@@ -51,7 +54,6 @@ const LeaderBoard = () => {
     var gameData = 'api/TypingLeaderboard';
     
     const handleSelect = (selectedKey) => {
-        console.log("here?", username);
         if (selectedKey === "link-1") {
             setHeader(speedTypingHeader());
             gameData = 'api/TypingLeaderboard';
@@ -77,19 +79,25 @@ const LeaderBoard = () => {
     }
 
     useEffect(() => {
-        readCookie();
+        // readCookie();
         fetchPlayer();
     }, []);
 
     const readCookie = () => {
+        console.log("eat cookie");
         let data = document.cookie;
         let tokens = data.split("=");
         if (tokens[0] === "username") {
-            setUsername(tokens[1]);
+            return tokens[1];
+            // setUsername(tokens[1]);
         }
     }
 
+    
     const fetchPlayer = async () => {
+
+        const username = await readCookie();
+
         var obj = {};
         var js = JSON.stringify(obj);
         try {
@@ -102,11 +110,10 @@ const LeaderBoard = () => {
 
             // add case when user not found in leaderboard
             var ourUser = player.results.find(x => x.Username === username);
-            console.log(username);
+
             if (ourUser) {
                 console.log(`User ${ourUser.Username} found!`);
                 ourUser.Rank = await player.results.findIndex(x => x.Username === username) + 1;
-                console.log("hereh",ourUser);
                 setCurUser(ourUser);
 
             } else {
@@ -139,6 +146,7 @@ const LeaderBoard = () => {
                         <tr>
                             <td>{curUser.Rank}</td>
                             <td>{curUser.Username}</td>
+
                             <td>{curUser.Accuracy}</td>
                             <td>{curUser.Speed}</td>
                             <td>{curUser.Time}</td>
@@ -151,8 +159,10 @@ const LeaderBoard = () => {
                     <tbody>
                         {players.map(player => (
                             <tr key={player.username}>
+
                                 <td>{rank++}</td>
                                 <td>{player.Username}</td>
+
                                 <td>{player.Accuracy}</td>
                                 <td>{player.Speed}</td>
                                 <td>{player.Time}</td>

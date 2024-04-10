@@ -1,4 +1,3 @@
-import { faL } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef, useEffect } from "react";
 
 function ReactionGame()
@@ -78,7 +77,7 @@ function ReactionGame()
     const startGame = () => {
         canvasRef.current.style.backgroundColor = 'rgb(243,16,16)';
         console.log("game start");
-        let changeColorTime = randomTime(8); //max time as 8 sec.
+        let changeColorTime = randomTime(2); //max time as 8 sec.
         result = 0;
         setOutput(null);
         setUnit(null);
@@ -86,18 +85,17 @@ function ReactionGame()
         getStartingtime(changeColorTime);
     };
 
-    const submitStats = async (payload) => {
+    const submitStats = async () => {
 
+        let time = new Date();
+        const month = time.getMonth() + 1;
+        const year = time.getFullYear();
+        const date = time.getDate();
+        let day = `${month}-${date}-${year}`;
+        console.log("date: " , day);
         
-        if ((!isNaN(+result)) && (!user===""))
+        if ((!isNaN(+result)) && (!(user === "")))
         {
-            let time = new Date();
-            const month = time.getMonth() + 1;
-            const year = time.getFullYear();
-            const date = time.getDate();
-            let day = `${month}/${date}/${year}`;
-            console.log("date: " , day);
-
             // send the score to leaderboard
             var obj = { username: user, time: result, date: day, device: "computer" };
             var js = JSON.stringify(obj);
