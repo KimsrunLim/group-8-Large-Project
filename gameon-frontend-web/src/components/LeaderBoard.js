@@ -84,7 +84,6 @@ const LeaderBoard = () => {
     }, []);
 
     const readCookie = () => {
-        console.log("eat cookie");
         let data = document.cookie;
         let tokens = data.split("=");
         if (tokens[0] === "username") {
@@ -143,18 +142,17 @@ const LeaderBoard = () => {
                 </Nav>
                 <table className="table table-striped">
                     <thead className='sticky-top'>
-                        <tr>
-                            <td>{curUser.Rank}</td>
-                            <td>{curUser.Username}</td>
-
-                            <td>{curUser.Accuracy}</td>
-                            <td>{curUser.Speed}</td>
-                            <td>{curUser.Time}</td>
-                            <td>{curUser.Score}</td>
-                            <td>{curUser.Device}</td>
-                            <td>{curUser.Date}</td>
-                        </tr>
                         {header}
+                        <tr>
+                            <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Rank}</td>
+                            <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Username}</td>
+                            <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Accuracy}</td>
+                            <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Speed}</td>
+                            <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Time}</td>
+                            <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Score}</td>
+                            <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Device}</td>
+                            <td style={{ backgroundColor: "rgb(255, 246, 196)" }}>{curUser.Date}</td>
+                        </tr>
                     </thead>
                     <tbody>
                         {players.map(player => (
@@ -162,7 +160,6 @@ const LeaderBoard = () => {
 
                                 <td>{rank++}</td>
                                 <td>{player.Username}</td>
-
                                 <td>{player.Accuracy}</td>
                                 <td>{player.Speed}</td>
                                 <td>{player.Time}</td>
