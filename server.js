@@ -102,7 +102,7 @@ app.post('/api/users', async (req, res, next) => {
 
         match = await bcrypt.compare(password, results[0].Password);
 
-        console.log(match);
+        // console.log(match);
 
         if (!match) {
             error = "Password does not match";
@@ -130,7 +130,7 @@ app.post('/api/email', async (req, res, next) => {
     const { email } = req.body;
     var results;
 
-    console.log("Backend Email: ", email);
+    // console.log("Backend Email: ", email);
 
     try {
         const db = client.db("group8large");
@@ -155,7 +155,7 @@ app.post('/api/addReactionData', async (req, res, next) => {
     const { username, time, date, device } = req.body;
     const newData = { Username: username, Time: time, Date: date, Device: device };
 
-    console.log("New Data: ", newData);
+    // console.log("New Data: ", newData);
 
     var error = '';
 
@@ -332,7 +332,7 @@ app.post('/api/send-email', async (req, res) => {
     var message = '';
     var error = '';
 
-    console.log("EmailR: ", emailR, "    Username: ", username);
+    // console.log("EmailR: ", emailR, "    Username: ", username);
 
     try {
 
@@ -353,7 +353,7 @@ app.post('/api/send-email', async (req, res) => {
             message = `Welcome to GameOn!\n\nYour verificaion code is : ${results.VerifyCode}`;
         }
         else {
-            console.log("error getting username or email");
+            // console.log("error getting username or email");
             res.status(200).send('Error sending email getting user/email');
         }
 
@@ -384,7 +384,7 @@ app.post('/api/send-email', async (req, res) => {
                 console.error('Error sending email:', error);
                 res.status(200).send('Error sending email transporter.sendMail');
             } else {
-                console.log('Email sent:', info.response);
+                // console.log('Email sent:', info.response);
                 res.status(200).send('Email sent successfully');
             }
         });
@@ -419,7 +419,7 @@ app.post('/api/updatepassword', async (req, res) => {
     const { email, password } = req.body;
     var error = '';
 
-    console.log("This is the password: ", email);
+    // console.log("This is the password: ", email);
 
     const hash = await bcrypt.hash(password, 10);
 

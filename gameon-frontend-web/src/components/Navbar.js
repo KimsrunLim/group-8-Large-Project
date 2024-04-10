@@ -16,7 +16,7 @@ function Header() {
     const readCookie = () => {
         let data = document.cookie;
         let tokens = data.split("=");
-        console.log("token: ", tokens);
+        // console.log("token: ", tokens);
         if (tokens[0] === "username") {
             setIsLoggedIn(true);
             return tokens[1];
@@ -25,7 +25,7 @@ function Header() {
 
     const loggingOut = () => {
         // Implement logout logic here
-        console.log(isLoggedIn);
+        // console.log(isLoggedIn);
 
         document.cookie = "username= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
         setIsLoggedIn(false);
