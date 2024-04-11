@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faRankingStar, faUsers, faUser, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faRankingStar, faUser, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { Container, Navbar, Nav, Dropdown } from 'react-bootstrap';
-import Logo from '../assets/GameOnLogoWhite.png';
+import Logo from '../assets/NameLogo-Blue.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Header() {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+    const [isHomeHovered, setIsHomeHovered] = useState(false);
+    const [isLeaderboardHovered, setisLeaderboardHovered] = useState(false);
+    const [isDropdownHovered, setisDropdownHovered] = useState(false);
     useEffect(() => {
         readCookie();
     }, []);
@@ -34,30 +36,45 @@ function Header() {
 
     return (
         <>
-            <Navbar collapseOnSelect expand="md" className="bg-black" style={{ zIndex: 1030 }}>
+            <Navbar collapseOnSelect expand="md" className="bg-black m-0 p-0" style={{ zIndex: 1030 }}>
                 <Container>
                     <Navbar.Brand>
-                        <img src={Logo} style={{ height: "2rem" }} alt="GameOn Logo"></img>
+                        <img src={Logo} style={{ height: "2.5rem" }} alt="GameOn Logo"></img>
                     </Navbar.Brand>
 
-                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                    <Navbar.Toggle aria-controls="responsive-navbar-nav" className='bg-white' />
 
                     <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
                         <Nav>
-                            <Nav.Link className="text-white pe-5" href="/home">
+                            <Nav.Link className="text-white p-3" height="90px" href="/home" 
+                                            onMouseEnter={() => setIsHomeHovered(true)}
+                                            onMouseLeave={() => setIsHomeHovered(false)}
+                                            style={{
+                                                backgroundColor: isHomeHovered ? '#007bff' : 'black',
+                                                color: isHomeHovered ? 'white' : 'black', 
+                                            }}>
                                 <FontAwesomeIcon icon={faHouse} /><span className="ps-2">Home</span>
                             </Nav.Link>
 
-                            {/* <Nav.Link className="text-white pe-5" href="/about">
-                                <FontAwesomeIcon icon={faUsers} /><span className="ps-2">About</span>
-                            </Nav.Link> */}
 
-                            <Nav.Link className="text-white pe-5" href="/leaderboard">
+                            <Nav.Link className="text-white p-3" height="90px" href="/leaderboard"
+                                            onMouseEnter={() => setisLeaderboardHovered(true)}
+                                            onMouseLeave={() => setisLeaderboardHovered(false)}
+                                            style={{
+                                                backgroundColor: isLeaderboardHovered ? '#007bff' : 'black',
+                                                color: isLeaderboardHovered ? 'white' : 'black', 
+                                            }}>
                                 <FontAwesomeIcon icon={faRankingStar} /><span className="ps-2">Leaderboard</span>
                             </Nav.Link>
 
                             <Dropdown>
-                                <Dropdown.Toggle variant="light" id="dropdown-basic">
+                                <Dropdown.Toggle className="m-2" variant="light" id="dropdown-basic"
+                                    onMouseEnter={() => setisDropdownHovered(true)}
+                                    onMouseLeave={() => setisDropdownHovered(false)}
+                                    style={{
+                                        backgroundColor: isDropdownHovered ? '#007bff' : 'white',
+                                        color: isDropdownHovered ? 'white' : 'black', 
+                                    }}>
                                     <FontAwesomeIcon icon={faUser} />
                                 </Dropdown.Toggle>
 

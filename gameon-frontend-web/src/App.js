@@ -12,7 +12,6 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage.js';
 import VerifyPage from './pages/VerifyPage.js';
 import ResetPage from './pages/ResetPage.js';
 import ChangePasswordPage from './pages/ChangePasswordPage.js';
-import AboutPage from './pages/AboutPage.js';
 
 function App() {
   return (
@@ -26,7 +25,6 @@ function App() {
         <Route path="/leaderboard" index element={<LeaderBoardPage />} />
         <Route path="/speedtyping" index element={<SpeedTypingPage />} />
         <Route path="/reactiongame" index element={<ReactionGamePage />} />
-        <Route path="/about" index element={<AboutPage/>} />
         <Route path="/forgotpassword" index element={<ForgotPasswordPage/>} />
         <Route path="/changepassword" index element={<ChangePasswordPage/>} />
         <Route path="/reset" index element={<ResetPage/>} />
