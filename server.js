@@ -137,7 +137,7 @@ app.post('/api/email', async (req, res, next) => {
 
         results = await
             db.collection('users').findOne({ Email: email.toLowerCase() });
-        
+
         if (!results.Email) {
             error = "No Email Found";
         }
@@ -342,7 +342,13 @@ app.post('/api/send-email', async (req, res) => {
             const results = await
                 db.collection('users').findOne({ Email: emailR });
 
-            message = `Welcome to GameOn!\n\nLets reset your password!\nYour reset code is : ${results.VerifyCode}`;
+            const verificationCode = Math.floor(100000 + Math.random() * 900000);
+            console.log("Email Only: ", emailR);
+            const filter = { Email: emailR };
+            db.collection('users').updateOne(filter, { $set: { VerifyCode: verificationCode } });
+
+
+            message = `Welcome to GameOn!\n\nLets reset your password!\nYour reset code is : ${verificationCode}`;
         }
         else if (emailR && username) {
             // Get this verification code in your database along with the user's emailR
@@ -350,7 +356,12 @@ app.post('/api/send-email', async (req, res) => {
             const results = await
                 db.collection('users').findOne({ Username: username, Email: emailR });
 
-            message = `Welcome to GameOn!\n\nYour verificaion code is : ${results.VerifyCode}`;
+            const verificationCode = Math.floor(100000 + Math.random() * 900000);
+            console.log("Email and Username: ", emailR);
+            const filter = { Email: emailR };
+            db.collection('users').updateOne(filter, { $set: { VerifyCode: verificationCode } });
+
+            message = `Welcome to GameOn!\n\nYour verificaion code is : ${verificationCode}`;
         }
         else {
             // console.log("error getting username or email");
@@ -389,8 +400,7 @@ app.post('/api/send-email', async (req, res) => {
             }
         });
     }
-    catch(e) 
-    {
+    catch (e) {
         error = e;
     }
 });
