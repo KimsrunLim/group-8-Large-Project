@@ -43,7 +43,7 @@ function ReactionGame()
     const randomTime = (max) => {
         let time = Math.floor(Math.random() * Math.floor(max) ) + 1;
         time *= 1000;
-        // console.log("time:", time / 1000, "s");
+        console.log("time:", time / 1000, "s");
         return time;
     }
 
@@ -82,7 +82,7 @@ function ReactionGame()
     const startGame = () => {
         canvasRef.current.style.backgroundColor = 'rgb(243,16,16)';
         // console.log("game start");
-        let changeColorTime = randomTime(1); //max time as 8 sec.
+        let changeColorTime = randomTime(8); //max time as 8 sec.
         result = 0;
         setOutput(null);
         setUnit(null);
