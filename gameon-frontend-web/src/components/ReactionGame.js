@@ -43,7 +43,7 @@ function ReactionGame()
     const randomTime = (max) => {
         let time = Math.floor(Math.random() * Math.floor(max) ) + 1;
         time *= 1000;
-        console.log("time:", time / 1000, "s");
+        // console.log("time:", time / 1000, "s");
         return time;
     }
 
@@ -114,7 +114,7 @@ function ReactionGame()
                 setLastScore(result);
                 setLastunit(" ms");
                 setDynamictxt("Time: ");
-                result = (sum +result) / 5;
+                result = parseInt(((sum +result) / 5), 10);
                 setSum(0);
                 setCount(0);
                 setOutput("Your Averge Reaction Time is: ");
