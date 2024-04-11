@@ -57,7 +57,7 @@ function Login() {
             if (res.result === false || res.error.length > 0) // can't log in
             {
                 // console.log("Error: ", res.user);
-                if (res.error === "Account Not Validated")
+                if (res.error === "Account Not Validated" && res.result === true)
                 {
                     localStorage.setItem('username', res.user)
                     setMessage('Account Not Validated');
