@@ -261,7 +261,7 @@ function Signup() {
                                                 </span>
                                                 <input className="form-control form-control-lg
                                                     border-0 border-end rounded bg-transparent"
-                                                    type="text" id="username" placeholder="Username" 
+                                                    type="text" id="username" data-testid="username-input" placeholder="Username" 
                                                     value={username} onChange={handleUNChange}
                                                 />
                                             </div>
@@ -286,7 +286,7 @@ function Signup() {
                                                 </span>
                                                 <input className="form-control form-control-lg 
                                                     border-0 border-end rounded bg-transparent"
-                                                    type="text" id="email" placeholder="example@domain.com" 
+                                                    type="text" id="email" data-testid="email-input" placeholder="example@domain.com" 
                                                     value={email} onChange={handleEmailChange}
                                                 />
                                             </div>
@@ -311,7 +311,7 @@ function Signup() {
                                                 </span>
                                                 <input className="form-control form-control-lg 
                                                     border-0 border-end rounded bg-transparent"
-                                                    type="password" id="password" placeholder="Password" 
+                                                    type="password" id="password" data-testid="password-input" placeholder="Password" 
                                                     value={password} onChange={handlePassChange}
                                                 />
                                             </div>
@@ -336,7 +336,7 @@ function Signup() {
                                                 </span>
                                                 <input className="form-control form-control-lg 
                                                     border-0 border-end rounded bg-transparent"
-                                                    type="password" id="passwordConfirm" 
+                                                    type="password" id="passwordConfirm" data-testid="confirm-password-input"
                                                     placeholder="Confirm Password" 
                                                     value={conPass} onChange={handleConPassChange}
                                                 />
@@ -351,7 +351,7 @@ function Signup() {
                                         { /* Error Feedback */}
                                         {message &&
                                             <div className="text-danger text-center mx-auto pt-3 
-                                                pb-1 fs-6 fw-bold">
+                                                pb-1 fs-6 fw-bold" data-testid="error-message">
                                                 {message}
                                             </div>
                                         }
