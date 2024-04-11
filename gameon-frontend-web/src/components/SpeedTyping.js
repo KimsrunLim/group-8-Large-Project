@@ -112,11 +112,11 @@ const createPayload = (validatedInputHistory, numMistakes, username) => {
     let day = `${month}-${date}-${year}`;
 
     return {
-        accuracy: accuracyCalc.toFixed(2), 
+        accuracy: parseInt(accuracyCalc), 
         date: day,
         device: "Computer",
-        score: wpmCalc.toFixed(2) * accuracyCalc.toFixed(2),
-        speed: wpmCalc.toFixed(2),
+        score: parseInt(wpmCalc * accuracyCalc),
+        speed: parseInt(wpmCalc),
         username: username
     };
 };
