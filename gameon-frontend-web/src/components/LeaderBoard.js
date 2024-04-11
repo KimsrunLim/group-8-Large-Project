@@ -19,14 +19,14 @@ const LeaderBoard = () => {
         return(
             <>
             <tr class="col-7 overflow-auto">
-                <th className='bg-info bg-gradient'>Rank</th>
-                <th className='bg-info bg-gradient'>Player</th>
-                <th className='bg-info bg-gradient'></th>
-                <th className='bg-info bg-gradient'></th>
-                <th className='bg-info bg-gradient'>Time</th>
-                <th className='bg-info bg-gradient'></th>
-                <th className='bg-info bg-gradient'>Device</th>
-                <th className='bg-info bg-gradient'>Date</th>
+                <th className='bg-gradient' style={{backgroundColor:"#007bff", color:"white"}}>Rank</th>
+                <th className='bg-gradient' style={{backgroundColor:"#007bff", color:"white"}}>Player</th>
+                <th className='bg-gradient' style={{backgroundColor:"#007bff", color:"white"}}></th>
+                <th className='bg-gradient' style={{backgroundColor:"#007bff", color:"white"}}></th>
+                <th className='bg-gradient' style={{backgroundColor:"#007bff", color:"white"}}>Time</th>
+                <th className='bg-gradient' style={{backgroundColor:"#007bff", color:"white"}}></th>
+                <th className='bg-gradient' style={{backgroundColor:"#007bff", color:"white"}}>Device</th>
+                <th className='bg-gradient' style={{backgroundColor:"#007bff", color:"white"}}>Date</th>
             </tr>
             </>
         )
@@ -36,14 +36,14 @@ const LeaderBoard = () => {
         return(
             <>
             <tr class="col-7 overflow-auto">
-            <th className='bg-info bg-gradient'>Rank</th>
-            <th className='bg-info bg-gradient'>Name</th>
-            <th className='bg-info bg-gradient'>Accuracy</th>
-            <th className='bg-info bg-gradient'>Speed</th>
-            <th className='bg-info bg-gradient'></th>
-            <th className='bg-info bg-gradient'>Score</th>
-            <th className='bg-info bg-gradient'>Device</th>
-            <th className='bg-info bg-gradient'>Date</th> 
+            <th className='bg-gradient' style={{backgroundColor:"#007bff", color:"white"}}>Rank</th>
+            <th className='bg-gradient' style={{backgroundColor:"#007bff", color:"white"}}>Name</th>
+            <th className='bg-gradient' style={{backgroundColor:"#007bff", color:"white"}}>Accuracy</th>
+            <th className='bg-gradient' style={{backgroundColor:"#007bff", color:"white"}}>Speed</th>
+            <th className='bg-gradient' style={{backgroundColor:"#007bff", color:"white"}}></th>
+            <th className='bg-gradient' style={{backgroundColor:"#007bff", color:"white"}}>Score</th>
+            <th className='bg-gradient' style={{backgroundColor:"#007bff", color:"white"}}>Device</th>
+            <th className='bg-gradient' style={{backgroundColor:"#007bff", color:"white"}}>Date</th> 
             </tr>
             </>
         )  
