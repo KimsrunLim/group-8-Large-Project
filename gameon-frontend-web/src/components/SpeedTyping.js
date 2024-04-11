@@ -319,7 +319,7 @@ function SpeedTyping() {
         <div className="container-fluid d-flex flex-column align-items-center justify-content-center">
             {/* Header */}
             <div id="header" className="row text-center mt-4 pt-5 mb-1">
-                <h1 id="game-title" className="mb-5 pb-2 fw-bolder">Speed Typing</h1>
+                <h1 id="game-title" className="mb-5 pb-2 fw-bolder">Typing Test</h1>
                 <h5 id="timer-title" className="mb-0 mt-3 ms-1 fw-bold">Timer</h5>
 
                 {/* Circular Timer */}

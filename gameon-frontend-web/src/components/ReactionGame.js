@@ -6,10 +6,15 @@ function ReactionGame()
     const [output, setOutput] = useState(null);
     const [unit, setUnit] = useState(null);
     const [user, setUser] = useState("");
-    
+    const [sum, setSum] = useState(0);
+    const [count, setCount] = useState(0);
     const canvasRef = useRef(null);
     var result = endTime;
+    const [lastScore, setLastScore] = useState(null);
+    const [dynamictxt, setDynamictxt] = useState(null);
+    const [lastunit, setLastunit] = useState(null);
 
+    const [compare, setCompare] = useState(0);
     const app_name = 'group8large-57cfa8808431'
     function buildPath(route) {
         if (process.env.NODE_ENV === 'production') {
@@ -67,7 +72,7 @@ function ReactionGame()
                     result = endTime;
                     setOutput("Time: ");
                     setUnit(" ms");
-                    
+                    setCount(count + 1);
                 }
             })
         }, time)
@@ -77,12 +82,47 @@ function ReactionGame()
     const startGame = () => {
         canvasRef.current.style.backgroundColor = 'rgb(243,16,16)';
         // console.log("game start");
-        let changeColorTime = randomTime(8); //max time as 8 sec.
+        let changeColorTime = randomTime(1); //max time as 8 sec.
         result = 0;
         setOutput(null);
         setUnit(null);
         setEndTime(null);
+        setDynamictxt(null);
+        setLastScore(null);
+        setLastunit(null);
+        setCompare(0);
         getStartingtime(changeColorTime);
+    };
+
+    const calcAve = () => {
+        if (compare > 0)
+        {
+            return;
+        }
+        if (!isNaN(+result) ) 
+        {
+            setCompare(compare+1);
+            setSum(sum + result);
+            
+            // console.log("score",result);
+            // console.log("count", count);
+            // console.log("sum", sum);
+    
+            if(count === 5) {
+                // console.log("show result ave");
+                // console.log((sum +result) / 5);
+                setLastScore(result);
+                setLastunit(" ms");
+                setDynamictxt("Time: ");
+                result = (sum +result) / 5;
+                setSum(0);
+                setCount(0);
+                setOutput("Your Averge Reaction Time is: ");
+                setEndTime(result);
+                submitStats();
+            }
+            
+        }
     };
 
     const submitStats = async () => {
@@ -93,7 +133,7 @@ function ReactionGame()
         const date = time.getDate();
         let day = `${month}-${date}-${year}`;
         // console.log("date: " , day);
-        
+        // console.log("to leaderboard::",result);
         if ((!isNaN(+result)) && (!(user === "")))
         {
             // send the score to leaderboard
@@ -113,18 +153,21 @@ function ReactionGame()
     };
 
     return(
-        <div className="text-center">
+        <div className="text-center" style={{}}>
             <div>
-                <h1>Reaction Game</h1>
-                <p>Click the area when color change to <span className="text-success fw-bold">GREEN</span></p>
+                <h1 className="mt-5">Reaction Test</h1>
+                <h5 className="m-1">Click the Area When Color Change To <span className="text-success fw-bold">GREEN</span></h5>
+                <p className="m-1">This Test Will Take The Average Of 5 trials</p>
+                <p className="m-1">You have {5-count} {(count === 4)? "round":"rounds"} left</p>
             </div>
             <div>
             </div>
-            <button className="btn btn-primary" onClick={startGame}>Start</button>
-            <p>
+            <button className="btn btn-primary m-2" onClick={startGame}>Start</button>
+            <h4>{dynamictxt}{lastScore}{lastunit}</h4>
+            <h4>
                 {endTime !== null && <span> {output}{endTime}{unit}</span>}
-            </p>
-            <canvas onClick={submitStats} className="w-100" style={{height: "70vh"}} ref={canvasRef}></canvas>
+            </h4>
+            <canvas onClick={calcAve} className="w-100" style={{height: "70vh"}} ref={canvasRef}></canvas>
         </div>
     )
 }
