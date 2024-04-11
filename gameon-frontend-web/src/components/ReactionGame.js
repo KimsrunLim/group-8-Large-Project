@@ -137,7 +137,7 @@ function ReactionGame()
         if ((!isNaN(+result)) && (!(user === "")))
         {
             // send the score to leaderboard
-            var obj = { username: user, time: result, date: day, device: "computer" };
+            var obj = { username: user, time: result, date: day, device: "Computer" };
             var js = JSON.stringify(obj);
 
             try {
